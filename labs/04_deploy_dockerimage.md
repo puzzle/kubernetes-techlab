@@ -248,9 +248,6 @@ Events:
 
 Unter Endpoints finden Sie nun den aktuell laufenden Pod.
 
-
-
-
 ---
 
 ## Zusatzaufgabe für Schnelle ;-)

@@ -14,7 +14,7 @@ Ziel des Techlabs:
 1. [Kubernetes CLI installieren](labs/02_cli.md)
 1. [Erste Schritte auf der Lab Plattform](labs/03_first_steps.md)
 1. [Ein Docker Image deployen](labs/04_deploy_dockerimage.md)
-1. [Routen erstellen](labs/05_create_route.md)
+1. [Service Exposen](labs/05_expose_service.md)
 1. [Skalieren](labs/06_scale.md)
 1. [Troubleshooting, was ist im Pod?](labs/07_troubleshooting_ops.md)
 1. [Datenbank deployen und anbinden](labs/08_database.md)
