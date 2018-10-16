@@ -20,8 +20,7 @@ Ziel des Techlabs:
 1. [Datenbank deployen und anbinden](labs/08_database.md)
 1. [Code Änderungen via Webhook direkt integrieren](labs/09_dockerbuild_webhook.md)
 1. [Persistent Storage anbinden und verwenden für Datenbank](labs/10_persistent_storage.md)
-1. [Applikationstemplates](labs/11_template.md)
-1. [Eigene Templates erstellen](labs/12_template_creation.md)
+
 
 1. [Helm](labs/13_helm.md)
 
@@ -30,3 +29,7 @@ Ziel des Techlabs:
 
 ## Additional Docs
 * [Kubernetes](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
+
+
+## Additional Tutorials
+* [Official Kubernetes Tutorial](https://kubernetes.io/docs/tutorials/)
