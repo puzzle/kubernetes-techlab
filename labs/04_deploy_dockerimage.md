@@ -258,6 +258,6 @@ Schauen Sie sich die erstellten Ressourcen mit `kubectl get [ResourceType] [Name
 
 **Ende Lab 4**
 
-<p width="100px" align="right"><a href="05_create_route.md">Routen erstellen →</a></p>
+<p width="100px" align="right"><a href="05_expose_service.md">Service Exposen →</a></p>
 
 [← zurück zur Übersicht](../README.md)

@@ -18,8 +18,7 @@ Ziel des Techlabs:
 1. [Skalieren](labs/06_scale.md)
 1. [Troubleshooting, was ist im Pod?](labs/07_troubleshooting_ops.md)
 1. [Datenbank deployen und anbinden](labs/08_database.md)
-1. [Code Änderungen via Webhook direkt integrieren](labs/09_dockerbuild_webhook.md)
-1. [Persistent Storage anbinden und verwenden für Datenbank](labs/10_persistent_storage.md)
+1. [Persistent Storage anbinden und verwenden für Datenbank](labs/09_persistent_storage.md)
 
 
 1. [Helm](labs/13_helm.md)
