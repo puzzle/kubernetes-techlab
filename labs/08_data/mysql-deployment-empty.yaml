@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-mysql
+  labels:
+    app: spring-boot-example
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: spring-boot-example
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-mysql
+  labels:
+    app: spring-boot-example
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot-example
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spring-boot-example
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_DATABASE
+          value: springboot
+        - name: MYSQL_USER
+          value: springboot
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+        ports:
+        - containerPort: 3306
+          name: mysql
