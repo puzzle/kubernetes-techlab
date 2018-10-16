@@ -72,7 +72,7 @@ $ kubectl logs -p [POD]
 
 ## Aufgabe: LAB7.3 Port Forwarding
 
-Kubernetes erlaubt es, beliebige Ports von der Entwicklungs-Workstation auf einen Pod weiterzuleiten. Dies ist z.B. nützlich, um auf Administrationskonsolen, Datenbanken, usw. zuzugreifen, die nicht gegen das Internet exponiert werden und auch sonst nicht erreichbar sind. Der Zugriff eines Port Forwarding erfolgt über den Kubernetes Master und wird vom Client bis zum Master über HTTPS getunnelt. Dies erlaubt es auch dann auf Kubernetes Platformen zuzugreifen, wenn sich restriktive Firewalls und/oder Proxies zwischen Workstation und OpenShift befinden.
+Kubernetes erlaubt es, beliebige Ports von der Entwicklungs-Workstation auf einen Pod weiterzuleiten. Dies ist z.B. nützlich, um auf Administrationskonsolen, Datenbanken, usw. zuzugreifen, die nicht gegen das Internet exponiert werden und auch sonst nicht erreichbar sind. Der Zugriff eines Port Forwarding erfolgt über den Kubernetes Master und wird vom Client bis zum Master über HTTPS getunnelt. Dies erlaubt es auch dann auf Kubernetes Platformen zuzugreifen, wenn sich restriktive Firewalls und/oder Proxies zwischen Workstation und Kubernetes befinden.
 
 Übung: Auf die Spring Boot Metrics aus [Lab 4](04_deploy_dockerimage.md) zugreifen.
 

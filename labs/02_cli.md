@@ -40,7 +40,7 @@ Dafür empfehlen sich folgende Phade
 **Windows**
 
 ```
-C:\OpenShift\
+C:\Kubernetes\
 ```
 
 ## Korrekte Berechtigung auf Linux und macOS erteilen
