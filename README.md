@@ -29,6 +29,7 @@ Ziel des Techlabs:
 
 ## Additional Docs
 * [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
+* [Helm Docs](https://docs.helm.sh/)
 
 
 ## Additional Tutorials
