@@ -19,9 +19,7 @@ Ziel des Techlabs:
 1. [Troubleshooting, was ist im Pod?](labs/07_troubleshooting_ops.md)
 1. [Datenbank deployen und anbinden](labs/08_database.md)
 1. [Persistent Storage anbinden und verwenden für Datenbank](labs/09_persistent_storage.md)
-1. [Weitere Koncepte](labs/10_additional_concepts.md)
-
-
+1. [Weitere Konzepte](labs/10_additional_concepts.md)
 1. [Helm](labs/13_helm.md)
 
 
