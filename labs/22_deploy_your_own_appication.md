@@ -2,8 +2,8 @@
 
 In diesem extended Lab geht es darum die eigene Applikation als Docker Container zu packetieren und anschliessend auf dem Kubernetes Cluster zu deployen.
 
-* Anhand des im Docker Techlab Gelernten die eigene Applikation als Docker Container
-* Docker image entsprechend auf Github pushen, oder automated Build einrichten
+* Anhand des im Docker Techlab Gelernten die eigene Applikation als Docker Container packetieren
+* Docker image entsprechend auf Github pushen oder automated Build einrichten
 * Deployment der Applikation inkl. Abhängigkeiten (Secrets, Configmaps, Services, Volumes, Jobs, Datenbank, usw.) einrichten.
 * Änderung am Code vornehmen und ein Update durchführen.
 
