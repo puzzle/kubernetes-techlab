@@ -30,29 +30,32 @@ Ein Napespace in Kubernetes ist das Top Level Konzept um Ihre Applikationen, Dep
 
 Erstellen Sie auf der Lab Plattform einen neuen Namespace.
 
-**Note**: Verwenden Sie für Ihren Namespacenamen am besten Ihren Techlab-Benutzernamen oder sonstigen Identifier, bspw. `[USER]-example1`
+**Note**: Verwenden Sie für Ihren Namespacenamen am besten Ihren Techlab-Benutzernamen oder sonstigen Identifier, bspw. `[USER]-lab3-1`
 
-> Wie kann ein neues Projekt erstellt werden?
+> Wie kann ein neuer Namespace erstellt werden?
 
 **Tipp** :information_source:
 ```
 $ kubectl help
 ```
 
-**Tipp:** Mit den folgenden Commands können Sie in einen anderen Namespace wechseln:
+**Tipp:** Mit dem folgenden Command können Sie in einen anderen Namespace wechseln:
 ```
 $ kubectl config set-context $(kubectl config current-context) --namespace=[namespace]
 ```
 
-## Dashboard
-TODO Dashboard
+## Aufgabe: LAB3.2 WebConsole erforschen
+
+Loggen Sie sich unter https://console.cloud.google.com/kubernetes mit Ihrem Account ein und schauen sie sich ihren Namespace im WebUi an.
+Aktuell gibts weder Deployments noch Pods oder Services
+
 
 ---
 
 ## Lösung: LAB3.1
 
 ```
-$ kubectl create namespace [USER]-example1
+$ kubectl create namespace [USER]-lab3-1
 ```
 ---
 
