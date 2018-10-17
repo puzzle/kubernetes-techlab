@@ -28,7 +28,7 @@ Ziel des Techlabs:
 
 
 ## Additional Docs
-* [Kubernetes](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
+* [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
 
 
 ## Additional Tutorials
