@@ -26,7 +26,7 @@ Nun müssen wir dem mysql Deployment noch das Volume am korrekten Ort anhängen
 ```
 $ kubectl edit deployment springboot-mysql
 ```
-das Deployment muss wie folgt aussehen, volumeMounts und volumes beachten:
+das Deployment muss wie folgt aussehen, volumes beachten:
 ```
 ...
     spec:
