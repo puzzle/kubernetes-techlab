@@ -78,7 +78,7 @@ Legen sie das kubectl direkt im Verzeichnis *C:\Windows* ab.
 
 Das kubectl sollte jetzt korrekt installiert sein. Am besten überprüfen wir das, indem wir den folgenden Command ausführen:
 ```
-$ kubectl
+$ kubectl version
 ```
 Der folgende Output sollte angezeigt werden:
 ```
