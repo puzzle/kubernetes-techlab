@@ -25,6 +25,9 @@ Ziel des Techlabs:
 
 ## Zusätzliche Labs
 1. [Deployment Strategien](labs/21_deployment_strategies.md)
+1. [Eigene Applikation auf Kubernetes Deployen](labs/22_deploy_your_own_appication.md)
+1. [Helm Chart für die eigene Applikation erstellen](labs/23_create_helm_chart.md)
+
 
 
 ## Additional Docs
