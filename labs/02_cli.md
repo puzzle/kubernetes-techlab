@@ -49,7 +49,7 @@ Das kubectl muss ausgeführt werden können.
 
 ```
 cd ~/bin
-chmod +x oc
+chmod +x kubectl
 ```
 
 ## Das kubectl im PATH registrieren
