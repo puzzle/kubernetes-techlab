@@ -2,6 +2,17 @@
 
 In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über kubectl wie auch über die Web Console
 
+## Vorbereitung Labs
+
+als erstes ist es Sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit sie die nötigen Tagen bei Ihnen local auf dem PC haben.
+
+```
+$ cd [Git Repo Project Folder]
+$ git clone https://github.com/puzzle/kubernetes-techlab.git
+```
+
+als Alternative kann das Repository als Zip heruntergeladen werden: https://github.com/puzzle/kubernetes-techlab
+
 ## Login
 
 **Note:** Vergewissern Sie sich, dass Sie [Lab 2](02_cli.md) erfolgreich abgeschlossen haben.
