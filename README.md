@@ -1,11 +1,11 @@
 # Kubernetes Techlab
 
-Das Ziel dieses Techlabs ist es, Kubernetes Hands-On mitzuerleben. Eine Kubernetes Plattform erlaubt es in Container packetierte Software auf einfach Art auszuliefern und zu deployen
+Das Ziel dieses Techlabs ist es, Kubernetes hands-on mitzuerleben. Eine Kubernetes Plattform erlaubt es, in Container packetierte Software auf einfache Art auszuliefern und zu deployen.
 
 Ziel des Techlabs:
-* Gemeinsam den Einstieg in eine neue moderne Technologie erreichen
+* Gemeinsam den Einstieg in eine neue moderne Technologie finden
 * Grundkonzepte verstehen
-* Applikation auf Kubernetes deployed
+* Applikation auf Kubernetes deployen
 
 
 ## Inhalte
@@ -14,7 +14,7 @@ Ziel des Techlabs:
 1. [Kubernetes CLI installieren](labs/02_cli.md)
 1. [Erste Schritte auf der Lab Plattform](labs/03_first_steps.md)
 1. [Ein Docker Image deployen](labs/04_deploy_dockerimage.md)
-1. [Service Exposen](labs/05_expose_service.md)
+1. [Service exposen](labs/05_expose_service.md)
 1. [Skalieren](labs/06_scale.md)
 1. [Troubleshooting, was ist im Pod?](labs/07_troubleshooting_ops.md)
 1. [Datenbank deployen und anbinden](labs/08_database.md)
@@ -24,16 +24,18 @@ Ziel des Techlabs:
 
 
 ## Zusätzliche Labs
+
 1. [Deployment Strategien](labs/21_deployment_strategies.md)
-1. [Eigene Applikation auf Kubernetes Deployen](labs/22_deploy_your_own_appication.md)
+1. [Eigene Applikation auf Kubernetes deployen](labs/22_deploy_your_own_appication.md)
 1. [Helm Chart für die eigene Applikation erstellen](labs/23_create_helm_chart.md)
 
 
-
 ## Additional Docs
+
 * [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
 * [Helm Docs](https://docs.helm.sh/)
 
 
 ## Additional Tutorials
+
 * [Official Kubernetes Tutorial](https://kubernetes.io/docs/tutorials/)

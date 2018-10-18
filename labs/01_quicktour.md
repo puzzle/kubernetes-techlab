@@ -2,41 +2,41 @@
 
 In diesem Lab werden die Grundkonzepte von Kubernetes vorgestellt. 
 
-Die hier aufgeführten Begriffe und Ressourcen sind ein Auszug aus der offiziellen Kubernetes Dokumentation, weiterführende Informationen zu Kubernetes können hier entnommen werden:
-
-> https://kubernetes.io/docs/concepts/
+Die hier aufgeführten Begriffe und Ressourcen sind ein Auszug aus der offiziellen Kubernetes Dokumentation, weiterführende Informationen zu Kubernetes können (der offiziellen Dokumentation)[https://kubernetes.io/docs/concepts/] entnommen werden.
 
 
 ## Grundkonzepte
 
-Kubernetes is Open Source  und bietet eine Plattform, mit der Software in Containern deployt und betrieben werden kann. Kubernetes kann als Container Platform oder Platform as a Service (PaaS) bezeichnet werden.
+Kubernetes ist Open Source Software und bietet eine Plattform, mit der Software in Container deployt und betrieben werden kann. Kubernetes kann als Container Platform oder auch Container-as-a-Service (CaaS) bezeichnet werden, je nach Ausprägung auch als Platform-as-a-Service (PaaS).
+
 
 ### Docker
 
-[Docker](https://www.docker.com/) ist die offene Plattform für Entwickler und Sysadmins und ihre Applikationen. Wählen Sie das für Ihre Technologie passende Basis-Docker-Images aus, Kuberentes deployt für Sie nach jedem Build  einen aktualisierten Docker-Container.
+[Docker](https://www.docker.com/) kann als Container Engine zusammen mit Kubernetes eingesetzt werden und ist eine Plattform für Entwickler, Sysadmins und ihre Applikationen. Wählen Sie das für Ihre Technologie passende Base Image aus, Kubernetes deployt für Sie nach jedem Build einen aktualisierten Container.
 
 
 ## Übersicht
 
 Kubernetes besteht aus Kubernetes Master und Kubernetes Nodes. 
-Der Master ist die Schnittstelle gegen aussen um dem Cluster mitzuteilen welche Applikationen er wie deployen soll. Des Weiteren ist er für das Verwalten des aktuellen Zustands zuständig.
-Die Nodes sind sogenannte Compute Nodes und führen die Applikationen und Workloads aus. Der Master verwaltet die Nodes.
+Der Master ist die Schnittstelle gegen aussen, um dem Cluster mitzuteilen, welche Applikationen er wie deployen soll. Desweiteren ist er für das Verwalten des aktuellen Zustands zuständig.
+Die Nodes sind sog. Compute Nodes und führen die Applikationen und Workloads aus. Der Master verwaltet die Nodes.
 
-### Container und Docker Images
+### Container und Images
 
-Die Basiselemente von Kubernetes Applikationen sind Container. Mit Docker Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Files, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Docker Containers können beliebige Prozesse ausgeführt werden.
+Die Basiselemente von Kubernetes Applikationen sind Container. Mit Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Files, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Containers können beliebige Prozesse ausgeführt werden.
 
-Docker Container basieren auf Docker Images. Ein Docker Image ist eine binary Datei, die alle nötigen Komponenten beinhaltet, damit ein einzelner Container ausgeführt werden kann.
+Container basieren auf Images. Ein Image ist eine binäre Datei, die alle nötigen Komponenten beinhaltet, damit ein einzelner Container ausgeführt werden kann.
 
-Docker Images werden anhand von DockerFiles (textueller Beschrieb wie das Docker Image Schritt für Schritt aufgebaut ist) gebuildet. Grundsätzlich sind Docker Images hierarchisch angewendete Filesystem Snapshots.
+Container Images werden anhand von bspw. Dockerfiles (textueller Beschrieb, wie das Image aufgebaut ist) gebuildet. Grundsätzlich sind Container Images hierarchisch angewandte Filesystem Snapshots.
 
 **Beispiel Tomcat**
-- Basis Image (CentOs 7)
+- Basis Image (CentOS 7)
 - + Install Java
 - + Install Tomcat
 - + Install App
 
-Die gebuildeten Docker Images werden in einer Docker Registry versioniert abgelegt und stehen der Plattform nach dem Build zum Deployment zur Verfügung.
+Die gebuildeten Container Images werden in einer Image Registry versioniert abgelegt und stehen der Plattform nach dem Build zum Deployment zur Verfügung.
+
 
 ### Namespaces
 
@@ -44,14 +44,16 @@ In Kubernetes werden Ressourcen (Container und Docker Images, Pods, Services, Ko
 
 Innerhalb eines Namespaces können berechtigte User ihre Ressourcen selber verwalten und organisieren.
 
-Die Ressourcen innerhalb eines Namespaces sind über ein transparentes [SDN](https://de.wikipedia.org/wiki/Software-defined_networking) verbunden. So können die einzelnen Komponenten eines Namespaces in einem Multi-Node Setup auf verschiedene Nodes deployed werden. Dabei sind sie über das SDN untereinander sicht- und zugreifbar.
+Die Ressourcen innerhalb eines Namespace sind über ein transparentes [SDN](https://de.wikipedia.org/wiki/Software-defined_networking) verbunden. So können die einzelnen Komponenten eines Namespace in einem Multi-Node Setup auf verschiedene Nodes deployed werden. Dabei sind sie über das SDN untereinander sicht- und zugreifbar.
+
 
 ### Pods
 
-Ein Pod ist ein oder mehrere Container, die zusammen auf den gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
-Typischerweise haben mehrere Container innerhalb eines Pods den gleichen Lifecycle.
+Ein Pod ist ein oder mehrere Container, die zusammen auf dem gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
+Typischerweise haben mehrere Container innerhalb eines Pod den gleichen Lifecycle.
 
-Ein Pod ist innerhalb eines Kubernetes Namespaces über den entsprechenden Service verfügbar.
+Ein Pod ist innerhalb eines Kubernetes Namespace über den entsprechenden Service verfügbar.
+
 
 ### Services
 
@@ -59,17 +61,20 @@ Ein Service repräsentiert einen internen Loadbalancer auf die dahinterliegenden
 
 Einem Service ist innerhalb eines Namespaces eine IP und ein Port zugewiesen und verteilt Requests entsprechend auf die Pod Replicas.
 
+
 ### Deployment
 
-Siehe: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+Siehe <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>
+
 
 ### Volume
 
-Siehe: https://kubernetes.io/docs/concepts/storage/volumes/
+Siehe <https://kubernetes.io/docs/concepts/storage/volumes/>
+
 
 ### Job
 
-Siehe: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+Siehe <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
 
 ---
 
