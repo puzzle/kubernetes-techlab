@@ -84,16 +84,16 @@ Diese Umgebungsvariablen können wir nun im Deployment example-spring-boot setze
 
 Die Umgebungsvariablen können nun im example-spring-boot Deployment wie folgt gesetzt werden:
 ```
-$ kubectl set env deployment/spring-boot-example SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true"
+$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true"
 ```
 
 oder direkt via
 ```
-$ kubectl edit deployment spring-boot-example
+$ kubectl edit deployment example-spring-boot
 ```
 
 ```
-$ kubectl get deployment spring-boot-example
+$ kubectl get deployment example-spring-boot
 ```
 ```
 ...
@@ -121,7 +121,7 @@ Wie im Lab [07](07_troubleshooting_ops.md) beschrieben kann mittels `kubectl exe
 ```
 $ kubectl get pods
 NAME                                   READY   STATUS    RESTARTS   AGE
-spring-boot-example-574544fd68-qfkcm   1/1     Running   0          2m20s
+example-spring-boot-574544fd68-qfkcm   1/1     Running   0          2m20s
 springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
 ```
 
