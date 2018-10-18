@@ -38,9 +38,9 @@ $ kubectl get namespace
 ```
 um alle Namespaces anzuzeigen, auf die Sie berechtigt sind.
 
-## Aufgabe: LAB4.2 Pod Deployen
+## Aufgabe: LAB4.2 Pod Starten
 
-Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation deployen. Als ersten Schritt deployen wir direkt einen Pod
+Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation deployen. Als ersten Schritt starten wir direkt einen Pod
 
 ```
 $ kubectl run nginx --image=nginx --port=80 --restart=Never
@@ -52,7 +52,7 @@ Schauen sie sich den nginx Pod im WebUI (https://console.cloud.google.com/kubern
 
 ## Aufgabe: LAB4.3 Deployment
 
-Ein einzelner Pod zu deployen kann Sinn machen, ist jedoch nur beschränkt Bestpractice. Zusammen mit dem Pod wollen wir uns noch ein weitere Konzept anschauen. Das sogenannte Deployment. Es sorgt dafür, dass Pods überwacht werden und überprüft ob jeweils die Anzahl requesteter Pods dem aktuell laufenden entspricht.
+Ein einzelner Pod zu starten kann Sinn machen, ist jedoch nur beschränkt Bestpractice. Zusammen mit dem Pod wollen wir uns noch ein weitere Konzept anschauen. Das sogenannte Deployment. Es sorgt dafür, dass Pods überwacht werden und überprüft ob jeweils die Anzahl requesteter Pods dem aktuell laufenden entspricht.
 
 Sobald der Namespace erstellt wurde, können wir mit dem folgenden Befehl das Docker Image deployen im Namespace deployen:
 
