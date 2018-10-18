@@ -57,11 +57,11 @@ Ein einzelner Pod zu deployen kann Sinn machen, ist jedoch nur beschränkt Bestp
 Sobald der Namespace erstellt wurde, können wir mit dem folgenden Befehl das Docker Image deployen im Namespace deployen:
 
 ```
-$ kubectl create deployment spring-boot-example --image=appuio/example-spring-boot
+$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot
 ```
 Output:
 ```
-deployment.apps/spring-boot-example created
+deployment.apps/example-spring-boot created
 ```
 
 Für unser Lab verwenden wir ein APPUiO-Beispiel (Java Spring Boot Applikation):
@@ -82,7 +82,7 @@ Je nach Internetverbindung oder abhängig davon, ob das Image auf Ihrem Kubernet
 
 ## Betrachten der erstellten Ressourcen
 
-Als wir `kubectl create deployment spring-boot-example --image=appuio/example-spring-boot` vorhin ausführten, hat Kubernetes ein Deployment für uns angelegt:
+Als wir `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot` vorhin ausführten, hat Kubernetes ein Deployment für uns angelegt:
 
 - [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
@@ -116,7 +116,7 @@ $ kubectl get pod
 
 ```
 NAME                                   READY   STATUS    RESTARTS   AGE
-spring-boot-example-69b658f647-xnm94   1/1     Running   0          52m
+example-spring-boot-69b658f647-xnm94   1/1     Running   0          52m
 ```
 
 Im Deployment wurde definiert, das ein Replica Pod deployt werden soll. Dieser Pod ist aktuell von ausserhalb noch nicht verfügbar.
