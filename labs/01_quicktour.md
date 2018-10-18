@@ -2,7 +2,7 @@
 
 In diesem Lab werden die Grundkonzepte von Kubernetes vorgestellt. 
 
-Die hier aufgeführten Begriffe und Ressourcen sind ein Auszug aus der offiziellen Kubernetes Dokumentation, weiterführende Informationen zu Kubernetes können (der offiziellen Dokumentation)[https://kubernetes.io/docs/concepts/] entnommen werden.
+Die hier aufgeführten Begriffe und Ressourcen sind ein Auszug aus der offiziellen Kubernetes Dokumentation, weiterführende Informationen zu Kubernetes können [der offiziellen Dokumentation](https://kubernetes.io/docs/concepts/) entnommen werden.
 
 
 ## Grundkonzepte
