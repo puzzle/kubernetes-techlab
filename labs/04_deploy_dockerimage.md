@@ -77,7 +77,7 @@ $ kubectl get pods -w
 
 Je nach Internetverbindung oder abhängig davon, ob das Image auf Ihrem Kubernetes Node bereits heruntergeladen wurde, kann das eine Weile dauern. 
 
-**Tipp** Um Ihre eigenen Docker Images für Kubernetes zu erstellen, sollten Sie die folgenden Best Practices befolgen: https://docs.openshift.com/container-platform/3.9/creating_images/guidelines.html Der Image Creation Guide ist zwar von OpenShift, jedoch auch für Kubernetes pur anwendbar
+**Tipp** Um Ihre eigenen Docker Images für Kubernetes zu erstellen, sollten Sie die folgenden Best Practices befolgen: <https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html> Der Image Creation Guide ist zwar von OpenShift, jedoch auch für Kubernetes pur anwendbar
 
 
 ## Betrachten der erstellten Ressourcen
