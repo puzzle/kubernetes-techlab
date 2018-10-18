@@ -16,9 +16,10 @@ Der Client ist in Go programmiert und kommt als einzelnes Binary für die folgen
 
 ## `kubectl` herunterladen und installieren
 
-Den (Instruktionen der offiziellen Dokumentation)[https://kubernetes.io/docs/tasks/tools/install-kubectl/] folgen.
+Den [Instruktionen der offiziellen Dokumentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/) folgen.
 
-**Wichtig:** Bitte die Version beachten, die aktuelle Version des Kubernetes Masters ist `1.9.7-gke.6`.
+**Wichtig:** Die neuste Version vom `kubectl` installieren, ausser sie ist nicht mit der Kubernetes Version vom Masters(`1.9.7-gke.6`) kompatibel.
+In diesem Fall eine ältere Version für die Installation wählen.
 
 
 ## Manuelle Installtion von `kubectl`
