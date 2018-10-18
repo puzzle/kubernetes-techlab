@@ -28,7 +28,7 @@ Installieren Sie anhand [der für Ihr Betriebssystemen entsprechenden Anleitunge
 
 **Note:** Sollte ein Proxy sein Unwesen treiben, funktioniert der interaktive Installer nicht und [muss als Archiv heruntergeladen werden](https://cloud.google.com/sdk/docs/downloads-versioned-archives). Das Zip, welches mit "Windows 64-bit (x86_64)" bezeichnet wird, herunterladen (ausser natürlich es handelt sich um ein 32-bit Windows).
 
-**Note:** Wie bereits in [Lab 2](02_cli.md) erwähnt, kann auf die lokale Installation von `kubectl` und `gcloud` verzichtet und stattdessen die sog. "Cloud Shell" in der Web Console verwendet werden. In diesem Fall muss Lab 3.2 vorgezogen werden, um anschliessend in der Cloud Shell das unten beschriebene Login durchzuführen.
+**Note:** Wie bereits in [Lab 2](02_cli.md) erwähnt, kann auf die lokale Installation von `kubectl` und `gcloud` verzichtet und stattdessen die sog. "Cloud Shell" in der Web Console verwendet werden. In diesem Fall muss [Lab 3.2](03_first_steps.md#aufgabe-lab32-web-console-erforschen) vorgezogen werden, um anschliessend in der Cloud Shell das unten beschriebene Login durchzuführen.
 
 
 ### Login und Auswahl Kubernetes Cluster
