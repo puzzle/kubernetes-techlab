@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: springboot-mysql
   labels:
-    app: spring-boot-example
+    app: example-spring-boot
 spec:
   ports:
     - port: 3306
   selector:
-    app: spring-boot-example
+    app: example-spring-boot
     tier: mysql
   clusterIP: None
 ---
@@ -17,18 +17,18 @@ kind: Deployment
 metadata:
   name: springboot-mysql
   labels:
-    app: spring-boot-example
+    app: example-spring-boot
 spec:
   selector:
     matchLabels:
-      app: spring-boot-example
+      app: example-spring-boot
       tier: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: spring-boot-example
+        app: example-spring-boot
         tier: mysql
     spec:
       containers:
