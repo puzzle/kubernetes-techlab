@@ -9,9 +9,15 @@ Dafür erstellen wir einen neuen Namespace
 ```
 $ kubectl create namespace [USER]-scale
 ```
-wechesln in den Namespace 
+Wechseln in den Namespace 
 ```
+Linux:
 $ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-scale
+```
+
+```
+Windows:
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-scale
 ```
 
 und fügen dem Namespace ein Deplyoment hinzu

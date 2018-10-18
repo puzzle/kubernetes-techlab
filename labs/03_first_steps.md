@@ -189,7 +189,9 @@ $ kubectl config set-context $(kubectl config current-context) --namespace=[name
 ```
 Windows:
 $ kubectl config current-context
-$ kubectl config set-context [Output des obigen Befehls hier einfügen] --namespace=[namespace]
+// Kontext in eine Variable speichern
+SET KUBE_CONTEXT=[Output des obigen Befehls hier einfügen]
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[namespace]
 ```
 
 ## Aufgabe: LAB3.2 Web Console erforschen
