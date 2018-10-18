@@ -1,47 +1,170 @@
 # Lab 3: Erste Schritte auf der Lab Plattform
 
-In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über kubectl wie auch über die Web Console
+In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über `kubectl` wie auch über die Web Console
+
 
 ## Vorbereitung Labs
 
-als erstes ist es Sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit sie die nötigen Tagen bei Ihnen local auf dem PC haben.
+Als erstes ist es sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit die nötigen Aufgaben lokal auf dem PC vorhanden sind.
 
 ```
 $ cd [Git Repo Project Folder]
 $ git clone https://github.com/puzzle/kubernetes-techlab.git
 ```
 
-als Alternative kann das Repository als Zip heruntergeladen werden: https://github.com/puzzle/kubernetes-techlab
+Als Alternative kann das Repository als [Zip](https://github.com/puzzle/kubernetes-techlab/archive/master.zip) heruntergeladen werden.
+
 
 ## Login
 
 **Note:** Vergewissern Sie sich, dass Sie [Lab 2](02_cli.md) erfolgreich abgeschlossen haben.
 
-Unser Kubernetes Cluster der Techlab Plattform läuft auf GKE (Google Kubernetes Engine) das login erfolgt mittels Google Cloud sdk.
+Unser Kubernetes Cluster der Techlab Plattform läuft auf GKE (Google Kubernetes Engine), das Login erfolgt mittels Google Cloud SDK.
 
-### Installation gcloud 
 
-Installieren Sie anhand der Anleitungen unter https://cloud.google.com/sdk/docs/quickstarts das Google Cloud sdk
+### Installation `gcloud`
 
-### Login und auswahl Kubernetes Cluster
+Installieren Sie anhand [der für Ihr Betriebssystemen entsprechenden Anleitungen](https://cloud.google.com/sdk/docs/quickstarts) das Google Cloud SDK.
+
+
+### Login und Auswahl Kubernetes Cluster
 
 ```
 $ gcloud init
-$ gcloud container clusters get-credentials [cluster] --zone europe-west1-b --project [project]
+Welcome! This command will take you through the configuration of gcloud.
+
+Your current configuration has been set to: [default]
+
+You can skip diagnostics next time by using the following flag:
+  gcloud init --skip-diagnostics
+
+Network diagnostic detects and fixes local network connection issues.
+Checking network connection...done.                                                                                                                                                                               
+Reachability Check passed.
+Network diagnostic (1/1 checks) passed.
+
+You must log in to continue. Would you like to log in (Y/n)?  Y
+
+Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/auth?redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&prompt=select_account&response_type=code&client_id=xxxxxxxxxxx.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&access_type=offline
+
+
+You are logged in as: [user@example.com].
+
+Pick cloud project to use: 
+ [1] mobi-kubernetes-schulung
+ [2] Create a new project
+Please enter numeric choice or text value (must exactly match list 
+item):  1
+
+Your current project has been set to: [mobi-kubernetes-schulung].
+
+Do you want to configure a default Compute Region and Zone? (Y/n)?  Y
+
+Which Google Compute Engine zone would you like to use as project 
+default?
+If you do not specify a zone via a command line flag while working 
+with Compute Engine resources, the default is assumed.
+ [1] us-east1-b
+ [2] us-east1-c
+ [3] us-east1-d
+ [4] us-east4-c
+ [5] us-east4-b
+ [6] us-east4-a
+ [7] us-central1-c
+ [8] us-central1-a
+ [9] us-central1-f
+ [10] us-central1-b
+ [11] us-west1-b
+ [12] us-west1-c
+ [13] us-west1-a
+ [14] europe-west4-a
+ [15] europe-west4-b
+ [16] europe-west4-c
+ [17] europe-west1-b
+ [18] europe-west1-d
+ [19] europe-west1-c
+ [20] europe-west3-b
+ [21] europe-west3-c
+ [22] europe-west3-a
+ [23] europe-west2-c
+ [24] europe-west2-b
+ [25] europe-west2-a
+ [26] asia-east1-b
+ [27] asia-east1-a
+ [28] asia-east1-c
+ [29] asia-southeast1-b
+ [30] asia-southeast1-a
+ [31] asia-southeast1-c
+ [32] asia-northeast1-b
+ [33] asia-northeast1-c
+ [34] asia-northeast1-a
+ [35] asia-south1-c
+ [36] asia-south1-b
+ [37] asia-south1-a
+ [38] australia-southeast1-b
+ [39] australia-southeast1-c
+ [40] australia-southeast1-a
+ [41] southamerica-east1-b
+ [42] southamerica-east1-c
+ [43] southamerica-east1-a
+ [44] europe-north1-a
+ [45] europe-north1-b
+ [46] europe-north1-c
+ [47] northamerica-northeast1-a
+ [48] northamerica-northeast1-b
+ [49] northamerica-northeast1-c
+ [50] us-west2-a
+Did not print [3] options.
+Too many options [53]. Enter "list" at prompt to print choices fully.
+Please enter numeric choice or text value (must exactly match list 
+item):  17
+
+Your project default Compute Engine zone has been set to [europe-west1-b].
+You can change it by running [gcloud config set compute/zone NAME].
+
+Your project default Compute Engine region has been set to [europe-west1].
+You can change it by running [gcloud config set compute/region NAME].
+
+Created a default .boto configuration file at [/home/baffolter/.boto]. See this file and
+[https://cloud.google.com/storage/docs/gsutil/commands/config] for more
+information about configuring Google Cloud Storage.
+Your Google Cloud SDK is configured and ready to use!
+
+* Commands that require authentication will use affolter@puzzle.ch by default
+* Commands will reference project `mobi-kubernetes-schulung` by default
+* Compute Engine commands will use region `europe-west1` by default
+* Compute Engine commands will use zone `europe-west1-b` by default
+
+Run `gcloud help config` to learn how to change individual settings
+
+This gcloud configuration is called [default]. You can create additional configurations if you work with multiple accounts and/or projects.
+Run `gcloud topic configurations` to learn more.
+
+Some things to try next:
+
+* Run `gcloud --help` to see the Cloud Platform services you can interact with. And run `gcloud help COMMAND` to get help on any gcloud command.
+* Run `gcloud topic -h` to learn about advanced features of the SDK like arg files and output formatting
 ```
-Die Informationen zum Cluster und Projekt erhalten Sie vom Teacher
+
+Die Informationen zum Cluster und Projekt in folgendem Befehl erhalten Sie vom Instruktor:
+
+```
+$ gcloud container clusters get-credentials [cluster] --project [project]
+```
 
 
 ## Namespace erstellen
 
-Ein Napespace in Kubernetes ist das Top Level Konzept um Ihre Applikationen, Deployments, Container etc. zu organisieren. Siehe [Kubernetes Docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
+Ein Namespace in Kubernetes ist das Top Level-Konzept um Ihre Applikationen, Deployments, Container etc. zu organisieren. Siehe [Kubernetes Docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
 
 
 ## Aufgabe: LAB3.1
 
 Erstellen Sie auf der Lab Plattform einen neuen Namespace.
 
-**Note**: Verwenden Sie für Ihren Namespacenamen am besten Ihren Techlab-Benutzernamen oder sonstigen Identifier, bspw. `[USER]-lab3-1`
+**Note**: Verwenden Sie für Ihren Namespace-Namen am besten Ihren Techlab-Benutzernamen oder sonstigen Identifier, bspw. `[USER]-lab3-1`
 
 > Wie kann ein neuer Namespace erstellt werden?
 
@@ -55,10 +178,11 @@ $ kubectl help
 $ kubectl config set-context $(kubectl config current-context) --namespace=[namespace]
 ```
 
+
 ## Aufgabe: LAB3.2 WebConsole erforschen
 
-Loggen Sie sich unter https://console.cloud.google.com/kubernetes mit Ihrem Account ein und schauen sie sich ihren Namespace im WebUi an.
-Aktuell gibts weder Deployments noch Pods oder Services
+Loggen Sie sich auf der [WebConsole](https://console.cloud.google.com/kubernetes) mit Ihrem Account ein und schauen Sie sich Ihren Namespace im WebUI an.
+Aktuell gibts weder Deployments noch Pods oder Services.
 
 
 ---
