@@ -1,10 +1,11 @@
 # Lab 2: Kubernetes CLI installieren
 
-In diesem Lab werden wir gemeinsam das kubectl Client installieren und konfigurieren, damit wir danach die ersten Schritte auf der Techlab Plattform durchführen können.
+In diesem Lab werden wir gemeinsam den `kubectl` Client installieren und konfigurieren, damit wir danach die ersten Schritte auf der Techlab Plattform durchführen können.
+
 
 ## Command Line Interface
 
-Das **kubectl** stellt ein Interface zu einem Kubernetes Cluster bereit.
+`kubectl` stellt ein Interface zu einem Kubernetes Cluster bereit.
 
 Der Client ist in Go programmiert und kommt als einzelnes Binary für die folgenden Betriebsysteme daher:
 
@@ -13,17 +14,17 @@ Der Client ist in Go programmiert und kommt als einzelnes Binary für die folgen
 - Linux
 
 
-## kubectl herunterladen und installieren
+## `kubectl` herunterladen und installieren
 
-Die Instruktionen auf https://kubernetes.io/docs/tasks/tools/install-kubectl/ folgen
+Den (Instruktionen der offiziellen Dokumentation)[https://kubernetes.io/docs/tasks/tools/install-kubectl/] folgen.
 
-**Wichtig:** bitte die Version beachten, aktuelle Version des Kubernetes Masters: 1.9.7-gke.6 
+**Wichtig:** Bitte die Version beachten, die aktuelle Version des Kubernetes Masters ist `1.9.7-gke.6`.
 
 
-## Manuelle Installtion von kubectl
+## Manuelle Installtion von `kubectl`
 
-Falls die Installation über die Paketquellen nicht funktioniert, oder bspw. eine explizite Version benötigt wird, kann das kubectl auch als Binary herunter geladen werden.
-Dafür empfehlen sich folgende Phade
+Falls die Installation über die Paketquellen nicht funktioniert, oder bspw. eine explizite Version benötigt wird, kann `kubectl` auch als Binary heruntergeladen werden.
+Dafür empfehlen sich folgende Pfade:
 
 **Linux**
 
@@ -43,23 +44,27 @@ Dafür empfehlen sich folgende Phade
 C:\Kubernetes\
 ```
 
+
 ## Korrekte Berechtigung auf Linux und macOS erteilen
 
-Das kubectl muss ausgeführt werden können.
+`kubectl` muss ausgeführt werden können:
 
 ```
 cd ~/bin
 chmod +x kubectl
 ```
 
-## Das kubectl im PATH registrieren
+
+## `kubectl` im PATH registrieren
 
 Unter **Linux** und **Mac OS X** ist das Verzeichnis ~/bin bereits im PATH, daher muss hier nichts gemacht werden.
 
-Falls das kubectl in einem anderen Verzeichnis abgelegt wurde, kann der PATH wie folgt gesetzt werden:
+Falls `kubectl` in einem anderen Verzeichnis abgelegt wurde, kann der PATH wie folgt gesetzt werden:
+
 ```
 $ export PATH=$PATH:[path to kubectl]
 ```
+
 
 ### Windows
 
@@ -71,16 +76,19 @@ Unter Windows kann der PATH in den erweiterten Systemeinstellungen konfiguriert 
 
 **Windows Quick Hack**
 
-Legen sie das kubectl direkt im Verzeichnis *C:\Windows* ab.
+Legen Sie `kubectl` direkt im Verzeichnis `C:\Windows` ab.
 
 
 ## Installation verifizieren
 
-Das kubectl sollte jetzt korrekt installiert sein. Am besten überprüfen wir das, indem wir den folgenden Command ausführen:
+`kubectl` sollte jetzt korrekt installiert sein. Am besten überprüfen wir das, indem wir den folgenden Command ausführen:
+
 ```
 $ kubectl version
 ```
+
 Der folgende Output sollte angezeigt werden:
+
 ```
 Client Version: version.Info{Major:"1", Minor:"12", GitVersion:"v1.12.1", GitCommit:"4ed3216f3ec431b140b1d899130a69fc671678f4", GitTreeState:"clean", BuildDate:"2018-10-05T16:46:06Z", GoVersion:"go1.10.4", Compiler:"gc", Platform:"linux/amd64"}
 [...]
@@ -103,13 +111,13 @@ Oder für zsh:
 source <(kubectl completion zsh)
 ```
 
-für die Installation der Bash Completion für zukünftige Shells, kann folgender Befehl ausgeführt werden
+Für die permanente Installation der bash completion kann folgender Befehl ausgeführt werden:
 
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
 
-Damit die bash completion funktioniert, muss vorher das Paket `bash-completion` installiert werden.
+Damit die bash completion funktioniert muss vorher das Paket `bash-completion` installiert werden.
 
 Ubuntu:
 
