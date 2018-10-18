@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-dump
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.6
+        command:
+        - 'bash'
+        - '-eo'
+        - 'pipefail'
+        - '-c'
+        - > 
+          trap "echo Backup failed; exit 0" ERR; 
+          FILENAME=backup-${MYSQL_DATABASE}-`date +%Y-%m-%d_%H%M%S`.sql.gz;
+# FIXME: DATABASE_HOST, DATABASE_PORT
+          mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD -h$DATABASE_HOST -P$DATABASE_PORT --skip-lock-tables --quick --add-drop-database --routines ${MYSQL_DATABASE} | gzip > /database-backup/$FILENAME); 
+          echo "";
+          echo "Backup successful"; du -h /database-backup/$FILENAME; 
+          echo "to restore the backup to the serviced host use: $ mysql -u$DATABASE_USER -p$DATABASE_PASSWORD -h$DATABASE_HOST < /database-backup/<backupfile> (unpacked)"
+        env:
+        - name: MYSQL_DATABASE
+          value: springboot
+        - name: MYSQL_USER
+          value: springboot
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+      restartPolicy: Never
