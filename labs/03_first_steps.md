@@ -179,10 +179,11 @@ $ kubectl config set-context $(kubectl config current-context) --namespace=[name
 ```
 
 
-## Aufgabe: LAB3.2 WebConsole erforschen
+## Aufgabe: LAB3.2 Web Console erforschen
 
-Loggen Sie sich auf der [WebConsole](https://console.cloud.google.com/kubernetes) mit Ihrem Account ein und schauen Sie sich Ihren Namespace im WebUI an.
-Aktuell gibts weder Deployments noch Pods oder Services.
+Loggen Sie sich auf der [Web Console](https://console.cloud.google.com/kubernetes) mit Ihrem Account ein. Klicken Sie oben links auf den Button "Projekt auswählen" und wählen als Organisation "puzzle.ch" und anschliessend den entsprechenden Cluster aus.
+
+Schauen Sie sich die verschiedenen Menüpunkte links an. Aktuell gibts weder Deployments noch Pods oder Services.
 
 
 ---
