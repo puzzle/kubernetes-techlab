@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   labels:
-    app: spring-boot-example
+    app: example-spring-boot
 spec:
   accessModes:
     - ReadWriteOnce
