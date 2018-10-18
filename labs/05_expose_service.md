@@ -28,16 +28,12 @@ Nun schauen wir uns unseren Service mal etwas genauer an:
 $ kubectl get services
 ```
 
-```
+```bash
 NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 example-spring-boot LoadBalancer   10.39.247.42   <pending>     80:30180/TCP   2s
 ```
 
 **Note:** die External IP wird erst nachträglich eingetragen, es braucht hier einen Moment bis sie verfügbar ist.
-
-Wie Sie am Output sehen, ist unser Service (example-spring-boot) über eine IP und Port erreichbar (172.30.124.20:8080) **Note:** Ihre IP kann unterschiedlich sein.
-
-**Note:** Service IPs bleiben während ihrer Lebensdauer immer gleich.
 
 Mit dem folgenden Befehl können Sie zusätzliche Informationen über den Service auslesen:
 ```
@@ -94,7 +90,7 @@ Mit dem entsprechenden Befehl können Sie auch die Details zu einem Pod anzeigen
 $ kubectl get pod example-spring-boot-3-nwzku -o json
 ```
 
-**Note:** Zuerst den pod Namen aus Ihrem Projekt abfragen (`kubectl get pods`) und im oberen Befehl ersetzen.
+**Note:** Zuerst den pod Namen aus Ihrem Projekt abfragen (`kubectl get pods`) und im oberen Befehl ersetzen oder mittels Tab (bash completion) eintragen lassen.
 
 Über den `selector` Bereich im Service wird definiert, welche Pods (`labels`) als Endpoints dienen. Dazu können die entsprechenden Konfigurationen von Service und Pod zusammen betrachtet werden.
 
@@ -152,17 +148,22 @@ Vergewissern Sie sich, dass Sie sich im Projekt `[USER]-dockerimage` befinden. *
 Den Service `example-spring-boot` haben wir bereits im vorherigen Lab exposed, jedoch war die Loadbalancer IP noch auf Pending.
 
 
-```
+```bash
 $ kubectl get services
 NAME                  TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
 example-spring-boot   LoadBalancer   10.39.240.212   104.199.26.127   80:30100/TCP   22m
 ```
-Im Service wurde mittlerweile die Externat-IP gesetzt. Unsere Applikation ist nun darüber verfügbar.
 
-Rufen Sie im Browser entsprechnd http://[ExternalIP] auf
+Im Service wurde mittlerweile die External-IP gesetzt. Unsere Applikation ist nun darüber verfügbar.
+Wie Sie am Output sehen, ist unser Service über eine IP und Port erreichbar (104.199.26.127.20:80) **Note:** Ihre IP kann unterschiedlich sein.
 
+**Note:** Service IPs bleiben während ihrer Lebensdauer immer gleich.
+
+Rufen Sie im Browser entsprechend http://[ExternalIP] auf
 
 Die Applikation ist nun vom Internet her über die IP, Sie können also nun auf die Applikation zugreifen. http://[ExternalIP] auf
+
+Jetzt ist Ihre Applikation im WebUI (<https://console.cloud.google.com/kubernetes>) auch unter dem Reiter services zu finden.
 
 ---
 
