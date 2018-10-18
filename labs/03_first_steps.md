@@ -1,6 +1,6 @@
 # Lab 3: Erste Schritte auf der Lab Plattform
 
-In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über `kubectl` wie auch über die Web Console
+In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über `kubectl` wie auch über die Web Console.
 
 
 ## Vorbereitung Labs
@@ -26,8 +26,15 @@ Unser Kubernetes Cluster der Techlab Plattform läuft auf GKE (Google Kubernetes
 
 Installieren Sie anhand [der für Ihr Betriebssystemen entsprechenden Anleitungen](https://cloud.google.com/sdk/docs/quickstarts) das Google Cloud SDK.
 
+**Note:** Sollte ein Proxy sein Unwesen treiben, funktioniert der interaktive Installer nicht und [muss als Archiv heruntergeladen werden](https://cloud.google.com/sdk/docs/downloads-versioned-archives). Das Zip, welches mit "Windows 64-bit (x86_64)" bezeichnet wird, herunterladen (ausser natürlich es handelt sich um ein 32-bit Windows).
+
+**Note:** Wie bereits in [Lab 2](02_cli.md) erwähnt, kann auf die lokale Installation von `kubectl` und `gcloud` verzichtet und stattdessen die sog. "Cloud Shell" in der Web Console verwendet werden. In diesem Fall muss Lab 3.2 vorgezogen werden, um anschliessend in der Cloud Shell das unten beschriebene Login durchzuführen.
+
 
 ### Login und Auswahl Kubernetes Cluster
+
+**Note:** Verstellt ein Proxy den Weg ins weite Netz [muss dieser zuvor konfiguriert werden](https://cloud.google.com/sdk/docs/proxy-settings#proxy_configuration). U.U. reicht es aus, den Parameter `--skip-diagnostics` dem Befehl `gcloud init` mitzugeben.
+
 
 ```
 $ gcloud init
