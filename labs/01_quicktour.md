@@ -13,30 +13,30 @@ Kubernetes is Open Source  und bietet eine Plattform, mit der Software in Contai
 
 ### Docker
 
-[Docker](https://www.docker.com/) ist die offene Plattform für Entwickler und Sysadmins und ihre Applikationen. Wählen Sie das für Ihre Technologie passende Basis-Docker-Images aus, Kuberentes deployt für Sie nach jedem Build  einen aktualisierten Docker-Container.
+[Docker](https://www.docker.com/) ist die offene Plattform für Entwickler und Sysadmins und ihre Applikationen. Wählen Sie das für Ihre Technologie passende Basis-Docker-Image aus, Kubernetes deployt für Sie nach jedem Build einen aktualisierten Docker-Container.
 
 
 ## Übersicht
 
 Kubernetes besteht aus Kubernetes Master und Kubernetes Nodes. 
-Der Master ist die Schnittstelle gegen aussen um dem Cluster mitzuteilen welche Applikationen er wie deployen soll. Des Weiteren ist er für das Verwalten des aktuellen Zustands zuständig.
+Der Master ist die Schnittstelle gegen aussen, um dem Cluster mitzuteilen, welche Applikationen er wie deployen soll. Des Weiteren ist er für das Verwalten des aktuellen Zustands zuständig.
 Die Nodes sind sogenannte Compute Nodes und führen die Applikationen und Workloads aus. Der Master verwaltet die Nodes.
 
 ### Container und Docker Images
 
-Die Basiselemente von Kubernetes Applikationen sind Container. Mit Docker Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Files, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Docker Containers können beliebige Prozesse ausgeführt werden.
+Die Basiselemente von Kubernetes Applikationen sind Container. Mit Docker Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Dateien, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Docker Containers können beliebige Prozesse ausgeführt werden.
 
 Docker Container basieren auf Docker Images. Ein Docker Image ist eine binary Datei, die alle nötigen Komponenten beinhaltet, damit ein einzelner Container ausgeführt werden kann.
 
-Docker Images werden anhand von DockerFiles (textueller Beschrieb wie das Docker Image Schritt für Schritt aufgebaut ist) gebuildet. Grundsätzlich sind Docker Images hierarchisch angewendete Filesystem Snapshots.
+Docker Images werden anhand von DockerFiles (textueller Beschrieb, wie das Docker Image Schritt für Schritt aufgebaut ist) gebaut. Grundsätzlich sind Docker Images hierarchisch angewendete Filesystem Snapshots.
 
 **Beispiel Tomcat**
 - Basis Image (CentOs 7)
-- + Install Java
-- + Install Tomcat
-- + Install App
+  + Install Java
+  + Install Tomcat
+  + Install App
 
-Die gebuildeten Docker Images werden in einer Docker Registry versioniert abgelegt und stehen der Plattform nach dem Build zum Deployment zur Verfügung.
+Die gebauten Docker Images werden in einer Docker Registry versioniert abgelegt und stehen der Plattform nach dem Bau ("Build") zum Deployment zur Verfügung.
 
 ### Namespaces
 
@@ -48,16 +48,16 @@ Die Ressourcen innerhalb eines Namespaces sind über ein transparentes [SDN](htt
 
 ### Pods
 
-Ein Pod ist ein oder mehrere Container, die zusammen auf den gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
+Ein Pod besteht aus ein oder mehreren Containern, die zusammen auf den gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
 Typischerweise haben mehrere Container innerhalb eines Pods den gleichen Lifecycle.
 
 Ein Pod ist innerhalb eines Kubernetes Namespaces über den entsprechenden Service verfügbar.
 
 ### Services
 
-Ein Service repräsentiert einen internen Loadbalancer auf die dahinterliegenden Pods (Replicas vom gleichen Typ). Der Service dient als Proxy zu den Pods und leitet Anfragen an diese weiter. So können Pods willkürlich einem Service hinzugefügt und entfernt werden, während der Service verfügbar bleibt.
+Ein Service repräsentiert einen internen Loadbalancer oder eine virtuelle IP-Adresse für die dahinterliegenden Pods (Replicas vom gleichen Typ). Der Service dient als Proxy zu den Pods und leitet Anfragen an diese weiter. So können Pods willkürlich einem Service hinzugefügt und entfernt werden, während der Service verfügbar bleibt.
 
-Einem Service ist innerhalb eines Namespaces eine IP und ein Port zugewiesen und verteilt Requests entsprechend auf die Pod Replicas.
+Einem Service ist innerhalb eines Namespaces eine IP-Adresse und ein Port zugewiesen und verteilt Requests entsprechend auf die Pod Replicas.
 
 ### Deployment
 

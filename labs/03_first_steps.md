@@ -4,14 +4,14 @@ In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagie
 
 ## Vorbereitung Labs
 
-als erstes ist es Sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit sie die nötigen Tagen bei Ihnen local auf dem PC haben.
+Als erstes ist es sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit sie die nötigen Aufgaben bei Ihnen local auf dem PC haben.
 
 ```
 $ cd [Git Repo Project Folder]
 $ git clone https://github.com/puzzle/kubernetes-techlab.git
 ```
 
-als Alternative kann das Repository als Zip heruntergeladen werden: https://github.com/puzzle/kubernetes-techlab
+Als Alternative kann das Repository als Zip heruntergeladen werden: https://github.com/puzzle/kubernetes-techlab
 
 ## Login
 
