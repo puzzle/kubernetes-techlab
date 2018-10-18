@@ -21,13 +21,14 @@ Kubernetes besteht aus Kubernetes Master und Kubernetes Nodes.
 Der Master ist die Schnittstelle gegen aussen, um dem Cluster mitzuteilen, welche Applikationen er wie deployen soll. Desweiteren ist er für das Verwalten des aktuellen Zustands zuständig.
 Die Nodes sind sog. Compute Nodes und führen die Applikationen und Workloads aus. Der Master verwaltet die Nodes.
 
+
 ### Container und Images
 
-Die Basiselemente von Kubernetes Applikationen sind Container. Mit Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Files, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Containers können beliebige Prozesse ausgeführt werden.
+Die Basiselemente von Kubernetes Applikationen sind Container. Mit Containern können Prozesse auf einem Linuxsystem so isoliert werden, dass sie nur mit den definierten Ressourcen interagieren können. So können viele unterschiedliche Container auf dem gleichen System laufen, ohne dass sie einander "sehen" (Dateien, Prozesse, Netzwerk). Typischerweise beinhaltet ein Container einen einzelnen Service (Webserver, Datenbank, Mailservice, Cache). Innerhalb eines Containers können beliebige Prozesse ausgeführt werden.
 
 Container basieren auf Images. Ein Image ist eine binäre Datei, die alle nötigen Komponenten beinhaltet, damit ein einzelner Container ausgeführt werden kann.
 
-Container Images werden anhand von bspw. Dockerfiles (textueller Beschrieb, wie das Image aufgebaut ist) gebuildet. Grundsätzlich sind Container Images hierarchisch angewandte Filesystem Snapshots.
+Container Images werden anhand von bspw. Dockerfiles (textueller Beschrieb, wie das Image aufgebaut ist) gebaut. Grundsätzlich sind Container Images hierarchisch angewandte Filesystem Snapshots.
 
 **Beispiel Tomcat**
 - Basis Image (CentOS 7)
@@ -35,7 +36,7 @@ Container Images werden anhand von bspw. Dockerfiles (textueller Beschrieb, wie 
 - + Install Tomcat
 - + Install App
 
-Die gebuildeten Container Images werden in einer Image Registry versioniert abgelegt und stehen der Plattform nach dem Build zum Deployment zur Verfügung.
+Die gebauten Container Images werden in einer Image Registry versioniert abgelegt und stehen der Plattform nach dem Bau ("Build") zum Deployment zur Verfügung.
 
 
 ### Namespaces
@@ -49,17 +50,17 @@ Die Ressourcen innerhalb eines Namespace sind über ein transparentes [SDN](http
 
 ### Pods
 
-Ein Pod ist ein oder mehrere Container, die zusammen auf dem gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
-Typischerweise haben mehrere Container innerhalb eines Pod den gleichen Lifecycle.
+Ein Pod besteht aus ein oder mehreren Containern, die zusammen auf dem gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
+Typischerweise haben mehrere Container innerhalb eines Pods den gleichen Lifecycle.
 
 Ein Pod ist innerhalb eines Kubernetes Namespace über den entsprechenden Service verfügbar.
 
 
 ### Services
 
-Ein Service repräsentiert einen internen Loadbalancer auf die dahinterliegenden Pods (Replicas vom gleichen Typ). Der Service dient als Proxy zu den Pods und leitet Anfragen an diese weiter. So können Pods willkürlich einem Service hinzugefügt und entfernt werden, während der Service verfügbar bleibt.
+Ein Service repräsentiert einen internen Loadbalancer oder eine virtuelle IP-Adresse für die dahinterliegenden Pods (Replicas desselben Typs). Der Service dient als Proxy zu den Pods und leitet Anfragen an diese weiter. So können Pods willkürlich einem Service hinzugefügt und entfernt werden, während der Service verfügbar bleibt.
 
-Einem Service ist innerhalb eines Namespaces eine IP und ein Port zugewiesen und verteilt Requests entsprechend auf die Pod Replicas.
+Einem Service ist innerhalb eines Namespace eine IP-Adresse und ein Port zugewiesen und verteilt Requests entsprechend auf die Pod Replicas.
 
 
 ### Deployment
