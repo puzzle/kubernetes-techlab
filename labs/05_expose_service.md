@@ -13,7 +13,7 @@ Damit machen wir nun die Applikation vom Internet her verfügbar.
 Mit dem folgenden Befehl wird unser Deployment über den Type LoadBalancer auf Port 80 und Pod Target Port 8080 exposed
 
 ```
-$ kubectl expose deployment spring-boot-example --type="LoadBalancer" --name="example-spring-boot" --port=80 --target-port=8080
+$ kubectl expose deployment example-spring-boot --type="LoadBalancer" --name="example-spring-boot" --port=80 --target-port=8080
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) dienen innerhalb Kubernetes als Abstraktionslayer, Einstiegspunkt und Proxy/Loadbalancer auf die dahinterliegenden Pods. Der Service ermöglicht es, innerhalb OpenShift eine Gruppe von Pods des gleichen Typs zu finden und anzusprechen.
@@ -51,7 +51,7 @@ $ kubectl get service example-spring-boot -o json
     "metadata": {
         "creationTimestamp": "2018-10-15T14:53:37Z",
         "labels": {
-            "app": "spring-boot-example"
+            "app": "example-spring-boot"
         },
         "name": "example-spring-boot",
         "namespace": "user-dockerimage",
@@ -71,7 +71,7 @@ $ kubectl get service example-spring-boot -o json
             }
         ],
         "selector": {
-            "app": "spring-boot-example"
+            "app": "example-spring-boot"
         },
         "sessionAffinity": "None",
         "type": "LoadBalancer"
@@ -125,9 +125,9 @@ $ kubectl describe service example-spring-boot
 ```
 Name:                     example-spring-boot
 Namespace:                philipona
-Labels:                   app=spring-boot-example
+Labels:                   app=example-spring-boot
 Annotations:              <none>
-Selector:                 app=spring-boot-example
+Selector:                 app=example-spring-boot
 Type:                     LoadBalancer
 IP:                       10.39.240.212
 LoadBalancer Ingress:     104.199.26.127
