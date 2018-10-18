@@ -73,7 +73,7 @@ Unsere Applikation erstellt beim Starten das DB Schema eigenständig.
 **Tipp:** redeployen Sie den Applikations-Pod:
 
 ```
-$ kubectl patch deployment spring-boot-example -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+$ kubectl patch deployment example-spring-boot -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 ```
 
 Mit dem Befehl `kubectl get persistentvolumeclaim`, oder etwas einfacher `kubectl get pvc`, können wir uns nun den im Projekt frisch erstellten PersistentVolumeClaim anzeigen lassen:

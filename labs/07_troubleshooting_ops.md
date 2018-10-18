@@ -43,7 +43,7 @@ $ oc exec [POD] env
 
 
 ```
-$ kubectl exec spring-boot-example-69b658f647-xnm94 env
+$ kubectl exec example-spring-boot-69b658f647-xnm94 env
 PATH=/opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-spring-boot-4-8mbwe
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
