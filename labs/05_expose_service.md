@@ -154,14 +154,14 @@ NAME                  TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)   
 example-spring-boot   LoadBalancer   10.39.240.212   104.199.26.127   80:30100/TCP   22m
 ```
 
-Im Service wurde mittlerweile die External-IP gesetzt. Unsere Applikation ist nun darüber verfügbar.
-Wie Sie am Output sehen, ist unser Service über eine IP und Port erreichbar (104.199.26.127.20:80) **Note:** Ihre IP kann unterschiedlich sein.
+Im Service wurde mittlerweile die EXTERNAL-IP gesetzt. Unsere Applikation ist nun darüber verfügbar.
+Wie Sie am Output sehen, ist unser Service über eine IP und Port erreichbar (104.199.26.127.20:80) 
+
+**Note:** Ihre IP kann unterschiedlich sein.
 
 **Note:** Service IPs bleiben während ihrer Lebensdauer immer gleich.
 
 Rufen Sie im Browser entsprechend http://[ExternalIP] auf
-
-Die Applikation ist nun vom Internet her über die IP, Sie können also nun auf die Applikation zugreifen. http://[ExternalIP] auf
 
 Jetzt ist Ihre Applikation im WebUI (<https://console.cloud.google.com/kubernetes>) auch unter dem Reiter services zu finden.
 
