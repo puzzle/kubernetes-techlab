@@ -48,7 +48,7 @@ $ kubectl run nginx --image=nginx --port=80 --restart=Never
 
 Verwenden Sie `kubectl get pods` um den laufenden Pod anzuzeigen.
 
-Schauen sie sich den nginx Pod im WebUI an: https://console.cloud.google.com/kubernetes und löschen Sie in dort auch gleich wieder.
+Schauen sie sich den nginx Pod im WebUI (https://console.cloud.google.com/kubernetes) unter dem Reiter workloads an und löschen Sie in dort auch gleich wieder.
 
 ## Aufgabe: LAB4.3 Deployment
 
