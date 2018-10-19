@@ -20,7 +20,7 @@ Windows:
 $ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-scale
 ```
 
-und fügen dem Namespace ein Deplyoment hinzu
+und fügen dem Namespace ein Deployment hinzu
 
 ```
 $ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld
@@ -37,7 +37,7 @@ Wenn wir unsere Example Applikation skalieren wollen, müssen wir unserem Deploy
 Schauen wir uns mal das Replicaset etwas genauer an:
 
 ```
-$ kubectl get Replicasets
+$ kubectl get replicasets
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   1         1         1       110s
@@ -46,7 +46,7 @@ appuio-php-docker-86d9d584f8   1         1         1       110s
 Für mehr Details:
 
 ```
-$ kubectl get Replicaset appuio-php-docker-86d9d584f8 -o json
+$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json
 ```
 
 Das Replicaset sagt uns, wieviele Pods wir erwarten (spec) und wieviele aktuell deployt sind (status).
@@ -61,7 +61,7 @@ $ kubectl scale deployment appuio-php-docker --replicas=3
 Überprüfen wir die Anzahl Replicas auf dem ReplicationController:
 
 ```
-$ kubectl get Replicasets
+$ kubectl get replicasets
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   3         3         1       4m33s
@@ -80,7 +80,8 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 ```
 
 Zum Schluss schauen wir uns den Service an. Der sollte jetzt alle drei Endpoints referenzieren:
-```
+
+```bash
 $ kubectl describe service appuio-php-docker
 Name:                     appuio-php-docker
 Namespace:                philipona-scale
@@ -99,8 +100,6 @@ Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
   Normal  EnsuringLoadBalancer  2s    service-controller  Ensuring load balancer
-
-
 ```
 
 Skalieren von Pods innerhalb eines Services ist sehr schnell, da Kubernetes einfach eine neue Instanz des Docker Images als Container startet.
@@ -182,7 +181,9 @@ POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:40,118
 POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
-In unserem Beispiel verwenden wir einen sehr leichtgewichtigen Pod. Das Verhalten ist ausgeprägter, wenn der Container länger braucht bis er Requests abarbeiten kann. Bspw. Java Applikation von LAB 4: **Startup: 30 Sekunden**
+In unserem Beispiel verwenden wir einen sehr leichtgewichtigen Pod.
+Das Verhalten ist ausgeprägter, wenn der Container länger braucht bis er Requests abarbeiten kann.
+Bspw. Java Applikation von [Lab 4](04_deploy_dockerimage.md): **Startup: 30 Sekunden**
 
 ```
 Pod: example-spring-boot-2-73aln TIME: 16:48:25,251
@@ -218,8 +219,10 @@ Zusätzlich kann mittels [Container Health Checks](https://kubernetes.io/docs/ta
 
 Grundsätzlich gibt es zwei Checks, die implementiert werden können:
 
-- Liveness Probe, sagt aus, ob ein laufender Container immer noch sauber läuft.
-- Readiness Probe, gibt Feedback darüber, ob eine Applikation bereit ist, um Requests zu empfangen. Ist v.a. im Rolling Update relevant.
+- Liveness Probe
+  - sagt aus, ob ein laufender Container immer noch sauber läuft.
+- Readiness Probe
+  - gibt Feedback darüber, ob eine Applikation bereit ist, um Requests zu empfangen. Ist v.a. im Rolling Update relevant.
 
 Diese beiden Checks können als HTTP Check, Container Execution Check (Shell Script im Container) oder als TCP Socket Check implementiert werden.
 
@@ -269,25 +272,26 @@ $ kubectl edit deployment appuio-php-docker -o json
 
 Die Readiness Probe muss im Deployment hinzugefügt werden, und zwar unter:
 
-spec --> template --> spec --> containers unter halb von `resources: {  }`
+spec --> template --> spec --> containers oberhalb von `resources: {  }`
 
 **YAML:**
 
-```
+```bash
 ...
-          resources: {  }
-          readinessProbe:
-            httpGet:
-              path: /health/
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 10
-            timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /health/
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        resources: {  }
 ...
 ```
 
 **json:**
-```
+
+```bash
 ...
                         "resources": {},
                         "readinessProbe": {
@@ -308,7 +312,8 @@ Passen Sie das entsprechend analog oben an.
 
 Die Konfiguration unter Container muss dann wie folgt aussehen:
 **YAML:**
-```
+
+```bash
       containers:
       - image: appuio/example-php-docker-helloworld
         imagePullPolicy: Always
@@ -330,7 +335,8 @@ Die Konfiguration unter Container muss dann wie folgt aussehen:
 ```
 
 **json:**
-```
+
+```bash
                 "containers": [
                     {
                         "image": "appuio/example-php-docker-helloworld",
@@ -355,16 +361,17 @@ Die Konfiguration unter Container muss dann wie folgt aussehen:
                 ],
 ```
 
-
 Verifizieren Sie während eines Deployment der Applikation, ob nun auch ein Update der Applikation unterbruchsfrei verläuft:
 
 Einmal pro Sekunde ein Request:
-```
+
+```bash
 while true; do sleep 1; curl -s http://[ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 Starten des Deployments:
-```
+
+```bash
 $ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
 ```
 
