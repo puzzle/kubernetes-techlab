@@ -1,19 +1,23 @@
 # Lab 8: Datenbank anbinden
 
-Etliche Applikationen sind in irgend einer Art stateful und speichern Daten persistent ab. Sei dies in einer Datenbank oder als Files auf einem Filesystem oder Objectstore. In diesem Lab werden wir in unserem Namespace einen MySQL Service anlegen und an unsere Applikation anbinden, sodass mehrere Applikationspods auf die gleiche Datenbank zugreifen können.
+Etliche Applikationen sind in irgendeiner Art stateful und speichern Daten persistent ab. Sei dies in einer Datenbank oder als Files auf einem Filesystem oder Objectstore. In diesem Lab werden wir in unserem Namespace einen MySQL Service anlegen und an unsere Applikation anbinden, sodass mehrere Applikationspods auf die gleiche Datenbank zugreifen können.
 
-Für dieses Beispiel verwenden wir das Spring Boot Beispiel aus [LAB 4](04_deploy_dockerimage.md), `[USER]-dockerimage`. **Tipp:** `oc project [USER]-dockerimage`
+Für dieses Beispiel verwenden wir das Spring Boot Beispiel aus [LAB 4](04_deploy_dockerimage.md), `[USER]-dockerimage`.
+
+**Tipp:** `kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
 
 ## Aufgabe: LAB8.1: MySQL Service anlegen
 
 Für unser Beispiel legen wir als ersten ein sogenanntes Secret an, in welchem wir das Passwort des Users für den Zugriff auf die Datenbank ablegen.
 
-```
+```bash
 $ kubectl create secret generic mysql-password --from-literal=password=mysqlpassword
+secret/mysql-password created
 ```
+
 Das Passwort wird weder mit `kubectl get` noch mit `kubectl describe` angezeigt.
 
-```
+```bash
 $ kubectl get secret mysql-password -o json
 {
     "apiVersion": "v1",
@@ -32,33 +36,37 @@ $ kubectl get secret mysql-password -o json
     "type": "Opaque"
 }
 ```
+
 Der String unter data --> password ist base64 encodiert und kann einfach decodiert werden: 
-```
+
+```bash
 $ echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 mysqlpassword
 ```
-**Note:** das Secret ist nicht verschlüsselt! Für das sichere Aufbewahren von Secrets eignen sich sogenannte Vaults beispielsweise: https://www.vaultproject.io/
 
-Weiter erstellen wir ein secret für das mysql Root Passwort.
+**Note:** das Secret ist nicht verschlüsselt! Für das sichere Aufbewahren von Secrets eignen sich sogenannte Vaults beispielsweise: <https://www.vaultproject.io/>
 
-```
+Weiter erstellen wir ein secret für das MySQL Root Passwort.
+
+```bash
 $ kubectl create secret generic mysql-root-password --from-literal=password=mysqlrootpassword
+secret/mysql-root-password created
 ```
 
 Als nächstes legen wir das Deployment und den Service an. In unserem Beispiel verwenden wir zu Beginn eine Datenbank ohne persistent Storage angebunden. Dies ist nur für Testumgebungen zu verwenden, da beim Restart des MySQL Pods alle Daten verloren gehen. In einem späteren Lab werden wir aufzeigen, wie wir ein Persistent Volume an die MySQL Datenbank anhängen. Damit bleiben die Daten auch bei Restarts bestehen und ist so für den produktiven Betrieb geeignet.
 
 Wie wir in vorherigen Labs gesehen haben, können sämtliche Kubernetes Resourcen (Deployments, Services, Secrets, ...) auch als yaml oder json angezeigt werden. Nicht nur das, man kann Resourcen auch aus yaml oder json files laden und kreieren.
 
-In diesem Fall hier kreieren wir ein Deployment inkl. Service für die mysql Datenbank. 
+In diesem Fall hier kreieren wir ein Deployment inkl. Service für die MySQL Datenbank.
 
 ```
 $ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml
 service/springboot-mysql created
 deployment.apps/springboot-mysql created
 ```
-So bald das Docker Image Mysql:5.6 gepulled und deployed wurde, wird unter `kubectl get pods` ein weiterer Pod angezeigt.
+So bald das Docker Image MySQL:5.6 gepulled und deployed wurde, wird unter `kubectl get pods` ein weiterer Pod angezeigt.
 
-Die definierten Umgebungsvariablen im Deployment, konfigurieren den Mysql Pod und definieren somit wie später unser Frontend darauf zugreifen kann.
+Die definierten Umgebungsvariablen im Deployment, konfigurieren den MySQL Pod und definieren somit wie später unser Frontend darauf zugreifen kann.
 
 ## Aufgabe: LAB8.2: Applikation an die Datenbank anbinden
 
@@ -72,7 +80,8 @@ Standardmässig wird bei unserer example-spring-boot Applikation eine H2 Memory 
 Für die Adresse des MySQL Service können wir entweder dessen Cluster IP (`kubectl get service`) falls gesetzt oder aber dessen DNS-Namen (`<service>`) verwenden. Alle Services und Pods innerhalb eines Projektes können über DNS aufgelöst werden.
 
 So lautet der Wert für die Variable SPRING_DATASOURCE_URL bspw.:
-```
+
+```bash
 Name des Services: springboot-mysql
 
 jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
