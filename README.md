@@ -20,6 +20,11 @@ Ziel des Techlabs:
 1. [Datenbank deployen und anbinden](labs/08_database.md)
 1. [Persistent Storage anbinden und verwenden für Datenbank](labs/09_persistent_storage.md)
 1. [Weitere Konzepte](labs/10_additional_concepts.md)
+    1. [StatefulSet](labs/10_1_statefulset.md)
+    1. [DaemonSet](labs/10_2_daemonset.md)
+    1. [Jobs](labs/10_3_jobs.md)
+    1. [ConfigMap](labs/10_4_configmap.md)
+    1. [Rollback Deployment](labs/10_5_rollback_deployment.md)
 1. [Helm](labs/11_helm.md)
 
 
