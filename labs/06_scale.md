@@ -112,15 +112,15 @@ Skalieren von Pods innerhalb eines Services ist sehr schnell, da Kubernetes einf
 Mit dem folgenden Befehl können Sie nun überprüfen, ob Ihr Service verfügbar ist, während Sie hoch und runter skalieren.
 Ersetzen Sie dafür `[ip]` mit Ihrer definierten External IP:
 
-**Tipp:** oc get service appuio-php-docker
+**Tipp:** kubectl get service appuio-php-docker
 
 ```
+Linux:
 while true; do sleep 1; curl -s http://[ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
-oder in PowerShell (Achtung: erst ab PowerShell-Version 3.0!):
-
 ```
+Windows (ab Powershell-Version 3.0):
 while(1) {
 	Start-Sleep -s 1
 	Invoke-RestMethod http://[ip]/pod/
