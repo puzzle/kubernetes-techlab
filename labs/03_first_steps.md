@@ -192,7 +192,7 @@ $ kubectl help
 **Tipp:** Mit dem folgenden Command können Sie in einen anderen Namespace wechseln:
 ```
 Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[namespace]
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-lab3-1
 ```
 
 ```
@@ -200,7 +200,7 @@ Windows:
 $ kubectl config current-context
 // Kontext in eine Variable speichern
 SET KUBE_CONTEXT=[Output des obigen Befehls hier einfügen]
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[namespace]
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-lab3-1
 ```
 
 ## Aufgabe: LAB3.2 Web Console erforschen

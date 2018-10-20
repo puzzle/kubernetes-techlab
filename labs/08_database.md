@@ -4,7 +4,17 @@ Etliche Applikationen sind in irgendeiner Art stateful und speichern Daten persi
 
 Für dieses Beispiel verwenden wir das Spring Boot Beispiel aus [LAB 4](04_deploy_dockerimage.md), `[USER]-dockerimage`.
 
-**Tipp:** `kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
+**Tipp:**
+
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
+```
+
+```
+Windows:
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
+```
 
 ## Aufgabe: LAB8.1: MySQL Service anlegen
 
@@ -225,6 +235,6 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD springboot > /tmp/dump.s
 
 **Ende Lab 8**
 
-<p width="100px" align="right"><a href="09_dockerbuild_webhook.md">Code Änderungen via Webhook direkt integrieren →</a></p>
+<p width="100px" align="right"><a href="09_persistent_storage.md">Persistent Storage anbinden und verwenden für Datenbank →</a></p>
 
 [← zurück zur Übersicht](../README.md)

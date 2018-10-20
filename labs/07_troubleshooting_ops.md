@@ -6,7 +6,16 @@ In diesem Lab wird aufgezeigt, wie man im Fehlerfall und Troubleshooting vorgehe
 
 Wir verwenden dafür wieder das Projekt aus [Lab 4](04_deploy_dockerimage.md) `[USER]-dockerimage`.
 
-**Tipp:** `kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
+**Tipp:**
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
+```
+
+```
+Windows:
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
+```
 
 Laufende Container werden als unveränderbare Infrastruktur behandelt und sollen generell nicht modifiziert werden. Dennoch gibt es Usecases, bei denen man sich in die Container einloggen muss. Zum Beispiel für Debugging und Analysen.
 
@@ -47,7 +56,7 @@ bash-4.2$ exit
 Einzelne Befehle innerhalb des Containers können über `kubectl exec` ausgeführt werden:
 
 ```bash
-$ oc exec [POD] env
+$ kubectl exec [POD] env
 ```
 
 ```bash

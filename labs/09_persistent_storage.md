@@ -15,7 +15,19 @@ Der PersistentVolumeClaim stellt allerdings erst den Request dar, nicht aber die
 
 Im zweiten Schritt wird der zuvor erstellte PVC im richtigen Pod eingebunden. In [LAB 6](06_scale.md) bearbeiteten wir das Deployment, um die Readiness Probe einzufügen. Dasselbe tun wir nun für das Persistent Volume.
 
-Wir verwenden dafür wieder das Projekt aus [LAB 8](08_database.md) [USER]-dockerimage. **Tipp:** `kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
+Wir verwenden dafür wieder das Projekt aus [LAB 8](08_database.md) [USER]-dockerimage. 
+
+**Tipp:**
+
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
+```
+
+```
+Windows:
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
+```
 
 Der folgende Befehl führt erstellt den PersistentVolumeClaim für ein 1Gi Volume und fordert dieses an:
 ```
@@ -100,6 +112,6 @@ Skalieren Sie nun den mysql Pod auf 0 und anschliessend wieder auf 1. Beobachten
 
 **Ende Lab 9**
 
-<p width="100px" align="right"><a href="11_template.md">Applikationstemplates →</a></p>
+<p width="100px" align="right"><a href="10_additional_concepts.md">Weitere Konzepte →</a></p>
 
 [← zurück zur Übersicht](../README.md)
