@@ -1,3 +1,15 @@
 # Lab 10: Weitere Konzepte
 
-TODO: StatefulSet, DaemonSet, Job, Configmap, Rollback Deployment
+Unter den weiteren Konzepten werden wir uns die Ressourcentypen StatefulSet, DaemonSet, Job, Configmap sowie Rollback Deployment genauer anschauen:
+
+1. [StatefulSet](labs/10_1_statefulset.md)
+1. [DaemonSet](labs/10_2_daemonset.md)
+1. [Jobs](labs/10_3_jobs.md)
+1. [ConfigMap](labs/10_4_configmap.md)
+1. [Rollback Deployment](labs/10_5_rollback_deployment.md)
+
+---
+
+<p width="100px" align="right"><a href="10_1_statefulset.md">StatefulSet →</a></p>
+
+[← zurück zur Übersicht](../README.md)
