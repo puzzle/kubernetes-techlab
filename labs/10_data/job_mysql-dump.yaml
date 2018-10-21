@@ -17,24 +17,21 @@ spec:
         - > 
           trap "echo Backup failed; exit 0" ERR; 
           FILENAME=backup-${MYSQL_DATABASE}-`date +%Y-%m-%d_%H%M%S`.sql.gz;
-# FIXME: DATABASE_HOST, DATABASE_PORT
-          mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD -h$DATABASE_HOST -P$DATABASE_PORT --skip-lock-tables --quick --add-drop-database --routines ${MYSQL_DATABASE} | gzip > /database-backup/$FILENAME); 
+          mysqldump --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT} --skip-lock-tables --quick --add-drop-database --routines ${MYSQL_DATABASE} | gzip > /tmp/$FILENAME); 
           echo "";
-          echo "Backup successful"; du -h /database-backup/$FILENAME; 
-          echo "to restore the backup to the serviced host use: $ mysql -u$DATABASE_USER -p$DATABASE_PASSWORD -h$DATABASE_HOST < /database-backup/<backupfile> (unpacked)"
+          echo "Backup successful"; du -h /tmp/$FILENAME;
         env:
         - name: MYSQL_DATABASE
           value: springboot
         - name: MYSQL_USER
           value: springboot
+        - name: MYSQL_HOST
+          value: springboot-mysql
+        - name: MYSQL_PORT
+          value: 3306
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-password
-              key: password
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-root-password
               key: password
       restartPolicy: Never
