@@ -33,8 +33,17 @@ Installieren Sie anhand [der für Ihr Betriebssystemen entsprechenden Anleitunge
 
 ### Login und Auswahl Kubernetes Cluster
 
-**Note:** Verstellt ein Proxy den Weg ins weite Netz [muss dieser zuvor konfiguriert werden](https://cloud.google.com/sdk/docs/proxy-settings#proxy_configuration). U.U. reicht es aus, den Parameter `--skip-diagnostics` dem Befehl `gcloud init` mitzugeben.
+**Note:** Verstellt ein Proxy den Weg ins weite Netz, [muss dieser zuvor konfiguriert werden](https://cloud.google.com/sdk/docs/proxy-settings#proxy_configuration). Alternativ kann der Parameter `--skip-diagnostics` dem Befehl `gcloud init` mitgegeben werden, kann aber u.U. später zu weiteren Fehlern führen, weshalb das Setzen des Proxy empfohlen wird.
 
+**Note:** Sollte der Proxy zusätzlich TLS-Termination durchführen und so für `gcloud` Zertifikate mit unbekanntem Issuer anzeigen, muss die ausstellende Proxy-CA in `gcloud` konfiguriert werden:
+
+```
+$ gcloud config set custom_ca_certs_file <Pfad>
+```
+
+Mit Windows kann der Pfad gewohnt mit Backslashes angegeben werden, bspw. `gcloud config set custom_ca_certs_file c:\Users\...\curl-ca-bundle.crt`
+
+Sobald alle nötigen Konfigurationen gemacht wurden, kann eingeloggt werden:
 
 ```
 $ gcloud init
