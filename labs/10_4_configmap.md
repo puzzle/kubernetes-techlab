@@ -124,7 +124,6 @@ spec:
 
 anschliessend kann im Container im file /etc/config/properties.properties auf die Werte zugegriffen werden.
 
-```
 ```bash
 $ kubectl exec -it [POD] -- cat /etc/config/properties.properties
 key=value

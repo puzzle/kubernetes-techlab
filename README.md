@@ -24,7 +24,6 @@ Ziel des Techlabs:
     1. [DaemonSet](labs/10_2_daemonset.md)
     1. [Jobs](labs/10_3_jobs.md)
     1. [ConfigMap](labs/10_4_configmap.md)
-    1. [Rollback Deployment](labs/10_5_rollback_deployment.md)
 1. [Helm](labs/11_helm.md)
 
 
