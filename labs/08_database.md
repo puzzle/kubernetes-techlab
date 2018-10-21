@@ -182,6 +182,10 @@ Die Aufgabe ist es, in den MySQL Pod den [Dump](https://raw.githubusercontent.co
 
 **Tipp:** Die bestehende Datenbank muss vorgängig leer sein. Sie kann auch gelöscht und neu angelegt werden.
 
+## Aufgabe: LAB8.5: Springboot Deployemnt Passwort als Secret
+
+Setzen Sie analog dem Mysql Pod das Passwort anstelle von Plaintext via Secret
+
 
 ---
 
