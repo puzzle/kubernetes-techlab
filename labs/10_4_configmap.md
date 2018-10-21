@@ -53,7 +53,7 @@ Im Beispiel hier wollen wir, dass das File als File auf einem Volume liegt.
 
 dafür müssen wir entweder den Pod oder in unserem Fall das Deployment `kubectl edit deployment example-spring-boot` bearbeiten.
 
-unter spec --> tempalte --> spec --> container
+Zu beachten gilt es den volumeMounts (wie wird das Volume in den Container gemountet) und volumes (welches Volume in unserem Fall die Configmap wird in den Container gemountet) Teil
 
 ```
 apiVersion: extensions/v1beta1
@@ -120,7 +120,6 @@ spec:
         name: config-volume
 
 ```
-
 
 anschliessend kann im Container im file /etc/config/properties.properties auf die Werte zugegriffen werden.
 
