@@ -29,7 +29,7 @@ Bei einem Update der Anwendung wird ebenfalls mit dem jüngsten Pod angefangen u
 
 1. Jüngster Pod wird beendet
 1. Neuer Pod mit neuem Image wird gestartet
-1. Bei erfolgreichem "Readiness-Probe" wird der zweitjüngste Pod beendet
+1. Bei erfolgreichem "readinessProbe" wird der zweitjüngste Pod beendet
 1. etc...
 
 Schlägt der Start eines aktualisierten Pods fehl, bleibt das Update/Rollout stehen, damit keine weiteren Pods und damit die komplette Architektur der Applikation behindert wrd.
@@ -37,12 +37,76 @@ Schlägt der Start eines aktualisierten Pods fehl, bleibt das Update/Rollout ste
 ## Trivia
 Da Statefulsets vorhersagbare Namen der Pods besitzen und Namen wiederverwendet werden, besteht die Möglichkeit dass mit der Skalierung neue Volumes (via PVCs) aus einer StorageClass dynamisch erzeugt werden.
 Eine 1-zu-1 Beziehung zwischen Pods und Volumes ist somit gegeben.
+Durch das Setzen einer _Partition_ kann man Updates in zwei Schritten gezielt ausführen.
 
 ## Fazit
 Das kontrolliert "vorhersagbare" Verhalten wird bei Applikationen wie __rabbitmq__ oder __etcd__, in denen bei der Cluster-Bildung eineindeutige Namen benutzt werden, genutzt. Mit Anwendungen des Typs *Deployments* wäre das nicht möglich.
 
 
-FIXME
+## Aufgabe: LAB10.1
+
+### Statefulset erstellen
+1. Erstellen eines Statefulsets mittels YAML-Datei _nginx-sfs.yaml_ :
+```YAML
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-cluster
+spec:
+  serviceName: "nginx"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.12
+        ports:
+        - containerPort: 80
+          name: nginx
+```
+
+1. Starten des Statefulsets
+```bash
+kubectl create -f nginx-sfs.yaml
+```
+
+### Statefulset skalieren
+
+1. Zur Beobachtung ein zweites Konsolenfenster öffnen, statefulsets anzeigen lassen und Pods beobachten:
+```bash
+kubectl get statefulset
+kubectl get pods -l app=nginx -w
+```
+
+1. Statefulset hochskalieren
+```bash
+kubectl scale statefulset nginx-cluster --replicas=3
+```
+
+### Statefulset Image aktualisieren
+
+1. Zur Beobachtung der Veränderungen der Pods, bitte ein zweites Konsolenfenster öffnen und folgendes ausführen:
+```bash
+kubectl get pods -l app=nginx -w
+```
+
+1. Neue Version des Images für das statefulset setzen
+```bash
+kubectl set image statefulset nginx-cluster nginx=nginx:latest
+```
+
+1. Neue Version der Software im Statefulset zurückrollen
+```bash
+kubectl rollout undo statefulset nginx-cluster
+```
+
+
 
 Weitere Informationen können der [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) entnommen werden.
 
