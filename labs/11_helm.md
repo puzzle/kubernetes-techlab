@@ -25,7 +25,7 @@ helm create mychart
 Die so generierte Vorlage ist bereits ein gültiges und voll funktionsfähiges Chart
 welches Nginx deployed.
 Verschaft euch nun einen Überblick über die generierten Dateien und deren Inhalt.
-Sinn und Zweck der einzelnen Dateien sind i der [Helm Entwicklerdokumentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure) kurz beschrieben.
+Sinn und Zweck der einzelnen Dateien sind in der [Helm Entwicklerdokumentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure) kurz beschrieben.
 In einem [späteren Abschnitt](https://docs.helm.sh/developing_charts/#templates-and-values) finden
 sich weitere Informationen zu Helm Templates, welche nicht mit Kubernetes Templates zu verwechseln sind
 und einen anderen Syntax verwenden.
@@ -33,7 +33,7 @@ und einen anderen Syntax verwenden.
 ## Aufgabe: LAB11.3 Applikation mit Helm installieren
 
 Bevor wir mit dem generierten Chart ein Deployment machen können wir mit folgendem Befehl
-anschauen welche Resourcen Helm aus dem Chart generiert:
+anschauen welche Ressourcen Helm aus dem Chart generiert:
 
 ```sh
 helm install --dry-run --debug mychart
