@@ -1,7 +1,9 @@
 # Lab 11: Helm
 
-In diesem Lab werden wir gemeinsam Helm anschauen und eine einfache Applikation damit deployen und anpassen. In einem späteren Lab habt ihr dann noch die Gelegenheit eine
-eigene Applikation mit Helm zu deployen.
+[Helm](https://github.com/helm/helm) ist ein [Cloud Native Foundation](https://www.cncf.io/) Projekt mit
+dem Applikationen auf Kubernetes installiert und aktualisiert werden können.
+In diesem Lab werden wir gemeinsam Helm anschauen und eine einfache Applikation damit deployen und anpassen.
+In einem späteren Lab habt ihr dann noch die Gelegenheit eine eigene Applikation mit Helm zu deployen.
 
 ## Aufgabe: LAB11.1 Helm Client instalieren
 
