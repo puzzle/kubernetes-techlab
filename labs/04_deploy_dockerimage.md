@@ -21,12 +21,12 @@ Wechseln Sie daher in den entsprechend neu angelegten Namespace
 
 ```
 Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[namespace]
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
 ```
 
 ```
 Windows:
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[namespace]
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
 ```
 
 als Alternative zum Switchen des Contexts, kann beim Befehl `kubectl` der Parameter `-n` mitgegeben werden.

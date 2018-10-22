@@ -143,7 +143,19 @@ Events:
 
 Unter Endpoints finden Sie nun den aktuell laufenden Pod.
 
-Vergewissern Sie sich, dass Sie sich im Projekt `[USER]-dockerimage` befinden. **Tipp:** `kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
+Vergewissern Sie sich, dass Sie sich im Projekt `[USER]-dockerimage` befinden. 
+
+**Tipp:**
+
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
+```
+
+```
+Windows:
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
+```
 
 Den Service `example-spring-boot` haben wir bereits im vorherigen Lab exposed, jedoch war die Loadbalancer IP noch auf Pending.
 

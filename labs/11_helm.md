@@ -87,6 +87,4 @@ helm delete [RELEASE]
 
 **Ende Lab 11**
 
-<p width="100px" align="right"><a href="10_additional_concepts.md">Weitere Konzepte →</a></p>
-
 [← zurück zur Übersicht](../README.md)
