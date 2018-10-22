@@ -29,8 +29,7 @@ welches Nginx deployed.
 Verschaft euch nun einen Überblick über die generierten Dateien und deren Inhalt.
 Sinn und Zweck der einzelnen Dateien sind in der [Helm Entwicklerdokumentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure) kurz beschrieben.
 In einem [späteren Abschnitt](https://docs.helm.sh/developing_charts/#templates-and-values) finden
-sich weitere Informationen zu Helm Templates, welche nicht mit Kubernetes Templates zu verwechseln sind
-und einen anderen Syntax verwenden.
+sich weitere Informationen zu Helm Templates.
 
 ## Aufgabe: LAB11.3 Applikation mit Helm installieren
 
