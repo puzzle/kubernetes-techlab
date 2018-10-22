@@ -177,6 +177,11 @@ Rufen Sie im Browser entsprechend http://[ExternalIP] auf
 
 Jetzt ist Ihre Applikation im WebUI (<https://console.cloud.google.com/kubernetes>) auch unter dem Reiter services zu finden.
 
+
+## Aufgabe: LAB5.2
+
+Nebst dem im LAB5.1 beschriebenen Art wie man Services von aussen erreichbar machen kann, gibt es etliche weitere Möglichkeiten. Schauen Sie sich die Möglichkeiten unter https://kubernetes.io/docs/concepts/services-networking/service/ an.
+
 ---
 
 ## Zusatzaufgabe für Schnelle ;-)
