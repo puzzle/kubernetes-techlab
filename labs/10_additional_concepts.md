@@ -1,6 +1,6 @@
 # Lab 10: Weitere Konzepte
 
-Unter den weiteren Konzepten werden wir uns die Ressourcentypen StatefulSet, DaemonSet, Job, Configmap sowie Rollback Deployment genauer anschauen:
+Unter den weiteren Konzepten werden wir uns die Ressourcentypen StatefulSet, DaemonSet, Job sowie ConfigMap genauer anschauen:
 
 1. [StatefulSet](labs/10_1_statefulset.md)
 1. [DaemonSet](labs/10_2_daemonset.md)
