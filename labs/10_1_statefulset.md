@@ -16,7 +16,7 @@ rabbitmq-2
 Weiterhin verhält sich die Skalierung eines eines Statefulset anders. Beim Hochskalieren von 3 auf 5 könnten beim Deployment, je nach Konfiguration 2 zusätzliche Pods auf einmal gestartet werden. Beim Statefulset läuft das "geregelt" ab.
 Beispiel anhand von Rabbitmq
 
-1. Skalierung mittels `kubectl scale deployment rabbitmq --replicas=4`
+1. Skalierung mittels `kubectl scale deployment rabbitmq --replicas=5`
 1. `rabbitmq-3` wird gestartet
 1. wenn `rabbitmq-3` fertig (Zustand: "Ready", siehe Readiness-Probe), wird `rabbitmq-4` gestartet
 
