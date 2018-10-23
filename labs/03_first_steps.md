@@ -167,7 +167,7 @@ Some things to try next:
 Die Informationen zum Cluster und Projekt in folgendem Befehl erhalten Sie vom Instruktor:
 
 ```
-$ gcloud container clusters get-credentials [cluster] --project [project]
+$ gcloud container clusters get-credentials [cluster] --project [project] --zone europe-west1-b
 ```
 
 
