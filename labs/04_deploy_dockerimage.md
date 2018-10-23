@@ -17,28 +17,28 @@ $ kubectl create namespace [USER]-dockerimage
 
 `kubectl create namespace` wechselt nicht automatisch in den eben neu angelegten Namespace.
 
-Wechseln Sie daher in den entsprechend neu angelegten Namespace
+Wechseln Sie daher in den entsprechend neu angelegten Namespace:
 
-```
 Linux:
+```bash
 $ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
 ```
 
-```
 Windows:
+```bash
 $ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
 ```
 
-als Alternative zum Switchen des Contexts, kann beim Befehl `kubectl` der Parameter `-n` mitgegeben werden.
-Beispielsweise beim Anzeigen der Pods eines Namespaces, sieht der ganze Befehl dann wie folgt aus:
+Als Alternative zum Wechseln des Contexts kann beim Befehl `kubectl` der Parameter `-n` mitgegeben werden.
+Beispielsweise beim Anzeigen der Pods eines Namespace sieht der ganze Befehl dann wie folgt aus:
 
 ```bash
-$ kubectl get pods -n=namespace
+$ kubectl get pods -n <namespace>
 ```
 
-Mit dem `kubectl get` Command können Ressourcen von einem bestimmten Typ angezeigt werden.
+Mit dem `kubectl get`-Befehl können Ressourcen von einem bestimmten Typ angezeigt werden.
 
-Verwenden Sie
+Verwenden Sie:
 ```
 $ kubectl get namespace
 ```
@@ -46,7 +46,7 @@ um alle Namespaces anzuzeigen, auf die Sie berechtigt sind.
 
 ## Aufgabe: LAB4.2 Pod Starten
 
-Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation deployen. Als ersten Schritt starten wir direkt einen Pod
+Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation deployen. Als ersten Schritt starten wir direkt einen Pod:
 
 ```
 $ kubectl run nginx --image=nginx --port=80 --restart=Never
@@ -54,17 +54,18 @@ $ kubectl run nginx --image=nginx --port=80 --restart=Never
 
 Verwenden Sie `kubectl get pods` um den laufenden Pod anzuzeigen.
 
-Schauen sie sich den nginx Pod im WebUI (https://console.cloud.google.com/kubernetes) unter dem Reiter workloads an und löschen Sie in dort auch gleich wieder.
+Schauen sie sich den nginx Pod in der [Web Console](https://console.cloud.google.com/kubernetes) unter dem Reiter "Workloads" an und löschen Sie ihn dort auch gleich wieder.
 
 ## Aufgabe: LAB4.3 Deployment
 
-Ein einzelner Pod zu starten kann Sinn machen, ist jedoch nur beschränkt Bestpractice. Zusammen mit dem Pod wollen wir uns noch ein weitere Konzept anschauen. Das sogenannte Deployment. Es sorgt dafür, dass Pods überwacht werden und überprüft ob jeweils die Anzahl requesteter Pods dem aktuell laufenden entspricht.
+Einen einzelnen Pod zu starten kann in bestimmten Fällen Sinn machen, ist jedoch nur beschränkt Best Practice. Zusammen mit dem Pod wollen wir uns noch ein weiteres Konzept anschauen. Das sog. "Deployment". Es sorgt dafür, dass Pods überwacht werden und überprüft ob jeweils die Anzahl geforderter Pods auch tatsächlich laufen.
 
-Sobald der Namespace erstellt wurde, können wir mit dem folgenden Befehl das Docker Image deployen im Namespace deployen:
+Sobald der Namespace erstellt wurde können wir mit dem folgenden Befehl das Docker Image im Namespace deployen:
 
 ```
 $ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot
 ```
+
 Output:
 ```
 deployment.apps/example-spring-boot created
@@ -76,21 +77,20 @@ Für unser Lab verwenden wir ein APPUiO-Beispiel (Java Spring Boot Applikation):
 
 Kubernetes legt die nötigen Ressourcen an, lädt das Docker Image in diesem Fall von Docker Hub herunter und deployt anschliessend den ensprechenden Pod.
 
-Verwenden Sie den `kubectl get` Befehl mit dem `-w` Parameter, um fortlaufend Änderungen an den Ressourcen des Typs Pod anzuzeigen (abbrechen mit ctrl+c):
+Verwenden Sie den `kubectl get` Befehl mit dem `-w` Parameter, um fortlaufend Änderungen an den Ressourcen des Typs Pod anzuzeigen (**abbrechen mit ctrl+c**):
 ```
 $ kubectl get pods -w
 ```
 
 Je nach Internetverbindung oder abhängig davon, ob das Image auf Ihrem Kubernetes Node bereits heruntergeladen wurde, kann das eine Weile dauern. 
 
-**Tipp** Um Ihre eigenen Docker Images für Kubernetes zu erstellen, sollten Sie die folgenden Best Practices befolgen: <https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html> Der Image Creation Guide ist zwar von OpenShift, jedoch auch für Kubernetes pur anwendbar
+**Tipp** Um Ihre eigenen Docker Images für Kubernetes zu erstellen, sollten Sie [diese Best Practices befolgen](https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html). Der Image Creation Guide ist zwar von OpenShift, jedoch auch für Kubernetes oder andere Container Plattformen anwendbar.
 
 
 ## Betrachten der erstellten Ressourcen
 
-Als wir `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot` vorhin ausführten, hat Kubernetes ein Deployment für uns angelegt:
+Als wir `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot` vorhin ausführten, legte Kubernetes ein [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) für uns an.
 
-- [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
 ### Deployment
 
@@ -107,14 +107,12 @@ Im [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploy
   - ImagePullPolicy
 - Replicas, Anzahl der Pods, die deployt werden sollen
 
-
 Mit dem folgenden Befehl können zusätzliche Informationen zur Deployment ausgelesen werden:
 ```
 $ kubectl get deployment example-spring-boot -o json
 ```
 
-
-Nach dem das Image heruntergeladen wurde deployt Kubernetes anhand des Deployments einen Pod
+Nachdem das Image heruntergeladen wurde deployt Kubernetes anhand des Deployments einen Pod.
 
 ```
 $ kubectl get pod
@@ -125,11 +123,12 @@ NAME                                   READY   STATUS    RESTARTS   AGE
 example-spring-boot-69b658f647-xnm94   1/1     Running   0          52m
 ```
 
-Im Deployment wurde definiert, das ein Replica Pod deployt werden soll. Dieser Pod ist aktuell von ausserhalb noch nicht verfügbar.
+Im Deployment wurde definiert, dass ein Replica Pod deployt werden soll. Dieser Pod ist aktuell von ausserhalb noch nicht verfügbar.
 
-## Aufgabe: LAB4.4 Deployment im WebUI Verifizieren
 
-Versuchen Sie sich die Logs zur Springboot Applikation über das WebUI anzuzeigen.
+## Aufgabe: LAB4.4 Deployment in der Web Console verifizieren
+
+Versuchen Sie sich die Logs zur Springboot Applikation über die Web Console anzuzeigen.
 
 ---
 
