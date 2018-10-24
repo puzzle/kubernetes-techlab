@@ -37,19 +37,19 @@ Bevor wir mit dem generierten Chart ein Deployment machen können wir mit folgen
 anschauen welche Ressourcen Helm aus dem Chart generiert:
 
 ```sh
-helm install --dry-run --debug mychart
+helm install --dry-run --debug --namespace [namespace] mychart
 ```
 
 Schliesslich erstellt folgender Befehl ein neues Release aus dem Chart und deployed damit die Applikation:
 ```sh
-helm install mychart
+helm install mychart --namespace [namespace]
 ```
 
 In `kubectl get pods` sollte nun ein neuer Pod auftauchen, während der neu erstellte
 Release mit folgendem Befehl aufgelistet wird:
 
 ```sh
-helm ls
+helm ls --namespace [namespace]
 ```
 
 ## Aufgabe: LAB11.4 Applikation mit Helm aktualisieren
@@ -61,13 +61,13 @@ Sucht die Definition der Service Types im Chart und passt diese
 entsprechend an. Die Änderung kann danach wie folgt übernommen werden:
 
 ```sh
-helm upgrade [RELEASE] mychart
+helm upgrade [RELEASE] --namespace [namespace] mychart
 ```
 
 Sobald dem Service eine externe IP zugeordnet wurde erscheint diese hier (Befehl terminiert nicht, muss mit CTRL-C beendet werden):
 
 ```sh
-kubectl get svc -w
+kubectl get svc --namespace [namespace] -w
 ```
 
 Nginx ist nun unter der zugeordneten externen IP verfügbar und sollte eine Willkommensseite anzeigen (Alternativ die IP in einem Webbrowser eingeben):
@@ -81,7 +81,7 @@ curl http://[EXTERNAL_IP]
 Um eine Applikation zu deinstallieren kann einfach der dazugehörige Release gelöscht werden:
 
 ```sh
-helm delete [RELEASE]
+helm delete [RELEASE] --namespace [namespace]
 ```
 
 ---
