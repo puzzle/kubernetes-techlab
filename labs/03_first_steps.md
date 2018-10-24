@@ -190,15 +190,16 @@ $ kubectl help
 ```
 
 **Tipp:** Mit dem folgenden Command können Sie in einen anderen Namespace wechseln:
-
-Linux:
 ```
+Linux:
 $ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-lab3-1
 ```
 
-Windows:
 ```
-$ export KUBE_CONTEXT=$(kubectl config current-context)
+Windows:
+$ kubectl config current-context
+// Kontext in eine Variable speichern
+SET KUBE_CONTEXT=[Output des obigen Befehls hier einfügen]
 $ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-lab3-1
 ```
 
