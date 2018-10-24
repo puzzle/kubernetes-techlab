@@ -116,7 +116,7 @@ Ersetzen Sie dafür `[ip]` mit Ihrer definierten External IP:
 
 ```
 Linux:
-while true; do sleep 1; curl -s http://[ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+while true; do sleep 1; curl -s http://[LoadBalance Ingress ip]/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 ```
