@@ -194,7 +194,7 @@ Die Aufgabe ist es, in den MySQL Pod den [Dump](https://raw.githubusercontent.co
 
 ## Aufgabe: LAB8.5: Springboot Deployemnt Passwort als Secret
 
-Setzen Sie analog dem Mysql Pod das Passwort anstelle von Plaintext via Secret
+Setzen Sie analog der `MYSQL_PASSWORD`-Umgebungsvariable das Passwort für `SPRING_DATASOURCE_PASSWORD` anstelle des Plaintext-Key als Secret-Referenz.
 
 
 ---
