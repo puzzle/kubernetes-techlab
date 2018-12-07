@@ -25,6 +25,7 @@ Ziel des Techlabs:
     1. [Jobs](labs/10_3_jobs.md)
     1. [ConfigMap](labs/10_4_configmap.md)
 1. [Helm](labs/11_helm.md)
+1. [Kustomize](labs/12_kustomize.md)
 
 
 ## Zusätzliche Labs

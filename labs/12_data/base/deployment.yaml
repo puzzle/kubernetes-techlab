@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: "nginx:1.14"
+          command:
+            - bash
+            - -c
+            - |-
+              set -e
+              sed -i \
+                "s/Welcome to nginx/Hello, my name is $APPLICATION_NAME/" \
+                /usr/share/nginx/html/index.html
+              nginx -g "daemon off;"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APPLICATION_NAME
+              value: Test-Applikation
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
