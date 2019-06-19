@@ -50,7 +50,7 @@ Die Ressourcen innerhalb eines Namespace sind über ein transparentes [SDN](http
 
 ### Pods
 
-Ein Pod besteht aus ein oder mehreren Containern, die zusammen auf dem gleichen Host deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
+Ein Pod besteht aus ein oder mehreren Containern, die zusammen auf dem gleichen Node deployed werden. Ein Pod ist die kleinste zu deployende Einheit auf Kubernetes.
 Typischerweise haben mehrere Container innerhalb eines Pods den gleichen Lifecycle.
 
 Ein Pod ist innerhalb eines Kubernetes Namespace über den entsprechenden Service verfügbar.

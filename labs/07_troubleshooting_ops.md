@@ -4,29 +4,16 @@ In diesem Lab wird aufgezeigt, wie man im Fehlerfall und Troubleshooting vorgehe
 
 ## In Container einloggen
 
-Wir verwenden dafür wieder das Projekt aus [Lab 4](04_deploy_dockerimage.md) `[USER]-dockerimage`.
-
-**Tipp:**
-```
-Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
-```
-
-```
-Windows:
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
-```
-
 Laufende Container werden als unveränderbare Infrastruktur behandelt und sollen generell nicht modifiziert werden. Dennoch gibt es Usecases, bei denen man sich in die Container einloggen muss. Zum Beispiel für Debugging und Analysen.
 
 ## Aufgabe: LAB7.1
 
 Mit Kubernetes können Remote Shells in die Pods geöffnet werden ohne dass man darin vorgängig SSH installieren müsste. Die kann mittels `kubectl exec` command erreicht werden. Der Befehl ist generell dafür da, Commands in Container auszuführen. Mit den Paramentern `-it` kann allerdings die Shell und Verbindung offen behalten werden.
 
-Wählen Sie mittels `kubectl get pods` einen Pod aus und führen Sie den folgenden Befehl aus:
+Wählen Sie mittels `kubectl get pods --namespace [USER]-dockerimage` einen Pod aus und führen Sie den folgenden Befehl aus:
 
 ```bash
-$ kubectl exec -it [POD] -- /bin/bash
+$ kubectl exec -it [POD] --namespace [USER]-dockerimage -- /bin/bash
 ```
 
 Sie können nun über diese Shell Analysen im Container ausführen:
@@ -56,11 +43,11 @@ bash-4.2$ exit
 Einzelne Befehle innerhalb des Containers können über `kubectl exec` ausgeführt werden:
 
 ```bash
-$ kubectl exec [POD] env
+$ kubectl exec [POD] --namespace [USER]-dockerimage env
 ```
 
 ```bash
-$ kubectl exec example-spring-boot-69b658f647-xnm94 env
+$ kubectl exec example-spring-boot-69b658f647-xnm94 --namespace [USER]-dockerimage env
 PATH=/opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-spring-boot-4-8mbwe
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
@@ -76,7 +63,7 @@ KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 Die Logfiles zu einem Pod können wie folgt angezeigt werden.
 
 ```bash
-$ kubectl logs [POD]
+$ kubectl logs [POD] --namespace [USER]-dockerimage
 ```
 
 Der Parameter `-f` bewirkt analoges Verhalten wie `tail -f`. Damit werden die Logs gestreamt und neue Einträge angezeigt.
@@ -84,7 +71,7 @@ Der Parameter `-f` bewirkt analoges Verhalten wie `tail -f`. Damit werden die Lo
 Befindet sich ein Pod im Status **CrashLoopBackOff** bedeutet dies, dass er auch nach wiederholtem Restarten nicht erfolgreich gestartet werden konnte. Die Logfiles können auch wenn der Pod nicht läuft mit dem folgenden Befehl angezeigt werden.
 
  ```bash
-$ kubectl logs -p [POD]
+$ kubectl logs -p [POD] --namespace [USER]-dockerimage
 ```
 
 
@@ -95,8 +82,8 @@ Kubernetes erlaubt es, beliebige Ports von der Entwicklungs-Workstation auf eine
 Übung: Auf die Spring Boot Metrics aus [Lab 4](04_deploy_dockerimage.md) zugreifen.
 
 ```bash
-$ kubectl get pod --namespace="[USER]-dockerimage"
-$ kubectl port-forward example-spring-boot-1-xj1df 9000:9000 --namespace="[USER]-dockerimage"
+$ kubectl get pod --namespace [USER]-dockerimage
+$ kubectl port-forward example-spring-boot-1-xj1df 9000:9000 --namespace [USER]-dockerimage
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
@@ -104,7 +91,7 @@ Forwarding from [::1]:9000 -> 9000
 Nicht vergessen den Pod Namen an die eigene Installation anzupassen. Falls installiert kann dafür Autocompletion verwendet werden.
 
 Die Metrics können nun unter folgendem Link abgerufen werden: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
-Die Metrics werden Ihnen als JSON angezeigt. Mit demselben Konzept können Sie nun bspw. mit Ihrem lokalen SQL Client auf eine Datenbank verbinden.
+Die Metrics werden Ihnen als JSON angezeigt. Mit demselben Konzept können Sie nun bspw. mit Ihrem lokalen SQL Client auf eine Datenbank verbinden oder beispielsweise ihre locale Entwicklungsumgebung via Remote Debugging an die Applikation im Pod anhängen.
 
 Unter folgendem Link sind weiterführende Informationen zu Port Forwarding zu finden: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
 

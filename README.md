@@ -25,7 +25,6 @@ Ziel des Techlabs:
     1. [Jobs](labs/10_3_jobs.md)
     1. [ConfigMap](labs/10_4_configmap.md)
 1. [Helm](labs/11_helm.md)
-1. [Kustomize](labs/12_kustomize.md)
 
 
 ## Zusätzliche Labs
@@ -33,6 +32,7 @@ Ziel des Techlabs:
 1. [Deployment Strategien](labs/21_deployment_strategies.md)
 1. [Eigene Applikation auf Kubernetes deployen](labs/22_deploy_your_own_appication.md)
 1. [Helm Chart für die eigene Applikation erstellen](labs/23_create_helm_chart.md)
+1. [Kustomize Resource Templating](labs/24_kustomize.md)
 
 
 ## Additional Docs

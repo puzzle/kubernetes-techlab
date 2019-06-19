@@ -17,25 +17,25 @@ Unter `.spec.template.spec.containers[0].image` sehen wir, dass wir dasselbe Ima
 Erstellen wir nun also unseren Job:
 
 ```
-$ kubectl create -f ./labs/10_data/job_mysql-dump.yaml
+$ kubectl create -f ./labs/10_data/job_mysql-dump.yaml --namespace [USER]-dockerimage
 ```
 
 Überprüfen wir, ob der Job erfolgreich war:
 
 ```
-$ kubectl describe jobs/mysql-dump
+$ kubectl describe jobs/mysql-dump --namespace [USER]-dockerimage
 ```
 
 Den ausgeführten Pod können wir wie folgt anschauen:
 
 ```
-$ kubectl get pods
+$ kubectl get pods --namespace [USER]-dockerimage
 ```
 
 Um alle Pods, welche zu einem Job gehören, in maschinenlesbarer Form auszugeben, kann bspw. folgender Befehl verwendet werden:
 
 ```
-$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name}
+$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [USER]-dockerimage
 ```
 
 

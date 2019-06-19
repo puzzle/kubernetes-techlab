@@ -16,7 +16,7 @@ rabbitmq-2
 Weiterhin verhält sich die Skalierung eines eines Statefulset anders. Beim Hochskalieren von 3 auf 5 könnten beim Deployment, je nach Konfiguration 2 zusätzliche Pods auf einmal gestartet werden. Beim Statefulset läuft das "geregelt" ab.
 Beispiel anhand von Rabbitmq
 
-1. Skalierung mittels `kubectl scale deployment rabbitmq --replicas=5`
+1. Skalierung mittels `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]-dockerimage`
 1. `rabbitmq-3` wird gestartet
 1. wenn `rabbitmq-3` fertig (Zustand: "Ready", siehe Readiness-Probe), wird `rabbitmq-4` gestartet
 
@@ -73,37 +73,37 @@ spec:
 
 1. Starten des Statefulsets
 ```bash
-kubectl create -f nginx-sfs.yaml
+kubectl create -f nginx-sfs.yaml --namespace [USER]-dockerimage
 ```
 
 ### Statefulset skalieren
 
 1. Zur Beobachtung ein zweites Konsolenfenster öffnen, statefulsets anzeigen lassen und Pods beobachten:
 ```bash
-kubectl get statefulset
-kubectl get pods -l app=nginx -w
+kubectl get statefulset --namespace [USER]-dockerimage
+kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
 ```
 
 1. Statefulset hochskalieren
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3
+kubectl scale statefulset nginx-cluster --replicas=3 --namespace [USER]-dockerimage
 ```
 
 ### Statefulset Image aktualisieren
 
 1. Zur Beobachtung der Veränderungen der Pods, bitte ein zweites Konsolenfenster öffnen und folgendes ausführen:
 ```bash
-kubectl get pods -l app=nginx -w
+kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
 ```
 
 1. Neue Version des Images für das statefulset setzen
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest
+kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [USER]-dockerimage
 ```
 
 1. Neue Version der Software im Statefulset zurückrollen
 ```bash
-kubectl rollout undo statefulset nginx-cluster
+kubectl rollout undo statefulset nginx-cluster --namespace [USER]-dockerimage
 ```
 
 Weitere Informationen können der [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) oder [diesem auf opensource.com erschienenen Artikel](https://opensource.com/article/17/2/stateful-applications) entnommen werden.

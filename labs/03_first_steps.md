@@ -189,20 +189,6 @@ Erstellen Sie auf der Lab Plattform einen neuen Namespace.
 $ kubectl help
 ```
 
-**Tipp:** Mit dem folgenden Command können Sie in einen anderen Namespace wechseln:
-```
-Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-lab3-1
-```
-
-```
-Windows:
-$ kubectl config current-context
-// Kontext in eine Variable speichern
-SET KUBE_CONTEXT=[Output des obigen Befehls hier einfügen]
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-lab3-1
-```
-
 ## Aufgabe: LAB3.2 Web Console erforschen
 
 Loggen Sie sich auf der [Web Console](https://console.cloud.google.com/kubernetes) mit Ihrem Account ein. Klicken Sie oben links auf den Button "Projekt auswählen" und wählen als Organisation "puzzle.ch" und anschliessend den entsprechenden Cluster aus.
@@ -217,6 +203,10 @@ Schauen Sie sich die verschiedenen Menüpunkte links an. Aktuell gibts weder Dep
 ```
 $ kubectl create namespace [USER]-lab3-1
 ```
+---
+
+Bestpractice ist den jeweiligen Namespace bei sämtlichen `kubectl` Befehlen über `--namespace namespace` oder in Kurzform `-n namespace` explizit anzugeben
+
 ---
 
 **Ende Lab 3**

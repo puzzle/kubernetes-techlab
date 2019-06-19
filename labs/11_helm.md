@@ -37,19 +37,19 @@ Bevor wir mit dem generierten Chart ein Deployment machen können wir mit folgen
 anschauen welche Ressourcen Helm aus dem Chart generiert:
 
 ```sh
-helm install --dry-run --debug --namespace [namespace] mychart
+helm install --dry-run --debug --namespace [USER]-dockerimage mychart
 ```
 
 Schliesslich erstellt folgender Befehl ein neues Release aus dem Chart und deployed damit die Applikation:
 ```sh
-helm install mychart --namespace [namespace]
+helm install mychart --namespace [USER]-dockerimage
 ```
 
-In `kubectl get pods` sollte nun ein neuer Pod auftauchen, während der neu erstellte
+In `kubectl get pods --namespace [USER]-dockerimage` sollte nun ein neuer Pod auftauchen, während der neu erstellte
 Release mit folgendem Befehl aufgelistet wird:
 
 ```sh
-helm ls --namespace [namespace]
+helm ls --namespace [USER]-dockerimage
 ```
 
 ## Aufgabe: LAB11.4 Applikation mit Helm aktualisieren

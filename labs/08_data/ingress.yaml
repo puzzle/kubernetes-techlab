@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: example-spring-boot
+  name: springboot-example-[U-nummer]
+spec:
+  rules:
+  - host: springboot-example-example.com
+    http:
+      paths:
+      - backend:
+          serviceName: example-spring-boot
+          servicePort: 80
+        path: /

@@ -15,7 +15,7 @@ Damit machen wir nun die Applikation vom Internet her verfügbar.
 Mit dem folgenden Befehl wird unser Deployment über den Type LoadBalancer auf Port 80 und Pod Target Port 8080 exponiert:
 
 ```
-$ kubectl expose deployment example-spring-boot --type="LoadBalancer" --name="example-spring-boot" --port=80 --target-port=8080
+$ kubectl expose deployment example-spring-boot --type="LoadBalancer" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) dienen innerhalb Kubernetes als Abstraktionslayer, Einstiegspunkt und Proxy/Loadbalancer auf die dahinterliegenden Pods. Der Service ermöglicht es, innerhalb Kubernetes eine Gruppe von Pods des gleichen Typs zu finden und anzusprechen.
@@ -27,7 +27,7 @@ Als Beispiel: Wenn eine Applikationsinstanz unseres Labs die Last nicht mehr all
 Nun schauen wir uns unseren Service mal etwas genauer an:
 
 ```
-$ kubectl get services
+$ kubectl get services --namespace [USER]-dockerimage
 ```
 
 ```bash
@@ -39,7 +39,7 @@ example-spring-boot LoadBalancer   10.39.247.42   <pending>     80:30180/TCP   2
 
 Mit dem folgenden Befehl können Sie zusätzliche Informationen über den Service auslesen:
 ```
-$ kubectl get service example-spring-boot -o json
+$ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
 ```
 
 ```
@@ -89,14 +89,14 @@ $ kubectl get service example-spring-boot -o json
 
 Mit dem entsprechenden Befehl können Sie auch die Details zu einem Pod anzeigen:
 ```
-$ kubectl get pod example-spring-boot-3-nwzku -o json
+$ kubectl get pod example-spring-boot-3-nwzku --namespace [USER]-dockerimage -o json
 ```
 
-**Note:** Zuerst den Pod-Namen aus Ihrem Projekt abfragen (`kubectl get pods`) und im oberen Befehl ersetzen oder mittels Tab-Taste (bash completion) eintragen lassen.
+**Note:** Zuerst den Pod-Namen aus Ihrem Projekt abfragen (`kubectl get pods --namespace [USER]-dockerimage`) und im oberen Befehl ersetzen oder mittels Tab-Taste (bash completion) eintragen lassen.
 
 Über den `selector` Bereich im Service wird definiert, welche Pods (`labels`) als Endpoints dienen. Dazu können die entsprechenden Konfigurationen von Service und Pod zusammen betrachtet werden.
 
-Service (`kubectl get service <Service Name> -o json`):
+Service (`kubectl get service <Service Name> --namespace [USER]-dockerimage -o json`):
 ```
 ...
 "selector": {
@@ -106,7 +106,7 @@ Service (`kubectl get service <Service Name> -o json`):
 ...
 ```
 
-Pod (`kubectl get pod <Pod Name>`):
+Pod (`kubectl get pod <Pod Name> --namespace puzzle-[U-NUMMER]`):
 ```
 ...
 "labels": {
@@ -117,7 +117,7 @@ Pod (`kubectl get pod <Pod Name>`):
 
 Diese Verknüpfung ist besser mittels `kubectl describe` Befehl zu sehen:
 ```
-$ kubectl describe service example-spring-boot
+$ kubectl describe service example-spring-boot --namespace [USER]-dockerimage
 ```
 
 ```
@@ -145,23 +145,7 @@ Events:
 
 Unter Endpoints finden Sie nun den aktuell laufenden Pod.
 
-Vergewissern Sie sich, dass Sie sich im Projekt `[USER]-dockerimage` befinden. 
-
-**Tipp:**
-
-Linux:
-```
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
-```
-
-Windows:
-```
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
-```
-
 Den Service `example-spring-boot` haben wir bereits im vorherigen Lab exponiert, jedoch war die LoadBalancer IP noch auf Pending.
-
-
 ```bash
 $ kubectl get services
 NAME                  TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
@@ -182,7 +166,26 @@ Jetzt ist Ihre Applikation in der [Web Console](https://console.cloud.google.com
 
 ## Aufgabe: LAB5.2
 
-Nebst dem im LAB5.1 beschriebenen Art wie man Services von aussen erreichbar machen kann, gibt es etliche weitere Möglichkeiten. Schauen Sie sich die Möglichkeiten unter https://kubernetes.io/docs/concepts/services-networking/service/ an.
+Die zweite Variante um einen Service von aussen erreichbar zu machen, ist das verwenden eines Ingress Routers
+
+Dafür löschen wir den oben definierten Service mit folgendem Befehl
+```
+$ kubectl delete service example-spring-boot --namespace=[USER]-dockerimage
+```
+Anschliessend legen wir einen Service vom Type Cluster IP an
+
+```
+$ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [USER]-dockerimage
+```
+
+Passen Sie dafür im File `05_data/ingress.yaml` entsprechend den Namen und den Host entsprechend mit Ihrer U-Nummer an.
+
+Die Ingress Resource kann wie folgt angelegt werden:
+```
+$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]-dockerimage
+```
+
+TODO: Beschreiben wi man nun via Namen darauf zugreifen kann.
 
 ---
 

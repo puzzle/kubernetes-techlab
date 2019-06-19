@@ -35,7 +35,7 @@ javaconfiguration   1      7s
 ```
 kann nun verifiziert werden ob die ConfigMap erfolgreich angelegt wurde.
 
-Oder mittels `$ kubectl get configmaps javaconfiguration -o json` kann der Inhalt angezeigt werden. 
+Oder mittels `$ kubectl get configmaps javaconfiguration -o json --namespace [USER]-dockerimage` kann der Inhalt angezeigt werden. 
 
 
 ## Configmap in Pod zur Verfügung stellen
@@ -49,9 +49,19 @@ Grundsätzlich gibt es dafür die folgenden Möglichkeiten: https://kubernetes.i
 * Commandline Arguments via Umgebungsvariablen
 * als Volumes in den Container gemountet
 
-Im Beispiel hier wollen wir, dass das File als File auf einem Volume liegt.
+Im Beispiel hier wollen wir, dass das File als File auf einem Volume liegt. Dafür fügen wir im Deployment die ConfigMap als Volume wie folgt ein:
 
-dafür müssen wir entweder den Pod oder in unserem Fall das Deployment `kubectl edit deployment example-spring-boot` bearbeiten.
+dafür müssen wir entweder den Pod oder in unserem Fall das Deployment `kubectl edit deployment example-spring-boot --namespace --namespace [USER]-dockerimage` bearbeiten und fügen entsprechend die ConfigMap als Volume:
+
+```
+      - configMap:
+          defaultMode: 420
+          name: javaconfiguration
+        name: config-volume
+
+```
+
+Mittels `kubectl edit deployment example-spring-boot --namespace [USER]-dockerimage` können wir das Deployment editieren und unter Volumes (ganz zu unterst) die entsprechende Konfiguration einfügen.
 
 Zu beachten gilt es den volumeMounts (wie wird das Volume in den Container gemountet) und volumes (welches Volume in unserem Fall die Configmap wird in den Container gemountet) Teil
 
@@ -124,7 +134,7 @@ spec:
 anschliessend kann im Container im file /etc/config/properties.properties auf die Werte zugegriffen werden.
 
 ```bash
-$ kubectl exec -it [POD] -- cat /etc/config/properties.properties
+$ kubectl exec -it [POD]  --namespace [USER]-dockerimage -- cat /etc/config/properties.properties
 key=value
 key2=value2
 ```

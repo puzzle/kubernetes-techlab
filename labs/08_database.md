@@ -2,33 +2,20 @@
 
 Etliche Applikationen sind in irgendeiner Art stateful und speichern Daten persistent ab. Sei dies in einer Datenbank oder als Files auf einem Filesystem oder Objectstore. In diesem Lab werden wir in unserem Namespace einen MySQL Service anlegen und an unsere Applikation anbinden, sodass mehrere Applikationspods auf die gleiche Datenbank zugreifen können.
 
-Für dieses Beispiel verwenden wir das Spring Boot Beispiel aus [LAB 4](04_deploy_dockerimage.md), `[USER]-dockerimage`.
-
-**Tipp:**
-
-```
-Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
-```
-
-```
-Windows:
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
-```
 
 ## Aufgabe: LAB8.1: MySQL Service anlegen
 
 Für unser Beispiel legen wir als ersten ein sogenanntes Secret an, in welchem wir das Passwort des Users für den Zugriff auf die Datenbank ablegen.
 
 ```bash
-$ kubectl create secret generic mysql-password --from-literal=password=mysqlpassword
+$ kubectl create secret generic mysql-password --namespace [USER]-dockerimage --from-literal=password=mysqlpassword
 secret/mysql-password created
 ```
 
 Das Passwort wird weder mit `kubectl get` noch mit `kubectl describe` angezeigt.
 
 ```bash
-$ kubectl get secret mysql-password -o json
+$ kubectl get secret mysql-password --namespace [USER]-dockerimage -o json
 {
     "apiVersion": "v1",
     "data": {
@@ -59,7 +46,7 @@ mysqlpassword
 Weiter erstellen wir ein secret für das MySQL Root Passwort.
 
 ```bash
-$ kubectl create secret generic mysql-root-password --from-literal=password=mysqlrootpassword
+$ kubectl create secret generic mysql-root-password --namespace [USER]-dockerimage --from-literal=password=mysqlrootpassword
 secret/mysql-root-password created
 ```
 
@@ -70,7 +57,7 @@ Wie wir in vorherigen Labs gesehen haben, können sämtliche Kubernetes Resource
 In diesem Fall hier kreieren wir ein Deployment inkl. Service für die MySQL Datenbank.
 
 ```
-$ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml
+$ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml --namespace [USER]-dockerimage
 service/springboot-mysql created
 deployment.apps/springboot-mysql created
 ```
@@ -103,16 +90,16 @@ Diese Umgebungsvariablen können wir nun im Deployment example-spring-boot setze
 
 Die Umgebungsvariablen können nun im example-spring-boot Deployment wie folgt gesetzt werden:
 ```
-$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true"
+$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true" --namespace [USER]-dockerimage
 ```
 
 oder direkt via
 ```
-$ kubectl edit deployment example-spring-boot
+$ kubectl edit deployment --namespace [USER]-dockerimage example-spring-boot
 ```
 
 ```
-$ kubectl get deployment example-spring-boot
+$ kubectl get deployment --namespace [USER]-dockerimage example-spring-boot
 ```
 ```
 ...
@@ -138,7 +125,7 @@ oder aber ein paar Hellos erfassen, und dann den Springboot Container löschen u
 
 Wie im Lab [07](07_troubleshooting_ops.md) beschrieben kann mittels `kubectl exec -it [POD] -- /bin/bash` in einen Pod eingeloggt werden:
 ```
-$ kubectl get pods
+$ kubectl get pods --namespace [USER]-dockerimage
 NAME                                   READY   STATUS    RESTARTS   AGE
 example-spring-boot-574544fd68-qfkcm   1/1     Running   0          2m20s
 springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
@@ -146,7 +133,7 @@ springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
 
 Danach in den MySQL Pod einloggen:
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 -- /bin/bash
+$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER]-dockerimage -- /bin/bash
 ```
 
 Nun können Sie mittels mysql Tool auf die Datenbank verbinden und die Tabellen anzeigen:
@@ -203,12 +190,12 @@ Setzen Sie analog der `MYSQL_PASSWORD`-Umgebungsvariable das Passwort für `SPRI
 
 Ein ganzes Verzeichnis (dump) syncen. Darin enthalten ist das File `dump.sql`. Beachten Sie zum rsync-Befehl auch obenstehenden Tipp sowie den fehlenden trailing slash.
 ```
-kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/
+kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/ --namespace [USER]-dockerimage
 ```
 In den MySQL Pod einloggen:
 
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 -- /bin/bash
+$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER]-dockerimage -- /bin/bash
 ```
 
 Bestehende Datenbank löschen:

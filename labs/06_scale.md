@@ -4,32 +4,17 @@ In diesem Lab zeigen wir auf, wie man Applikationen in Kubernetes skaliert. Des 
 
 ## Example Applikation hochskalieren
 
-Dafür erstellen wir einen neuen Namespace
+Erstellen Sie in Ihrem Namespace ein neues Deployment
+
 
 ```
-$ kubectl create namespace [USER]-scale
-```
-Wechseln in den Namespace 
-```
-Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-scale
-```
-
-```
-Windows:
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-scale
-```
-
-und fügen dem Namespace ein Deployment hinzu
-
-```
-$ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld
+$ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld --namespace [USER]-dockerimage
 ```
 
 und stellen den Service zur Verfügung (expose)
 
 ```
-$ kubectl expose deployment appuio-php-docker --type="LoadBalancer" --name="appuio-php-docker" --port=80 --target-port=8080
+$ kubectl expose deployment appuio-php-docker --type="LoadBalancer" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
 Wenn wir unsere Example Applikation skalieren wollen, müssen wir unserem Deployment mitteilen, dass wir bspw. stets 3 Replicas des Images am Laufen haben wollen.
@@ -37,7 +22,7 @@ Wenn wir unsere Example Applikation skalieren wollen, müssen wir unserem Deploy
 Schauen wir uns mal das Replicaset etwas genauer an:
 
 ```
-$ kubectl get replicasets
+$ kubectl get replicasets --namespace [USER]-dockerimage
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   1         1         1       110s
@@ -46,7 +31,7 @@ appuio-php-docker-86d9d584f8   1         1         1       110s
 Für mehr Details:
 
 ```
-$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json
+$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [USER]-dockerimage
 ```
 
 Das Replicaset sagt uns, wieviele Pods wir erwarten (spec) und wieviele aktuell deployt sind (status).
@@ -55,13 +40,13 @@ Das Replicaset sagt uns, wieviele Pods wir erwarten (spec) und wieviele aktuell 
 Nun skalieren wir unsere Example Applikation auf 3 Replicas:
 
 ```
-$ kubectl scale deployment appuio-php-docker --replicas=3
+$ kubectl scale deployment appuio-php-docker --replicas=3 --namespace [USER]-dockerimage
 ```
 
 Überprüfen wir die Anzahl Replicas auf dem ReplicationController:
 
 ```
-$ kubectl get replicasets
+$ kubectl get replicasets --namespace [USER]-dockerimage
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   3         3         1       4m33s
@@ -71,7 +56,7 @@ appuio-php-docker-86d9d584f8   3         3         1       4m33s
 und zeigen entsprechend die Pods an:
 
 ```
-$ kubectl get pods
+$ kubectl get pods --namespace [USER]-dockerimage
 NAME                                 READY   STATUS    RESTARTS   AGE
 appuio-php-docker-86d9d584f8-7vjcj   1/1     Running   0          5m2s
 appuio-php-docker-86d9d584f8-hbvlv   1/1     Running   0          31s
@@ -82,7 +67,7 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 Zum Schluss schauen wir uns den Service an. Der sollte jetzt alle drei Endpoints referenzieren:
 
 ```bash
-$ kubectl describe service appuio-php-docker
+$ kubectl describe service appuio-php-docker --namespace [USER]-dockerimage
 Name:                     appuio-php-docker
 Namespace:                philipona-scale
 Labels:                   app=appuio-php-docker
@@ -112,7 +97,7 @@ Skalieren von Pods innerhalb eines Services ist sehr schnell, da Kubernetes einf
 Mit dem folgenden Befehl können Sie nun überprüfen, ob Ihr Service verfügbar ist, während Sie hoch und runter skalieren.
 Ersetzen Sie dafür `[ip]` mit Ihrer definierten External IP:
 
-**Tipp:** kubectl get service appuio-php-docker
+**Tipp:** kubectl get service appuio-php-docker --namespace [USER]-dockerimage
 
 ```
 Linux:
@@ -156,8 +141,10 @@ Die Requests werden an die unterschiedlichen Pods geleitet, sobald man runterska
 
 Was passiert nun, wenn wir nun während dem der While Befehl oben läuft, ein neues Deployment starten:
 
+**Tipp:** in Gitbash ausführen. Powershell funktioniert nicht.
+
 ```
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
 Währen einer kurzen Zeit gibt die öffentliche Route keine Antwort
 ```
@@ -251,12 +238,12 @@ spec:
 
 Das Deployment Config kann direkt über `kubectl` editiert werden.
 ```
-$ kubectl edit deployment appuio-php-docker
+$ kubectl edit deployment appuio-php-docker --namespace [USER]-dockerimage
 ```
 
 Oder im JSON-Format editieren:
 ```
-$ kubectl edit deployment appuio-php-docker -o json
+$ kubectl edit deployment appuio-php-docker -o json --namespace [USER]-dockerimage
 ```
 **json**
 ```
@@ -372,7 +359,7 @@ while true; do sleep 1; curl -s http://[ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; d
 Starten des Deployments:
 
 ```bash
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
 
 
@@ -384,7 +371,7 @@ Suchen Sie mittels `kubectl get pods` einen Pod im Status "running" aus, den Sie
 
 Starten sie in einem eigenen Terminal den folgenden Befehl (anzeige der Änderungen an Pods)
 ```
-kubectl get pods -w
+kubectl get pods -w --namespace [USER]-dockerimage
 ```
 Löschen Sie im anderen Terminal einen Pod mit folgendem Befehl
 ```

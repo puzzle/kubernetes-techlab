@@ -15,25 +15,9 @@ Erstellen Sie daher einen neuen Namespace mit dem Namen `[USER]-dockerimage`:
 $ kubectl create namespace [USER]-dockerimage
 ```
 
-`kubectl create namespace` wechselt nicht automatisch in den eben neu angelegten Namespace.
-
-Wechseln Sie daher in den entsprechend neu angelegten Namespace:
-
-Linux:
+Zeigen Sie sämtliche Pods in ihrem Namespace an, es sollten keine Pods gefunden werden.
 ```bash
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage
-```
-
-Windows:
-```bash
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-dockerimage
-```
-
-Als Alternative zum Wechseln des Contexts kann beim Befehl `kubectl` der Parameter `-n` mitgegeben werden.
-Beispielsweise beim Anzeigen der Pods eines Namespace sieht der ganze Befehl dann wie folgt aus:
-
-```bash
-$ kubectl get pods -n <namespace>
+$ kubectl get pods -n=[USER]-dockerimage
 ```
 
 Mit dem `kubectl get`-Befehl können Ressourcen von einem bestimmten Typ angezeigt werden.
@@ -49,8 +33,16 @@ um alle Namespaces anzuzeigen, auf die Sie berechtigt sind.
 Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation deployen. Als ersten Schritt starten wir direkt einen Pod:
 
 ```
-$ kubectl run nginx --image=nginx --port=80 --restart=Never
+$ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [USER]-dockerimage
 ```
+
+Verwenden Sie `kubectl get pods --namespace puzzle-u803687` um den laufenden Pod anzuzeigen.
+```
+$ kubectl get pods --namespace [USER]-dockerimage
+NAME      READY     STATUS    RESTARTS   AGE
+nginx     1/1       Running   0          1m
+```
+
 
 Verwenden Sie `kubectl get pods` um den laufenden Pod anzuzeigen.
 
@@ -63,7 +55,7 @@ Einen einzelnen Pod zu starten kann in bestimmten Fällen Sinn machen, ist jedoc
 Sobald der Namespace erstellt wurde können wir mit dem folgenden Befehl das Docker Image im Namespace deployen:
 
 ```
-$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot
+$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]-dockerimage
 ```
 
 Output:
@@ -79,7 +71,7 @@ Kubernetes legt die nötigen Ressourcen an, lädt das Docker Image in diesem Fal
 
 Verwenden Sie den `kubectl get` Befehl mit dem `-w` Parameter, um fortlaufend Änderungen an den Ressourcen des Typs Pod anzuzeigen (**abbrechen mit ctrl+c**):
 ```
-$ kubectl get pods -w
+$ kubectl get pods --namespace [USER]-dockerimage -w
 ```
 
 Je nach Internetverbindung oder abhängig davon, ob das Image auf Ihrem Kubernetes Node bereits heruntergeladen wurde, kann das eine Weile dauern. 
@@ -89,13 +81,13 @@ Je nach Internetverbindung oder abhängig davon, ob das Image auf Ihrem Kubernet
 
 ## Betrachten der erstellten Ressourcen
 
-Als wir `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot` vorhin ausführten, legte Kubernetes ein [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) für uns an.
+Als wir `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]-dockerimage` vorhin ausführten, legte Kubernetes ein [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) für uns an.
 
 
 ### Deployment
 
 ```
-$ kubectl get deployment
+$ kubectl get deployment --namespace [USER]-dockerimage
 ```
 
 Im [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) werden folgende Punkte definiert:
@@ -109,13 +101,13 @@ Im [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploy
 
 Mit dem folgenden Befehl können zusätzliche Informationen zur Deployment ausgelesen werden:
 ```
-$ kubectl get deployment example-spring-boot -o json
+$ kubectl get deployment example-spring-boot -o json --namespace [USER]-dockerimage
 ```
 
 Nachdem das Image heruntergeladen wurde deployt Kubernetes anhand des Deployments einen Pod.
 
 ```
-$ kubectl get pod
+$ kubectl get pod --namespace [USER]-dockerimage
 ```
 
 ```
