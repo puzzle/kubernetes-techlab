@@ -1,57 +1,57 @@
 # Lab 10.4: ConfigMap
 
-ConfigMaps erlauben ähnlich wie das setzen von Umgebungsvariablen die Konfiguration für eine Applikation vom Image zu trennen und bei Laufzeit dem Pod zur Verfügung zu stellen um Applikationen innerhalb von Containern möglichst portabel zu halten.
+Similar to environment variables, ConfigsMaps allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
+In this lab you learn to create and use ConfigMaps.
 
-In diesem Lab lernen Sie wie man ConfigMaps erstellt und entsprechend verwendet.
+# Create a ConfigMap in the Kubernetes Namespace:
 
-# ConfigMap in Kubernetes Namespace anlegen:
-
-Um eine ConfigMap in einem Namespace anzulegen kann folgender Befehl verwendet werden:
+To create a ConfigMap in a namespace, the following command is used:
 
 ```
 kubectl create configmap [name der ConfigMap] [Data Source]
 ```
-Die `[Data Source]` kann sowohl ein File, ein Verzeichnis oder eine direkte Kommandozeileneingabe sein.
+The [data source] can be a file, a directory or a command line input.
 
 
-## Java properties Files als ConfigMap
+## Java properties Files as ConfigMap
 
-Ein klassisches Beispiel für ConfigMaps sind Property Files bei Java Applikationen, welche in erster Linie nicht via Umgebungsvariablen konfiguriert werden können.
+A classic example for ConfigMaps are property files of Java applications, which can't be configured with environment variables.
 
-Wir wechseln dafür in den Namespace des Labs 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
+We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-dockerimage`
 
-Mit dem folgenden Befehl legen wir nun die erste ConfigMap auf Basis eines localen Files an:
+With the following command, a ConfigMap based on a local file is created:
 
 ```
 $ kubectl create configmap javaconfiguration --from-file=labs/10_data/properties.properties 
 ```
 
-Mit 
+With 
 
 ```
 $ kubectl get configmaps
 NAME                DATA   AGE
 javaconfiguration   1      7s
 ```
-kann nun verifiziert werden ob die ConfigMap erfolgreich angelegt wurde.
-
-Oder mittels `$ kubectl get configmaps javaconfiguration -o json --namespace [USER]-dockerimage` kann der Inhalt angezeigt werden. 
+you can verify, if the ConfigMap was crated successfully.
 
 
-## Configmap in Pod zur Verfügung stellen
-
-Als nächstest wollen wir die ConfigMap im Pod verfügbar machen.
-
-Grundsätzlich gibt es dafür die folgenden Möglichkeiten: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+The content can also be displayed with `$ kubectl get configmaps javaconfiguration -o json --namespace [USER]-dockerimage`.
 
 
-* ConfigMap Properties als Umgebungsvariablen im Deployment 
-* Commandline Arguments via Umgebungsvariablen
-* als Volumes in den Container gemountet
+## Attach a Configmap to a Pod
 
-Im Beispiel hier wollen wir, dass das File als File auf einem Volume liegt. Dafür fügen wir im Deployment die ConfigMap als Volume wie folgt ein:
+Next, we want to make a ConfigMap accessible for a pod.
 
-dafür müssen wir entweder den Pod oder in unserem Fall das Deployment `kubectl edit deployment example-spring-boot --namespace --namespace [USER]-dockerimage` bearbeiten und fügen entsprechend die ConfigMap als Volume:
+Basically, there are the following possibilities to achieve this: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+
+* ConfigMap properties as environment variables in a deployment
+* Commandline arguments via environment variables
+* Mounted as volumes in the container
+
+In this example, we want the file to be mounted as a volume in the container. We add the ConfigMap in the deployment as follows:
+
+
+Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace --namespace [USER]-dockerimage`:
 
 ```
       - configMap:
@@ -61,9 +61,8 @@ dafür müssen wir entweder den Pod oder in unserem Fall das Deployment `kubectl
 
 ```
 
-Mittels `kubectl edit deployment example-spring-boot --namespace [USER]-dockerimage` können wir das Deployment editieren und unter Volumes (ganz zu unterst) die entsprechende Konfiguration einfügen.
+With `kubectl edit deployment example-spring-boot --namespace [USER]-dockerimage` we can edit the deployment and add the configuration in the volumes section at the very bottom:
 
-Zu beachten gilt es den volumeMounts (wie wird das Volume in den Container gemountet) und volumes (welches Volume in unserem Fall die Configmap wird in den Container gemountet) Teil
 
 ```
 apiVersion: extensions/v1beta1
@@ -131,7 +130,7 @@ spec:
 
 ```
 
-anschliessend kann im Container im file /etc/config/properties.properties auf die Werte zugegriffen werden.
+After that, it's possible for the container to access the values in the ConfigMap in /etc/config/properties.properties 
 
 ```bash
 $ kubectl exec -it [POD]  --namespace [USER]-dockerimage -- cat /etc/config/properties.properties
@@ -139,21 +138,22 @@ key=value
 key2=value2
 ```
 
-Diese Property File kann nun so von der Java Applikation im Conainer gelesen und verwendet werden. Das Image bleibt dabei umgebungsneutral.
+Like this, the property file can be read and used by the Java application in the container. The image stays portable to other environments.
 
-## Aufgabe: LAB10.4.1 ConfigMap Data Sources
 
-Erstellen Sie jeweils eine ConfigMap und verwenden Sie dafür die verschiedenen Arten von Data Sources https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+## Task: LAB10.4.1 ConfigMap Data Sources
 
-Machen Sie die Werte innerhalb von Pods auf die unterschiedlichen Arten verfügbar.
+Create a ConfigMap and use the different kinds of data sources: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+
+Make the values accessible in the different ways possible.
 
 
 ---
 
-**Ende Lab 10.4**
+**End of Lab 10.4**
 
 <p width="100px" align="right"><a href="11_helm.md">Helm →</a></p>
 
-[← zurück zur Kapitelübersicht "Weitere Konzepte"](10_additional_concepts.md)
+[← Back to Overview "Additional Concepts"](10_additional_concepts.md)
 
-[← zurück zur Gesamtübersicht](../README.md)
+[← Back to Main Overview ](../README.md)

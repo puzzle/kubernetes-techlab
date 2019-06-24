@@ -1,9 +1,9 @@
-# Lab: Deployment Strategien
+# Lab: Deployment Strategies
 
-In diesem Lab werden wir uns mit den unterschiedlichen Deployment Strategien etwas im Detail befassen.
+In this Lab we are going to have a look on the different Deployment Strategies
 
-Dafür dient uns https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf als Basis.
+This Document https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf should give you a good Start. For more Details, have a look at the Examples in https://github.com/ContainerSolutions/k8s-deployment-strategies
 
-Im detail sieht man die erwähnten Beispiele unter: https://github.com/ContainerSolutions/k8s-deployment-strategies
+## Task: Apply Deployment Strategies
 
-Konkrete Aufgabe, Deploymentstrategien auf Beispiel aus Lab 6 anwenden
+Apply some Deployment Strategries to the Example from Lab 6.

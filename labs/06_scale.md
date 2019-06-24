@@ -1,25 +1,22 @@
-# Lab 6: Pod Scaling, Readiness Probe und Self Healing
+# Lab 6: Scaling
 
-In diesem Lab zeigen wir auf, wie man Applikationen in Kubernetes skaliert. Des Weiteren zeigen wir, wie Kubernetes dafür sorgt, dass jeweils die Anzahl erwarteter Pods gestartet wird und wie eine Applikation der Plattform zurückmelden kann, dass sie bereit für Requests ist.
+In this lab we are going to show you how to scale applications on Kubernetes. Further we show you how Kubernetes makes sure that the number of requested pods is up and running how an application can tell the platform that it is ready to ready to receive request.
 
-## Example Applikation hochskalieren
 
-Erstellen Sie in Ihrem Namespace ein neues Deployment
+
+## Task: LAB6.1 Scale the Example Application
+
+Create a new deployment in your namespace:
 
 
 ```
 $ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld --namespace [USER]-dockerimage
 ```
 
-und stellen den Service zur Verfügung (expose)
+If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
 
-```
-$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --target-port=8080 --namespace [USER]-dockerimage
-```
+Let's have a closer look at the existing ReplicaSet:
 
-Wenn wir unsere Example Applikation skalieren wollen, müssen wir unserem Deployment mitteilen, dass wir bspw. stets 3 Replicas des Images am Laufen haben wollen.
-
-Schauen wir uns mal das Replicaset etwas genauer an:
 
 ```
 $ kubectl get replicasets --namespace [USER]-dockerimage
@@ -28,22 +25,22 @@ NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   1         1         1       110s
 ```
 
-Für mehr Details:
+Or for even more details:
 
 ```
 $ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [USER]-dockerimage
 ```
 
-Das Replicaset sagt uns, wieviele Pods wir erwarten (spec) und wieviele aktuell deployt sind (status).
+The ReplicaSet shows how many pods/replicas are desired, current and ready.
 
-## Aufgabe: LAB6.1 skalieren unserer Beispiel Applikation
-Nun skalieren wir unsere Example Applikation auf 3 Replicas:
+
+Now we scale our application to three replicas:
 
 ```
 $ kubectl scale deployment appuio-php-docker --replicas=3 --namespace [USER]-dockerimage
 ```
 
-Überprüfen wir die Anzahl Replicas auf dem ReplicationController:
+Check the number of desired, current and ready replicas:
 
 ```
 $ kubectl get replicasets --namespace [USER]-dockerimage
@@ -53,7 +50,7 @@ appuio-php-docker-86d9d584f8   3         3         1       4m33s
 
 ```
 
-und zeigen entsprechend die Pods an:
+and look at how many pods there are:
 
 ```
 $ kubectl get pods --namespace [USER]-dockerimage
@@ -64,7 +61,18 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
 
-Zum Schluss schauen wir uns den Service an. Der sollte jetzt alle drei Endpoints referenzieren:
+**Tip:** Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
+
+
+## Check for Uninterruptible Scaling/Deploying
+
+Now we create a new service with type NodePort:
+
+```
+$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --target-port=8080 --namespace [USER]-dockerimage
+```
+
+Let's look at our service. We should see all three endpoints referenced:
 
 ```bash
 $ kubectl describe service appuio-php-docker --namespace [USER]-dockerimage
@@ -87,25 +95,32 @@ Events:
   Normal  EnsuringLoadBalancer  2s    service-controller  Ensuring load balancer
 ```
 
-Skalieren von Pods innerhalb eines Services ist sehr schnell, da Kubernetes einfach eine neue Instanz des Docker Images als Container startet.
-
-**Tipp:** Kubernetes unterstützt auch Autoscaling, die Dokumentation dazu ist unter dem folgenden Link zu finden: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+Scaling of Pods within a Service ist fast, as Kubernetes simply creates a new Container
 
 
-## Unterbruchsfreies Skalieren überprüfen
+**Tip:** Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 
-Mit dem folgenden Befehl können Sie nun überprüfen, ob Ihr Service verfügbar ist, während Sie hoch und runter skalieren.
-Ersetzen Sie dafür `[ip]` mit Ihrer definierten External IP:
-
-**Tipp:** kubectl get service appuio-php-docker --namespace [USER]-dockerimage
+You can check the availability of your service while you scale the number of replicas up and down.
+Replace the `URL` placeholder with the actual, constructed URL:
 
 ```
-Linux:
-while true; do sleep 1; curl -s http://[LoadBalance Ingress ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+NodePort=32193
+
+URL=http://[EXTERNALIP]:38709/
+```
+
+**Tip:** Check previous Lab on how to get the `ExternalIP`
+
+Now, execute the corresponding loop command for your operating system.
+
+
+```
+@Linux:
+while true; do sleep 1; curl -s [URL]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 ```
-Windows (ab Powershell-Version 3.0):
+@Windows (ab Powershell-Version 3.0):
 while(1) { ^
 	Start-Sleep -s 1 ^
 	Invoke-RestMethod http://35.205.165.31/pod/ ^
@@ -113,8 +128,9 @@ while(1) { ^
 } ^
 ```
 
-und skalieren Sie von **3** Replicas auf **1**.
-Der Output zeigt jeweils den Pod an, der den Request verarbeitete:
+and scale from **3** to **1** replicas.
+The output shows which pod responded to the sent request:
+
 
 ```
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:07,289
@@ -137,16 +153,17 @@ POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:24,377
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:25,445
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
-Die Requests werden an die unterschiedlichen Pods geleitet, sobald man runterskaliert auf einen Pod, gibt dann nur noch einer Antwort
+The requests are being distributed amongst the pods. As soon as you scale down to one pod, there should only be one pod remaining that responds.
 
-Was passiert nun, wenn wir nun während dem der While Befehl oben läuft, ein neues Deployment starten:
+But what happens if start a new deployment while our while command is running?
 
-**Tipp:** in Gitbash ausführen. Powershell funktioniert nicht.
+
+**Tip:** If on Windows, execute the following command in Gitbash, Powershell seems not to work.
 
 ```
 $ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
-Währen einer kurzen Zeit gibt die öffentliche Route keine Antwort
+During a short period we won't get a response:
 ```
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:24,121
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:25,189
@@ -168,9 +185,9 @@ POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:40,118
 POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
-In unserem Beispiel verwenden wir einen sehr leichtgewichtigen Pod.
-Das Verhalten ist ausgeprägter, wenn der Container länger braucht bis er Requests abarbeiten kann.
-Bspw. Java Applikation von [Lab 4](04_deploy_dockerimage.md): **Startup: 30 Sekunden**
+In our example we use a very lightweight pod. If we had used a more heavy-weight pod that needed a longer time to respond to requests, we would of course see a larger gap.
+An example for this would be the Java application from [lab 4](04_deploy_dockerimage.md): **Startup time: 30 seconds**:
+
 
 ```
 Pod: example-spring-boot-2-73aln TIME: 16:48:25,251
@@ -193,36 +210,41 @@ Pod: example-spring-boot-3-tjdkj TIME: 16:49:22,231
 
 ```
 
-Es kann dann sogar sein, dass der Service gar nicht mehr online ist und der Routing Layer ein **503 Error** zurück gibt.
+It is even possible that the service gets down and the routing layer responds with the status code 503 as can be seen in the example output above.
 
-Im Folgenden Kapitel wird beschrieben, wie Sie Ihre Services konfigurieren können, dass unterbruchsfreie Deployments möglich werden.
+In the following chapter we are going to look at how a service can be configured to be highly available.
 
 
-## Unterbruchsfreies Deployment mittels Readiness Probe und Rolling Update
+## Uninterruptable Deployments
 
-Die Update Strategie [Rolling](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) ermöglicht unterbruchsfreie Deployments. Damit wird die neue Version der Applikation gestartet, sobald die Applikation bereit ist, werden Request auf den neuen Pod geleitet und die alte Version undeployed.
+The [rolling](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) update strategy makes it possible to deploy pods without interruption. The rolling update strategy means that the new version of an application gets deployed and started. As soon as the application says it is ready, Kubernetes forwards requests to the new instead of the old version of the pod and the old pod is terminated.
 
-Zusätzlich kann mittels [Container Health Checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) die deployte Applikation der Plattform detailliertes Feedback über ihr aktuelles Befinden geben.
+Additionally, [container health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) help Kubernetes to precisely determine what state the application is in.
 
-Grundsätzlich gibt es zwei Checks, die implementiert werden können:
+Basically there are two different kinds of checks that can be implemented:
 
-- Liveness Probe
-  - sagt aus, ob ein laufender Container immer noch sauber läuft.
-- Readiness Probe
-  - gibt Feedback darüber, ob eine Applikation bereit ist, um Requests zu empfangen. Ist v.a. im Rolling Update relevant.
+- Liveness probes are used to find out if an application is still running
+- Readiness probes tell us if the application es ready to receive requests (which is especially relevant for above-mentioned rolling updates)
 
-Diese beiden Checks können als HTTP Check, Container Execution Check (Shell Script im Container) oder als TCP Socket Check implementiert werden.
+These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In unserem Beispiel soll die Applikation der Plattform sagen, ob sie bereit für Requests ist. Dafür verwenden wir die Readiness Probe. Unsere Beispielapplikation gibt auf der folgenden URL auf Port 8080  ein Status Code 200 zurück, sobald die Applikation bereit ist.
+In our example we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check endpoint on port 8080 at:
+
 ```
-http://[ip]/health/
+http://[URL]:8080/health/
 ```
 
-## Aufgabe: LAB6.3
 
-Im Deployment (dc) definieren im Abschnitt der Rolling Update Strategie, dass bei einem Update die App immer verfügbar sein soll: `maxUnavailable: 0%`
+## Task: LAB6.3
 
-Dies kann in der Deployment Config (dc) konfiguriert werden:
+In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0%`
+
+You can directly edit the deployment (or any resource) with:
+
+```
+$ kubectl edit deployment appuio-php-docker --namespace [USER]-dockerimage
+```
+
 
 **YAML:**
 ```
@@ -236,12 +258,8 @@ spec:
 ...
 ```
 
-Das Deployment Config kann direkt über `kubectl` editiert werden.
-```
-$ kubectl edit deployment appuio-php-docker --namespace [USER]-dockerimage
-```
 
-Oder im JSON-Format editieren:
+If you prefer json formatting to yaml, use the `--output`/`-o` parameter to edit the resource in json:
 ```
 $ kubectl edit deployment appuio-php-docker -o json --namespace [USER]-dockerimage
 ```
@@ -257,9 +275,7 @@ $ kubectl edit deployment appuio-php-docker -o json --namespace [USER]-dockerima
 
 ```
 
-Die Readiness Probe muss im Deployment hinzugefügt werden, und zwar unter:
-
-spec --> template --> spec --> containers oberhalb von `resources: {  }`
+Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: { }` line:
 
 **YAML:**
 
@@ -295,9 +311,8 @@ spec --> template --> spec --> containers oberhalb von `resources: {  }`
 ...
 ```
 
-Passen Sie das entsprechend analog oben an.
 
-Die Konfiguration unter Container muss dann wie folgt aussehen:
+The `containers` configuration then looks like:
 **YAML:**
 
 ```bash
@@ -348,15 +363,15 @@ Die Konfiguration unter Container muss dann wie folgt aussehen:
                 ],
 ```
 
-Verifizieren Sie während eines Deployment der Applikation, ob nun auch ein Update der Applikation unterbruchsfrei verläuft:
+We are now going to verify that a redeployment of the application does not lead to an interruption:
 
-Einmal pro Sekunde ein Request:
+Set up the loop to periodically check the application's response:
 
 ```bash
-while true; do sleep 1; curl -s http://[ip]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
-Starten des Deployments:
+Start a new deployment by editing it (the so-called ConfigChange trigger triggers the new deployment automatically):
 
 ```bash
 $ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
@@ -365,27 +380,28 @@ $ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"meta
 
 ## Self Healing
 
-Über das Replicaset haben wir nun der Plattform mitgeteilt, dass jeweils **n** Replicas laufen sollen. Was passiert nun, wenn wir einen Pod löschen?
+Via ReplicaSet we told Kubernetes how many replicas we want. So what happens if we simply delete a pod?
 
-Suchen Sie mittels `kubectl get pods` einen Pod im Status "running" aus, den Sie *killen* können.
+Look for a running pod (status `RUNNING`) that you can bear to kill via `kubectl get pods`.
 
-Starten sie in einem eigenen Terminal den folgenden Befehl (anzeige der Änderungen an Pods)
+Show all pods and watch for changes:
+
 ```
 kubectl get pods -w --namespace [USER]-dockerimage
 ```
-Löschen Sie im anderen Terminal einen Pod mit folgendem Befehl
+Now delete a pod (in another terminal) with the following command:
 ```
 kubectl delete pod appuio-php-docker-3-788j5
 ```
 
 
-Kubernetes sorgt dafür, dass wieder **n** Replicas des genannten Pods laufen.
+Observe how Kubernetes instantly creates a new pod in order to fulfill the desired number of running replicas.
 
 
 ---
 
-**Ende Lab 6**
+**End of lab 6**
 
-<p width="100px" align="right"><a href="07_troubleshooting_ops.md">Troubleshooting, was ist im Pod? →</a></p>
+<p width="100px" align="right"><a href="07_troubleshooting_ops.md">Troubleshooting →</a></p>
 
-[← zurück zur Übersicht](../README.md)
+[← back to the overview](../README.md)

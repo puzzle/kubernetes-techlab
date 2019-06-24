@@ -1,30 +1,27 @@
-# Lab 5: Unseren Service mittels NodePort online verfügbar machen
+# Lab 5: Exposing a Service
 
-In diesem Lab werden wir die Applikation aus [Lab 4](04_deploy_dockerimage.md) über **http** vom Internet her erreichbar machen.
+In this lab, we are going to make the freshly deployed application from [lab 4](04_deploy_dockerimage.md) available online.
 
 
 ## Basis
 
-Der `kubectl create deployment`-Befehl aus dem vorherigen [Lab](04_deploy_dockerimage.md) erstellt zwar einen Pod, aber keinen Service. Dafür ist der `kubectl expose`-Befehl zuständig. Somit ist unser Service von *aussen* her erst erreichbar, wenn der Service exposed wurde.
+The command `kubectl create deployment` from [lab](04_deploy_dockerimage.md) creates a pod but no service. A service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the service itself, it is available online.
 
-Damit machen wir nun die Applikation vom Internet her verfügbar.
+## Task: LAB5.1
 
-
-## Aufgabe: LAB5.1
-
-Mit dem folgenden Befehl wird unser Deployment über den Type LoadBalancer auf Port 80 und Pod Target Port 8080 exponiert:
+With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 8080:
 
 ```
 $ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
-[Services](https://kubernetes.io/docs/concepts/services-networking/service/) dienen innerhalb Kubernetes als Abstraktionslayer, Einstiegspunkt und Proxy/Loadbalancer auf die dahinterliegenden Pods. Der Service ermöglicht es, innerhalb Kubernetes eine Gruppe von Pods des gleichen Typs zu finden und anzusprechen.
+[Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
 
-Als Beispiel: Wenn eine Applikationsinstanz unseres Labs die Last nicht mehr alleine verarbeiten kann, können wir die das Deployment hochskalieren, also weitere Pods unserer Applikation deployen. Kubernetes mappt diese als Endpoints automatisch zum Service. Sobald die Pods bereit sind, werden Requests auch auf die neuen Pods verteilt.
+As an example: If a replica of our application pod cannot handle the load anymore, we can simply scale our application to more pods in order to distribute the load. Kubernetes automatically maps these pods as the service's backends/endpoints. As soon as the pods are ready, they'll receive requests.
 
-**Note:** Die Applikation kann aktuell von aussen noch nicht erreicht werden, der Service ist ein Kubernetes-internes Konzept. Im folgenden Lab werden wir die Applikation öffentlich verfügbar machen.
+**Note:** The application is not yet accessible from outside, the service is a Kubernetes internal concept. We're going to fully expose the application in the next lab.
 
-Nun schauen wir uns unseren Service mal etwas genauer an:
+Let's have a more detailed look at our service:
 
 ```
 $ kubectl get services --namespace [USER]-dockerimage
@@ -35,9 +32,10 @@ NAME                  TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 example-spring-boot   NodePort   10.43.91.62   <none>        80:30692/TCP  
 ```
 
+The `NodePort` number is being assigned by Kubernetes and stays the same as long as the services is not deleted. A NodePort service is rather suitable for infrastructure tools than for public URLs. But don't worry, we are going to do that later too with Ingress mappings that create better readable URLs.
 
+You get additional information by executing the following command:
 
-Mit dem folgenden Befehl können Sie zusätzliche Informationen über den Service auslesen:
 ```
 $ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
 ```
@@ -85,14 +83,16 @@ $ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
 
 ```
 
-Mit dem entsprechenden Befehl können Sie auch die Details zu einem Pod anzeigen:
+With the appropriate command you get details from the pod (or any other resource):
+
 ```
 $ kubectl get pod example-spring-boot-3-nwzku --namespace [USER]-dockerimage -o json
 ```
 
-**Note:** Zuerst den Pod-Namen aus Ihrem Projekt abfragen (`kubectl get pods --namespace [USER]-dockerimage`) und im oberen Befehl ersetzen oder mittels Tab-Taste (bash completion) eintragen lassen.
+**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [USER]-dockerimage`) and then replace it in the following command.
 
-Über den `selector` Bereich im Service wird definiert, welche Pods (`labels`) als Endpoints dienen. Dazu können die entsprechenden Konfigurationen von Service und Pod zusammen betrachtet werden.
+The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
+
 
 Service (`kubectl get service <Service Name> --namespace [USER]-dockerimage -o json`):
 ```
@@ -113,7 +113,7 @@ Pod (`kubectl get pod <Pod Name> --namespace [USER]-dockerimage`):
 ...
 ```
 
-Diese Verknüpfung ist besser mittels `kubectl describe` Befehl zu sehen:
+This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
 ```
 $ kubectl describe service example-spring-boot --namespace [USER]-dockerimage
 ```
@@ -141,48 +141,55 @@ Events:
 
 ```
 
-Unter Endpoints finden Sie nun den aktuell laufenden Pod.
-
-**Note:** Service IPs bleiben während ihrer Lebensdauer immer gleich.
-
-Rufen Sie im Browser entsprechend http://[ExternalIP]:[NodePort] auf.
-
-Jetzt ist Ihre Applikation in der Rancher WebGUI auch unter dem Reiter "Service Discovery" zu finden.
 
 
-## Aufgabe: LAB5.2
+**Note:** Service IP addresses stay the same for the duration of the service's life span.
 
-Die zweite Variante um einen Service von aussen erreichbar zu machen, ist das verwenden eines Ingress Routers
+Open `http://[ExternalIP]:[NodePort]` in your Browser. You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the ExternalIP's of the Nodes.
 
-Dafür löschen wir den oben definierten Service mit folgendem Befehl
+Now your Application is also visible in the Rancher WerbGUI under "Service Discovery"
+
+
+## Task: LAB5.2
+
+There's a second option to make a service accessible from outside: Use an Ingress router.
+
+In order to switch the service type, we are going to delete the NodePort service that we've created before:
+
 ```
 $ kubectl delete service example-spring-boot --namespace=[USER]-dockerimage
 ```
-Anschliessend legen wir einen Service vom Type Cluster IP an
+Now we create a service with type ClusterIP:
 
 ```
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
-Passen Sie dafür im File `05_data/ingress.yaml` entsprechend den Namen und den Host entsprechend an.
+In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change the Name and Host.
 
-**Note:** Die NodeIP kann mit `kubectl get node -o wide` angezeigt werden. Verwenden sie die IP aus der Spalte `INTERNAL-IP`, sie können eine beliebigen Node auswählen.
+**Note:** As already mentioned the NodeIP can be shown with `kubectl get node -o wide`. Use an IP from `INTERNAL-IP`, you can choose any of them.
 
-Die Ingress Resource kann wie folgt angelegt werden:
+After editing the ingress resource, we can create it:
 ```
 $ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]-dockerimage
 ```
+Afterwards we are able to access our freshly created service (inside Mobiliar's network) at `http://springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io`
 
 ---
 
-## Zusatzaufgabe für Schnelle ;-)
 
-Schauen Sie sich die erstellten Ressourcen mit `kubectl get [ResourceType] [Name] -o json` und `kubectl describe [ResourceType] [Name]` aus dem Namespace `[USER]-dockerimage` an.
 
 ---
 
-**Ende Lab 5**
+## Additional Task for Fast Learners
 
-<p width="100px" align="right"><a href="06_scale.md">Skalieren →</a></p>
+Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `puzzle-[U-NUMBER]` and try to understand them.
 
-[← zurück zur Übersicht](../README.md)
+
+---
+
+**End of lab 5**
+
+<p width="100px" align="right"><a href="06_scale.md">Scaling →</a></p>
+
+[← back to the overview](../README.md)

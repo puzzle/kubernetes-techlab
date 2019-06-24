@@ -1,91 +1,107 @@
 # Lab 11: Helm
 
-[Helm](https://github.com/helm/helm) ist ein [Cloud Native Foundation](https://www.cncf.io/) Projekt mit
-dem Applikationen auf Kubernetes installiert und aktualisiert werden können.
-In diesem Lab werden wir gemeinsam Helm anschauen und eine einfache Applikation damit deployen und anpassen.
-In einem späteren Lab habt ihr dann noch die Gelegenheit eine eigene Applikation mit Helm zu deployen.
+[Helm](https://github.com/helm/helm) is a [Cloud Native Foundation](https://www.cncf.io/) Project to define, install and manage Applications in Kubernetes.
+In this Lab we are going to explore Helm by deploying a simple Application and then update the Application.
+In an later Lab, you will have the Opportunity to deploy your own Application with Helm.
 
-## Aufgabe: LAB11.1 Helm Client instalieren
+## Task: LAB11.1 install the Helm Client
 
-Für dieses Lab wird zusätzlich der Helm Client benötigt. Dessen Installation wird
-[hier](https://docs.helm.sh/using_helm/#installing-the-helm-client) beschrieben:
+In this Lab, you need the Helm Client. For Instructions to install the Helm Client, visit:
+[here](https://docs.helm.sh/using_helm/#installing-the-helm-client)
 
-Den Helm Server (Tiller) haben wir auf dem Cluster bereits installiert.
+The Helm Server Component (Tiller) can be installed globally for the whole Kubernetes Cluster. This has some Security Downsides and therefore we will install Tiller later only in your Namespaces.
 
-## Aufgabe: LAB11.2 Helm Überblick
+## Task: LAB11.2 Helm Overview
 
-Zuerst ist es wichtig die 3 Helm Konzepte "Chart", "Repository" und "Release" zu verstehen.
-Diese sind in der [Helm Einführung](https://docs.helm.sh/using_helm/#three-big-concepts) kurz beschrieben.
+First, you have to understand the following 3 Helm Concepts: "Chart", "Repository" and "Release".
+They are explained in the [Helm Introduction](https://docs.helm.sh/using_helm/#three-big-concepts)
 
-Nun können wir mit folgenden Befehl eine Vorlage für ein eigenes Chart erstellen lassen
-(erzeugt Unterverzeichnis `mychart` im aktuellen Verzeichnis):
+With the following Command, we can create a Template for our own Chart. This will create a Sub-Directory `my-chart` in the current Directory:
 
 ```sh
 helm create mychart
 ```
 
-Die so generierte Vorlage ist bereits ein gültiges und voll funktionsfähiges Chart
-welches Nginx deployed.
-Verschaft euch nun einen Überblick über die generierten Dateien und deren Inhalt.
-Sinn und Zweck der einzelnen Dateien sind in der [Helm Entwicklerdokumentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure) kurz beschrieben.
-In einem [späteren Abschnitt](https://docs.helm.sh/developing_charts/#templates-and-values) finden
-sich weitere Informationen zu Helm Templates.
+This Template is already a valid and fully functional Chart which deploys NGINX.
+Have a look now on the generated Files and their Content.
+For an Explanation of the Files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure).
+In a [later Section](https://docs.helm.sh/developing_charts/#templates-and-values) you find all the Information about Helm Templates
 
-## Aufgabe: LAB11.3 Applikation mit Helm installieren
 
-Bevor wir mit dem generierten Chart ein Deployment machen können wir mit folgendem Befehl
-anschauen welche Ressourcen Helm aus dem Chart generiert:
+## Task: LAB11.3 Install an Application with Helm
+
+### Helm and Tiller
+
+Helm needs a Component installed in the Kubernetes Cluster for the Communication with Kubernetes. This Component is called Tiller. The local Helm Client communicates with the Tiller Instance. Mobiliar does not run a central Tiller in their Kubernetes Cluster (as stated earlier)
+
+For this Exercise, you can easily install Tiller in your own Namespace:
+
+```
+helm init --tiller-namespace [USER]-dockerimage --upgrade
+```
+
+To not always add the Namespace when calling `helm` (with `--tiller-namespace [USER]-dockerimage`), you can set the following Environment Variable:
+
+```
+export TILLER_NAMESPACE=[USER]-dockerimage
+```
+
+As mentioned, there are some Security Conserns with a central and always running Tiller Instance. Everybody with access to the Tiller Instance, can create Deployments in all Namespaces the ServiceAccount on which Tiller runs, has access to. Therefore we limit the Permissions by using Tiller only for one Namespace.
+
+
+Before actually deploying our generated Chart, we can check the (to be) generated Kubernetes Ressources with the following Command:
 
 ```sh
 helm install --dry-run --debug --namespace [USER]-dockerimage mychart
 ```
 
-Schliesslich erstellt folgender Befehl ein neues Release aus dem Chart und deployed damit die Applikation:
+Finally, the following Command creates a new Release with the Helm Chart and deploys the Application::
 ```sh
 helm install mychart --namespace [USER]-dockerimage
 ```
 
-In `kubectl get pods --namespace [USER]-dockerimage` sollte nun ein neuer Pod auftauchen, während der neu erstellte
-Release mit folgendem Befehl aufgelistet wird:
+With `kubectl get pods --namespace [USER]-dockerimage` you should see a new Pod. You can list the newly created Helm Release with the following Command:
 
 ```sh
 helm ls --namespace [USER]-dockerimage
 ```
 
-## Aufgabe: LAB11.4 Applikation mit Helm aktualisieren
+## Task: LAB11.5 Update an Application with Helm
 
-Der deployte Nginx ist noch nicht von extern verfügbar. Um ihn
-von aussen verfügbar zu machen muss der Service Type auf
-`LoadBalancer` geändert werden.  
-Sucht die Definition der Service Types im Chart und passt diese
-entsprechend an. Die Änderung kann danach wie folgt übernommen werden:
+Your deployed NGINX is not yet accessible from External. To expose it, you have to change the Service Type to `NodePort`.
+Search now for the Service Type Definition in your Chart and make the Change.
+You can apply your Change with the following Command:
+
 
 ```sh
 helm upgrade [RELEASE] --namespace [namespace] mychart
 ```
 
-Sobald dem Service eine externe IP zugeordnet wurde erscheint diese hier (Befehl terminiert nicht, muss mit CTRL-C beendet werden):
+As soon as the Service has a NodePort, you will see it with the following Command (As we use -w (watch) you have to terminate the Command with CTRL-C):
+
 
 ```sh
 kubectl get svc --namespace [namespace] -w
 ```
 
-Nginx ist nun unter der zugeordneten externen IP verfügbar und sollte eine Willkommensseite anzeigen (Alternativ die IP in einem Webbrowser eingeben):
 
-```sh
-curl http://[EXTERNAL_IP]
-```
+NGINX is now available at the given NodePort and should Display a Welcome-Page when accessing it with `curl` or you can also open the page in your Browser:
 
-## Aufgabe: LAB11.5 Applikation mit Helm deinstallieren
+**Hint:** Similar to LAB5.1 you have to set the correct URL.
 
-Um eine Applikation zu deinstallieren kann einfach der dazugehörige Release gelöscht werden:
+## Task: LAB11.6 Remove an Application with HELM
+
+To remove an Application, you can simply remove the Helm Release with the following Command:
+
 
 ```sh
 helm delete [RELEASE] --namespace [namespace]
 ```
 
+With `kubectl get pods --namespace [USER]-dockerimage` you should now longer see your Application Pod.
+
 ---
 
-**Ende Lab 11**
+**End Lab 11**
 
-[← zurück zur Übersicht](../README.md)
+[← back to Overview](../README.md)

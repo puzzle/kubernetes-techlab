@@ -1,18 +1,19 @@
-# Lab 8: Datenbank anbinden
+# Lab 8: Attaching a Database
 
-Etliche Applikationen sind in irgendeiner Art stateful und speichern Daten persistent ab. Sei dies in einer Datenbank oder als Files auf einem Filesystem oder Objectstore. In diesem Lab werden wir in unserem Namespace einen MySQL Service anlegen und an unsere Applikation anbinden, sodass mehrere Applikationspods auf die gleiche Datenbank zugreifen können.
+Numerous applications are in some kind stateful and want to save data persistently, be it in a database or as files on a filesystem or in an object store. During this lab we are going to create a MySQL service and attach it to our application so that application pods can access the same database.
 
 
-## Aufgabe: LAB8.1: MySQL Service anlegen
+## Task: LAB8.1: Create the MySQL Service
 
-Für unser Beispiel legen wir als ersten ein sogenanntes Secret an, in welchem wir das Passwort des Users für den Zugriff auf die Datenbank ablegen.
+
+We are first going to create a so-called secret in which we write the password for accessing the database.
 
 ```bash
 $ kubectl create secret generic mysql-password --namespace [USER]-dockerimage --from-literal=password=mysqlpassword
 secret/mysql-password created
 ```
 
-Das Passwort wird weder mit `kubectl get` noch mit `kubectl describe` angezeigt.
+The secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
 $ kubectl get secret mysql-password --namespace [USER]-dockerimage -o json
@@ -34,49 +35,53 @@ $ kubectl get secret mysql-password --namespace [USER]-dockerimage -o json
 }
 ```
 
-Der String unter data --> password ist base64 encodiert und kann einfach decodiert werden: 
+The string at `.data.password` is base64 encoded and can easily be decoded:
 
 ```bash
 $ echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 mysqlpassword
 ```
 
-**Note:** das Secret ist nicht verschlüsselt! Für das sichere Aufbewahren von Secrets eignen sich sogenannte Vaults beispielsweise: <https://www.vaultproject.io/>
+**Note:** Secrets by default are not encrypted! Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/). Another option would be the use of a vault like [Vault by HashiCopr](https://www.vaultproject.io/).
 
-Weiter erstellen wir ein secret für das MySQL Root Passwort.
+We are going to create another secret for storing the MySQL root password.
 
 ```bash
 $ kubectl create secret generic mysql-root-password --namespace [USER]-dockerimage --from-literal=password=mysqlrootpassword
 secret/mysql-root-password created
 ```
 
-Als nächstes legen wir das Deployment und den Service an. In unserem Beispiel verwenden wir zu Beginn eine Datenbank ohne persistent Storage angebunden. Dies ist nur für Testumgebungen zu verwenden, da beim Restart des MySQL Pods alle Daten verloren gehen. In einem späteren Lab werden wir aufzeigen, wie wir ein Persistent Volume an die MySQL Datenbank anhängen. Damit bleiben die Daten auch bei Restarts bestehen und ist so für den produktiven Betrieb geeignet.
+We are now going to create deployment and service. For a first example we use a database without persistent storage. Only use an ephemeral database for testint purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
 
-Wie wir in vorherigen Labs gesehen haben, können sämtliche Kubernetes Resourcen (Deployments, Services, Secrets, ...) auch als yaml oder json angezeigt werden. Nicht nur das, man kann Resourcen auch aus yaml oder json files laden und kreieren.
+As we had seen in the earlier labs, all resources like deployments, services, secrets and so on can be displayed in yaml or json format. But it doesn't end there, capabilities also include the creation and exportation of resources using yaml or json files.
 
-In diesem Fall hier kreieren wir ein Deployment inkl. Service für die MySQL Datenbank.
+In our case we want to create a deployment including a service for our MySQL database:
+
 
 ```
 $ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml --namespace [USER]-dockerimage
 service/springboot-mysql created
 deployment.apps/springboot-mysql created
 ```
-So bald das Docker Image MySQL:5.6 gepulled und deployed wurde, wird unter `kubectl get pods` ein weiterer Pod angezeigt.
 
-Die definierten Umgebungsvariablen im Deployment, konfigurieren den MySQL Pod und definieren somit wie später unser Frontend darauf zugreifen kann.
+As soon as the Docker image for mysql:5.6 has been pulled, you will see a new pod using `kubectl get pods`.
 
-## Aufgabe: LAB8.2: Applikation an die Datenbank anbinden
+The environment variables defined in the deployment configure the MySQL pod and how our frontend will be able to access it.
 
-Standardmässig wird bei unserer example-spring-boot Applikation eine H2 Memory Datenbank verwendet. Dies kann über das Setzen der folgenden Umgebungsvariablen entsprechend auf unseren neuen MySQL Service umgestellt werden:
+
+## Task: LAB8.2: Attaching the Database to the Application
+
+By default our example-spring-boot application uses a H2 memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL service:
 
 - SPRING_DATASOURCE_USERNAME springboot
-- SPRING_DATASOURCE_PASSWORD [WERT aus dem Secret]
+- SPRING_DATASOURCE_PASSWORD [value from the secret]
 - SPRING_DATASOURCE_DRIVER_CLASS_NAME com.mysql.jdbc.Driver
-- SPRING_DATASOURCE_URL jdbc:mysql://[Adresse des MySQL Service]/springboot?autoReconnect=true
+- SPRING_DATASOURCE_URL jdbc:mysql://[MySQL service address]/springboot?autoReconnect=true
 
-Für die Adresse des MySQL Service können wir entweder dessen Cluster IP (`kubectl get service`) falls gesetzt oder aber dessen DNS-Namen (`<service>`) verwenden. Alle Services und Pods innerhalb eines Projektes können über DNS aufgelöst werden.
+You can either use the MySQL service's cluster ip or DNS name as address. All services and pods can be resolved by DNS using their name.
 
-So lautet der Wert für die Variable SPRING_DATASOURCE_URL bspw.:
+For us this means we can use the following value as `SPRING_DATASOURCE_URL`:
+
 
 ```bash
 Name des Services: springboot-mysql
@@ -84,16 +89,18 @@ Name des Services: springboot-mysql
 jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
 ```
 
-Diese Umgebungsvariablen können wir nun im Deployment example-spring-boot setzen. Nach dem **ConfigChange** (ConfigChange ist in der DeploymentConfig als Trigger registriert) wird die Applikation automatisch neu deployed. Aufgrund der neuen Umgebungsvariablen verbindet die Applikation an die MySQL DB und [Liquibase](http://www.liquibase.org/) kreiert das Schema und importiert die Testdaten.
+We now can set these environment variables inside the deployment configuration. The configuration change automatically triggers a new deployment of the application. Because we set the environment variables the application now tries to connect to the MySQL database and [Liquibase](http://www.liquibase.org/) creates the schema and imports some test data.
 
-**Note:** Liquibase ist Open Source. Es ist eine Datenbank unabhängige Library um Datenbank Änderungen zu verwalten und auf der Datenbank anzuwenden. Liquibase erkennt beim Startup der Applikation, ob DB Changes auf der Datenbank angewendet werden müssen oder nicht. Siehe Logs.
+**Note:** Liquibase is an open source, database-independent library for managing and applying database changes. Liquibase recognizes at application startup if database changes are necessary. You can also look at the logs to find out if Liquibase did some changes or not.
 
-Die Umgebungsvariablen können nun im example-spring-boot Deployment wie folgt gesetzt werden:
+So let's set the environment variables in the example-spring-boot deployment:
+
 ```
 $ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true" --namespace [USER]-dockerimage
 ```
 
-oder direkt via
+You could also do the changes by direclty editing the deployment:
+
 ```
 $ kubectl edit deployment --namespace [USER]-dockerimage example-spring-boot
 ```
@@ -116,14 +123,18 @@ $ kubectl get deployment --namespace [USER]-dockerimage example-spring-boot
 ...
 ```
 
-Um zu verifizieren ob dies funktioniert hat, können sie einerseits die logs des springboot Containers anschauen **Tipp:** `kubectl logs [POD]`
-oder aber ein paar Hellos erfassen, und dann den Springboot Container löschen und schauen ob die Hellos nach dem restart noch da sind.
+In order to find out if the change worked we can either look at the springboot container's logs (**Tip**: `kubectl logs [POD NAME]`).
+Or we could register some "Hellos" in the application, delete the pod, wait for the new pod to be started and check if they are still there.
 
-**Vorsicht:** wir der Datenbank Pod gelöscht, sind die Daten weg und müssen zuerst initialisiert werden (Restart des Springboot Containers)
+**Attention:** This does not work if we delete the database pod as its data is not yet persisted.
 
-## Aufgabe: LAB8.3: In MySQL Service Pod einloggen und manuell auf DB verbinden
 
-Wie im Lab [07](07_troubleshooting_ops.md) beschrieben kann mittels `kubectl exec -it [POD] -- /bin/bash` in einen Pod eingeloggt werden:
+## Task: LAB8.3: Manual Database Connection
+
+As described in [lab 07](07_troubleshooting_ops.md) we can log into a pod with `kubectl exec -it [POD NAME] -- /bin/bash`.
+
+Show all pods:
+
 ```
 $ kubectl get pods --namespace [USER]-dockerimage
 NAME                                   READY   STATUS    RESTARTS   AGE
@@ -131,12 +142,14 @@ example-spring-boot-574544fd68-qfkcm   1/1     Running   0          2m20s
 springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
 ```
 
-Danach in den MySQL Pod einloggen:
+Log into the MySQL pod:
+
 ```
 $ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER]-dockerimage -- /bin/bash
 ```
 
-Nun können Sie mittels mysql Tool auf die Datenbank verbinden und die Tabellen anzeigen:
+You are now able to connect to the database and display the tables. Log in using:
+
 ```
 $ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD springboot
 Warning: Using a password on the command line interface can be insecure.
@@ -158,47 +171,42 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-Anschliessend können Sie mit
+
+Show all tables with:
 ```
 show tables;
 ```
 
-alle Tabellen anzeigen.
+
+## Task: LAB8.4: Import a Database Dump
+
+Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/techlab/lab-3.3/labs/data/08_dump/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
+
+**Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
 
 
-## Aufgabe: LAB8.4: Dump auf MySQL DB einspielen
+## Task: LAB8.5: Springboot Deployment Password from Secret
 
-Die Aufgabe ist es, in den MySQL Pod den [Dump](https://raw.githubusercontent.com/appuio/techlab/lab-3.3/labs/data/08_dump/dump.sql) einzuspielen.
-
-
-**Tipp:** Mit `kubectl cp` können Sie lokale Dateien in einen Pod kopieren.
-
-**Achtung:** Beachten Sie, dass dabei der tar-Befehl des Betriebssystems verwendet wird. Auf UNIX-Systemen kann tar mit dem Paketmanager, auf Windows kann bspw. [cwRsync](https://www.itefix.net/cwrsync) installiert werden. Ist eine Installation von tar nicht möglich, kann stattdessen bspw. in den Pod eingeloggt und via `curl -O <URL>` der Dump heruntergeladen werden.
-
-**Tipp:** Verwenden Sie das Tool mysql um den Dump einzuspielen.
-
-**Tipp:** Die bestehende Datenbank muss vorgängig leer sein. Sie kann auch gelöscht und neu angelegt werden.
-
-## Aufgabe: LAB8.5: Springboot Deployemnt Passwort als Secret
-
-Setzen Sie analog der `MYSQL_PASSWORD`-Umgebungsvariable das Passwort für `SPRING_DATASOURCE_PASSWORD` anstelle des Plaintext-Key als Secret-Referenz.
+Analogue to the `MYSQL_PASSWORD` environment variable, remove the value of the `SPRING_DATASOURCE_PASSWORD` environment variable and instead insert a reference to the secret which contains the password.
 
 
 ---
 
-## Lösung: LAB8.4
+## Solution: LAB8.4
 
-Ein ganzes Verzeichnis (dump) syncen. Darin enthalten ist das File `dump.sql`. Beachten Sie zum rsync-Befehl auch obenstehenden Tipp sowie den fehlenden trailing slash.
+This is how you copy the database dump into the pod:
+
 ```
 kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/ --namespace [USER]-dockerimage
 ```
-In den MySQL Pod einloggen:
+
+This is how you log into the MySQL pod:
 
 ```
 $ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER]-dockerimage -- /bin/bash
 ```
 
-Bestehende Datenbank löschen:
+This shows how to drop the whole database:
 ```
 $ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD  springboot
 ...
@@ -206,12 +214,13 @@ mysql> drop database springboot;
 mysql> create database springboot;
 mysql> exit
 ```
-Dump einspielen:
+Importing a dump:
+
 ```
 $ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD springboot < /tmp/dump/dump.sql
 ```
 
-**Note:** Den Dump kann man wie folgt erstellen:
+**Note:** A database dump can be created as follows:
 
 ```
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD springboot > /tmp/dump.sql
@@ -219,9 +228,8 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD springboot > /tmp/dump.s
 
 
 ---
+**End of lab 8**
 
-**Ende Lab 8**
+<p width="100px" align="right"><a href="09_persistent_storage.md">Persistent Storage →</a></p>
 
-<p width="100px" align="right"><a href="09_persistent_storage.md">Persistent Storage anbinden und verwenden für Datenbank →</a></p>
-
-[← zurück zur Übersicht](../README.md)
+[← back to the overview](../README.md)

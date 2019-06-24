@@ -1,14 +1,16 @@
-# Lab 10: Weitere Konzepte
+## Task: LAB10.4.1 ConfigMap Data Sources
 
-Unter den weiteren Konzepten werden wir uns die Ressourcentypen StatefulSet, DaemonSet, Job sowie ConfigMap genauer anschauen:
+Create a ConfigMap and use the different kinds of data sources: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 
-1. [StatefulSet](labs/10_1_statefulset.md)
-1. [DaemonSet](labs/10_2_daemonset.md)
-1. [Jobs](labs/10_3_jobs.md)
-1. [ConfigMap](labs/10_4_configmap.md)
+Make the values accessible in the different ways possible.
+
 
 ---
 
-<p width="100px" align="right"><a href="10_1_statefulset.md">StatefulSet →</a></p>
+**End of Lab 10.4**
 
-[← zurück zur Übersicht](../README.md)
+<p width="100px" align="right"><a href="11_helm.md">Helm →</a></p>
+
+[← Back to Overview "Additional Concepts"](10_additional_concepts.md)
+
+[← Back to Main Overview ](../README.md)

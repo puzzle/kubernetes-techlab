@@ -1,31 +1,32 @@
-# Lab 9: Persistent Storage anbinden und verwenden für Datenbank
+# Lab 9: Persistent Storage
 
-Per se sind Daten in einem Pod nicht persistent, was u.a. auch in unserem Beispiel der Fall ist. Verschwindet also unser MySQL-Pod bspw. aufgrund einer Änderung des Images, sind die bis zuvor noch vorhandenen Daten im neuen Pod nicht mehr vorhanden. Um genau dies zu verhindern hängen wir nun Persistent Storage an unseren MySQL-Pod an.
-
-## Aufgabe: LAB9.1:
-
-### Storage anfordern
-
-Das Anhängen von Persistent Storage geschieht eigentlich in zwei Schritten. Der erste Schritt beinhaltet als erstes das Erstellen eines sog. PersistentVolumeClaim(PVC) für unseren Namespace. Im Claim definieren wir u.a. dessen Namen sowie Grösse, also wie viel persistenten Speicher wir überhaupt haben wollen.
-
-Der PersistentVolumeClaim stellt allerdings erst den Request dar, nicht aber die Ressource selbst. Er wird deshalb automatisch durch Kubernetes GKE mit einem zur Verfügung stehenden Persistent Volume verbunden, und zwar mit einem mit mindestens der angeforderten Grösse. Sind nur noch grössere Persistent Volumes vorhanden, wird eines dieser Volumes verwendet und die Grösse des Claims angepasst. Sind nur noch kleinere Persistent Volumes vorhanden, kann der Claim nicht verbunden werden und bleibt solange offen, bis ein Volume der passenden Grösse (oder eben grösser) auftaucht.
+By default, data in pods is not persistent which was e.g. the case in lab 8. This means that data that was written in a pod is lost as soon as that pod does not exist anymore. We want to prevent this from happening. One possible solution to this problem is using persistent storage.
 
 
-### Volume in Pod einbinden
+## Lab: LAB9.1
 
-Im zweiten Schritt wird der zuvor erstellte PVC im richtigen Pod eingebunden. In [LAB 6](06_scale.md) bearbeiteten wir das Deployment, um die Readiness Probe einzufügen. Dasselbe tun wir nun für das Persistent Volume.
+### Request Storage
+
+Attaching persistent storage to a pod happens in two steps. The first step includes the creation of a so-called PersistentVolueClaim (pvc) in our namespace. This claim defines amongst others what name and size we would like to get.
+
+The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a Persistent Volume by Kubernetes, one that has at least the requested size. If only volumes exist that have a larger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim will not be bound as long as no volume the exact same or larger size is created.
 
 
-Der folgende Befehl führt erstellt den PersistentVolumeClaim für ein 1Gi Volume und fordert dieses an:
+### Attaching a Volume to a Pod
+
+In a second step, the pvc from before is going to be attached to the right pod. In [lab 6](06_scale.md) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
+
+The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size:
+
 ```
 $ kubectl create --namespace [USER]-dockerimage -f ./labs/08_data/mysql-persistent-volume-claim.yaml
 ```
-Nun müssen wir dem mysql Deployment noch das Volume am korrekten Ort anhängen
+
+We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```
 $ kubectl edit deployment springboot-mysql --namespace [USER]-dockerimage
 ```
-das Deployment muss wie folgt aussehen, volumes beachten:
 ```
 ...
     spec:
@@ -65,40 +66,42 @@ das Deployment muss wie folgt aussehen, volumes beachten:
 ...
 ```
 
-**Note:** Durch die veränderte Deployment deployt Kubernetes automatisch einen neuen Pod. D.h. leider auch, dass das vorher erstellte DB-Schema und bereits eingefügte Daten verloren gegangen sind.
+**Note:** Because we just changed the deployment a new pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 
-Unsere Applikation erstellt beim Starten das DB Schema eigenständig.
+Our application automatically creates the database schema at startup.
 
-**Tipp:** redeployen Sie den Applikations-Pod:
+**Tip:** If you want to force a redeployment of a pod, you could e.g. use this:
 
 ```
 $ kubectl patch deployment example-spring-boot -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
 
-Mit dem Befehl `kubectl get persistentvolumeclaim`, oder etwas einfacher `kubectl get pvc --namespace [USER]-dockerimage`, können wir uns nun den im Projekt frisch erstellten PersistentVolumeClaim anzeigen lassen:
+Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [USER]-dockerimage`, we can display the freshly created PersistentVolumeClaim:
+
 ```
 $ kubectl get pvc --namespace [USER]-dockerimage
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        RWO            standard       11s
 ```
-Die beiden Attribute Status und Volume zeigen uns an, dass unser Claim mit dem Persistent Volume pvc-2cb78deb-d157-11e8-a406-42010a840034 verbunden wurde.
+
+The two columns `STATUS` and `VOLUME` show us that our claim has been bound to the persistent volume `pvc-2cb78deb-d157-11e8-a406-42010a840034`.
 
 
-## Aufgabe: LAB9.2: Persistenz-Test
+## Task: LAB9.2: Persistence Check
 
-### Daten wiederherstellen
+### Restore Data
 
-Wiederholen Sie [Lab-Aufgabe 8.4](08_database.md#l%C3%B6sung-lab84).
+Repeat the task from [lab 8.4](08_database.md#l%C3solution-lab84).
 
 
 ### Test
 
-Skalieren Sie nun den mysql Pod auf 0 und anschliessend wieder auf 1. Beobachten Sie, dass der neue Pod die Daten nicht mehr verliert.
+Scale your MySQL pod to 0 replicas and back to 1. Observe that the new pod didn't loose any data.
 
 ---
 
-**Ende Lab 9**
+**End of lab 9**
 
-<p width="100px" align="right"><a href="10_additional_concepts.md">Weitere Konzepte →</a></p>
+<p width="100px" align="right"><a href="10_additional_concepts.md">Additional Concepts →</a></p>
 
-[← zurück zur Übersicht](../README.md)
+[← back to the overview](../README.md)

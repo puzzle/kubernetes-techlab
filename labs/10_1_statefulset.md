@@ -1,10 +1,12 @@
 # Lab 10.1: StatefulSet
 
-Zustandslose Applikationen oder solche, deren Zustand in einem Backend abgebildet werden kann, können problemlos mit Deployments gehandhabt werden. Den Zustand so abzubilden ist allerdings nicht immer möglich, weshalb StatefulSets entwickelt wurden. StatefulSets lösen dieses komplexe Problem, indem sie nicht nur den Storage implementieren, sondern auch dafür sorgen, dass eine gewünschte Reihenfolge eingehalten oder die Identität eines Pods immer dieselbe bleibt.
+Stateless applications or applications with a stateful backend, can be described as **Deployments**. Sometimes you need your application to be stateful.
+For example if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g. rabbitmq).
+These features are implemented as **Statefulset**.
 
-## Konsistente Hostnamen
-Im Vergleich zu Deployments, in denen ein Zufalls-Hash im Namen des Pods (Hostname innerhalb des Systems) benutzt, verwenden Statefulsets einen fest konfigurierten Namen.
-Beispiel von rabbitmq-cluster mit drei Knoten als Pods:
+## Consistent hostnames
+While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, Statefulsets create Pods with preconfigured names.
+Example of a rabbitmq-cluster with three nodes (Pods):
 
 ```
 rabbitmq-0
@@ -12,41 +14,46 @@ rabbitmq-1
 rabbitmq-2
 ```
 
-## Skalierung
-Weiterhin verhält sich die Skalierung eines eines Statefulset anders. Beim Hochskalieren von 3 auf 5 könnten beim Deployment, je nach Konfiguration 2 zusätzliche Pods auf einmal gestartet werden. Beim Statefulset läuft das "geregelt" ab.
-Beispiel anhand von Rabbitmq
+## Scaling
+Scaling is handled as well differently in Statefulsets.
+On scaling up from 3 to 5 within a Deployment, two additional Pods could be started at the __same__ time (based on the configuren. Using the Stateful it seems to be more "in control".
 
-1. Skalierung mittels `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]-dockerimage`
-1. `rabbitmq-3` wird gestartet
-1. wenn `rabbitmq-3` fertig (Zustand: "Ready", siehe Readiness-Probe), wird `rabbitmq-4` gestartet
+Example with Rabbitmq
 
-Beim Herunterskalieren läuft es in umgekehrter Reihenfolge ab. Es wird solange gewartet bis der "jüngste" Pod beendet wird, bevor der nächste beendet wird.
-Reihenfolge beim Herunterskalieren: `rabbitmq-4`, `rabbitmq-3`, usw.
+1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace puzzle-[U-NUMBER]`
+1. `rabbitmq-3` is started
+1. when `rabbitmq-3` done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
+
+On downscaling the order is vice versa. The "youngest" Pod will be stopped in first place and it needs to be finished, before the "second youngest" Pod is stopped.
+Order for scaling down: `rabbitmq-4`, `rabbitmq-3`, etc.
 
 
-## Update-Verhalten / Rollout einer neuen Software
-Bei einem Update der Anwendung wird ebenfalls mit dem jüngsten Pod angefangen und erst nach erfolgreichem Start mit dem zweijüngsten Pod weitergemacht.
 
-1. Jüngster Pod wird beendet
-1. Neuer Pod mit neuem Image wird gestartet
-1. Bei erfolgreichem "readinessProbe" wird der zweitjüngste Pod beendet
+## Update procedure / Rollout of a new application
+On an update of the application, also the "youngest" Pod will be the first and only after a successful Start the next Pod will be updated.
+
+1. Youngest Pod will be stopped
+1. new Pod with new Image version is started
+1. Having a successful "readinessProbe" the second youngest Pod will be stopped
 1. etc...
 
-Schlägt der Start eines aktualisierten Pods fehl, bleibt das Update/Rollout stehen, damit keine weiteren Pods und damit die komplette Architektur der Applikation behindert wrd.
+If the start of a new Pod fails, the Update / Rollout will be interrupted, so that the architecture of your application won't break.
 
 ## Trivia
-Da Statefulsets vorhersagbare Namen der Pods besitzen und Namen wiederverwendet werden, besteht die Möglichkeit dass mit der Skalierung neue Volumes (via PVCs) aus einer StorageClass dynamisch erzeugt werden.
-Eine 1-zu-1 Beziehung zwischen Pods und Volumes ist somit gegeben.
-Durch das Setzen einer _Partition_ kann man Updates in zwei Schritten gezielt ausführen.
+As Statefulsets have predictable names, which are reused, you can integrate PVCs into the sets from a configured storageclass. The will be used als on **scale up**!
+As names are predictable a 1-to-1 relation is given. 
+By setting a _Partition_ updates can be splitted into two steps.
 
-## Fazit
-Das kontrolliert "vorhersagbare" Verhalten wird bei Applikationen wie __rabbitmq__ oder __etcd__, in denen bei der Cluster-Bildung eineindeutige Namen benutzt werden, genutzt. Mit Anwendungen des Typs *Deployments* wäre das nicht möglich.
+## Conclusion
+The control- and predictable behaviour can be perfectly used with application as __rabbitmq__ or __etcd__, as you need unique names the cluster creation.
 
 
-## Aufgabe: LAB10.1
+
+
+## Task: LAB10.1
 
 ### Statefulset erstellen
-1. Erstellen eines Statefulsets mittels YAML-Datei _nginx-sfs.yaml_ :
+1. Create a statefulset based on the YAML file _nginx-sfs.yaml_ :
 ```YAML
 apiVersion: apps/v1
 kind: StatefulSet
@@ -71,42 +78,43 @@ spec:
           name: nginx
 ```
 
-1. Starten des Statefulsets
+1. Start the Statefulset
 ```bash
 kubectl create -f nginx-sfs.yaml --namespace [USER]-dockerimage
 ```
 
-### Statefulset skalieren
+### Scaling
 
-1. Zur Beobachtung ein zweites Konsolenfenster öffnen, statefulsets anzeigen lassen und Pods beobachten:
+1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
+
 ```bash
 kubectl get statefulset --namespace [USER]-dockerimage
 kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
 ```
 
-1. Statefulset hochskalieren
+1. Scale up Statefulset
 ```bash
 kubectl scale statefulset nginx-cluster --replicas=3 --namespace [USER]-dockerimage
 ```
 
-### Statefulset Image aktualisieren
+### Update Statefulset Image
 
-1. Zur Beobachtung der Veränderungen der Pods, bitte ein zweites Konsolenfenster öffnen und folgendes ausführen:
+1. To watch the changes of the the Pods, please open a second window and execute the command:
 ```bash
 kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
 ```
 
-1. Neue Version des Images für das statefulset setzen
+1. Set new version of the Image in the Statefulset
 ```bash
 kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [USER]-dockerimage
 ```
 
-1. Neue Version der Software im Statefulset zurückrollen
+1. Rollback the software
 ```bash
 kubectl rollout undo statefulset nginx-cluster --namespace [USER]-dockerimage
 ```
 
-Weitere Informationen können der [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) oder [diesem auf opensource.com erschienenen Artikel](https://opensource.com/article/17/2/stateful-applications) entnommen werden.
+Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).
 
 
 ---
@@ -115,6 +123,7 @@ Weitere Informationen können der [Kubernetes StatefulSet Dokumentation](https:/
 
 <p width="100px" align="right"><a href="10_2_daemonset.md">DaemonSet →</a></p>
 
-[← zurück zur Kapitelübersicht "Weitere Konzepte"](10_additional_concepts.md)
+[← back to chapter overview "Addition concepts"](10_additional_concepts.md)
 
-[← zurück zur Gesamtübersicht](../README.md)
+[← back to overview](../README.md)
+

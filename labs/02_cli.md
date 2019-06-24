@@ -1,33 +1,36 @@
-# Lab 2: Kubernetes CLI installieren
+# Lab 2: Install the Kubernetes CLI
 
-In diesem Lab werden wir gemeinsam den `kubectl` Client installieren und konfigurieren, damit wir danach die ersten Schritte auf der Techlab Plattform durchführen können.
+In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
-**Note:** In Rancher kann `kubectl` auch direkt im Browser bedient werden. Sobald Sie im Rancher WebGUI eingeloggt sind und sich auf der Cluster Dashboard Seite befinden, kann oben rechts auf "Launch kubectl" geklickt werden.
-
+**Note:** With GKE you can use the browser based shell named "Cloud Shell". If you are not interested in the installation of `kubectl` and `gcloud` themselves later on, you can skip this lab. You can continue with the login from [Lab 3](03_first_steps.md) and click afterwards the "Cloud Shell" button on the top right in the GKE frontend.
 
 ## Command Line Interface
 
-`kubectl` stellt ein Interface zu einem Kubernetes Cluster bereit.
+`kubectl` provides for you a console based interface to control one or several Kubernetes clusters.
 
-Der Client ist in Go programmiert und kommt als einzelnes Binary für die folgenden Betriebsysteme daher:
+As the client is written in Go, you can run the single binary on the following Operating Systems:
 
 - Microsoft Windows
 - Mac OS X
 - Linux
 
 
-## `kubectl` herunterladen und installieren
+## Download and installation of `kubectl`
 
-Den [Instruktionen der offiziellen Dokumentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/) folgen.
+**If you want to use GKE** please follow the [instructions of the official documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-**Wichtig:** Die neuste Version vom `kubectl` installieren, ausser sie ist nicht mit der Kubernetes Version vom Masters(`1.9.7-gke.6`) kompatibel.
-In diesem Fall eine ältere Version für die Installation wählen.
+**Important:** You can install the latest version of `kubectl`, except it is not compatible with the Kubernetes Version of the installed master nodes (`1.9.7-gke.6`).
+Please install an older version in that case.
 
 
-## Manuelle Installtion von `kubectl`
+## Installation of `kubectl` at La Mobilière
+ 
+The Container Solutions Team at Mobilière provides a PowerShell script for installing and setting up `kubectl`. You find the documentation in the [CWiki](https://cwiki.mobicorp.ch/confluence/display/COP/Kubectl+einrichten). If you did the installation according to the documentation, you can skip the rest of this lab and continue with [lab 4](04_deploy_dockerimage.md).
 
-Falls die Installation über die Paketquellen nicht funktioniert, oder bspw. eine explizite Version benötigt wird, kann `kubectl` auch als Binary heruntergeladen werden.
-Dafür empfehlen sich folgende Pfade:
+
+## Manual installation of `kubectl`
+
+In case the installation from the official package repositories didn't work or a specific version is need, the static binary can be downloaded and put into one of the following paths.
 
 **Linux**
 
@@ -48,9 +51,9 @@ C:\Kubernetes\
 ```
 
 
-## Korrekte Berechtigung auf Linux und macOS erteilen
+## Set the the right file modes on Linux and macOS
 
-`kubectl` muss ausgeführt werden können:
+`kubectl` has to be executable:
 
 ```
 cd ~/bin
@@ -58,11 +61,10 @@ chmod +x kubectl
 ```
 
 
-## `kubectl` im PATH registrieren
+## `kubectl` folder in PATH variable
 
-Unter **Linux** und **Mac OS X** ist das Verzeichnis ~/bin bereits im PATH, daher muss hier nichts gemacht werden.
-
-Falls `kubectl` in einem anderen Verzeichnis abgelegt wurde, kann der PATH wie folgt gesetzt werden:
+In **Linux** and **Mac OS X** the directory _~/bin_ should already be part of the PATH variable.
+In case `kubectl` is placed in a different directory, you can change the PATH with the following command:
 
 ```
 $ export PATH=$PATH:[path to kubectl]
@@ -71,7 +73,7 @@ $ export PATH=$PATH:[path to kubectl]
 
 ### Windows
 
-Unter Windows kann der PATH in den erweiterten Systemeinstellungen konfiguriert werden. Dies ist abhängig von der entsprechenden Windows Version:
+The PATH can be set in windows in the advanced system settings. It depends on the used version:
 
 - [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
 - [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
@@ -79,48 +81,48 @@ Unter Windows kann der PATH in den erweiterten Systemeinstellungen konfiguriert 
 
 **Windows Quick Hack**
 
-Legen Sie `kubectl` direkt im Verzeichnis `C:\Windows` ab.
+Copy the `kubectl` binary directly into the folder `C:\Windows`.
 
 
-## Installation verifizieren
+## Verify installation 
 
-`kubectl` sollte jetzt korrekt installiert sein. Am besten überprüfen wir das, indem wir den folgenden Command ausführen:
+The `kubectl` binary should be correctly installed by now. This can be proofed by running the following command:
 
 ```
 $ kubectl version
 ```
 
-Der folgende Output sollte angezeigt werden:
+The shown output should look similar to this:
 
 ```
 Client Version: version.Info{Major:"1", Minor:"12", GitVersion:"v1.12.1", GitCommit:"4ed3216f3ec431b140b1d899130a69fc671678f4", GitTreeState:"clean", BuildDate:"2018-10-05T16:46:06Z", GoVersion:"go1.10.4", Compiler:"gc", Platform:"linux/amd64"}
 [...]
 ```
 
-Ist dies nicht der Fall, ist möglicherweise die PATH Variable nicht korrekt gesetzt.
+If you don't see a similar out, possibly there are issues with the set PATH variable.
 
 ---
 
 ## bash/zsh completion (optional)
 
-Mit Linux und Mac kann die bash completion mit folgendem Befehl temporär eingerichtet werden:
+Running on Linux and iOS (Mac) you can activate the bash completion:
 
 ```
 source <(kubectl completion bash)
 ```
 
-Oder für zsh:
+As well as for zsh:
 ```
 source <(kubectl completion zsh)
 ```
 
-Für die permanente Installation der bash completion kann folgender Befehl ausgeführt werden:
+To make it permanent you can put that command in our bash configuration file:
 
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
 
-Damit die bash completion funktioniert muss vorher das Paket `bash-completion` installiert werden.
+On most linux systems you have to install the bash-completion packet to make the completion work.
 
 Ubuntu:
 
@@ -130,8 +132,8 @@ sudo apt install bash-completion
 
 ---
 
-**Ende Lab 2**
+**End of lab 2**
 
-<p width="100px" align="right"><a href="03_first_steps.md">Erste Schritte auf der Lab Plattform →</a></p>
+<p width="100px" align="right"><a href="03_first_steps.md">First steps in the lab environment →</a></p>
 
-[← zurück zur Übersicht](../README.md)
+[← back to the overview](../README.md)

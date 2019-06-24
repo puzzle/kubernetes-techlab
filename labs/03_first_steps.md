@@ -1,87 +1,101 @@
-# Lab 3: Erste Schritte auf der Lab Plattform
+# Lab 3: First steps in the lab environment
 
-In diesem Lab werden wir gemeinsam das erste Mal mit der Lab Plattform interagieren, dies sowohl über `kubectl` wie auch über die Web Console.
+In this excercise we will interact for the first time with the lab environment, both with `kubectl` as well as via web console.
 
 
-## Vorbereitung Labs
+## Preparation for the labs
 
-Als erstes ist es sinnvoll, wenn das Git Repository des vorliegenden Labs gecloned wird, damit die nötigen Aufgaben lokal auf dem PC vorhanden sind.
+Please clone the git repository, to have a local copy of all necessary excercises.
 
 ```
 $ cd [Git Repo Project Folder]
 $ git clone https://github.com/puzzle/kubernetes-techlab.git
 ```
 
-Als Alternative kann das Repository als [Zip](https://github.com/puzzle/kubernetes-techlab/archive/master.zip) heruntergeladen werden.
+As a fallback the repository can be downloaded as [zip file](https://github.com/puzzle/kubernetes-techlab/archive/master.zip).
 
 
 ## Login
 
-**Note:** Vergewissern Sie sich, dass Sie [Lab 2](02_cli.md) erfolgreich abgeschlossen haben.
+**Note:** Please make sure, the be finshed with [Lab 2](02_cli.md).
 
-Unser Kubernetes Cluster der Techlab Plattform läuft auf cloudscale.ch und wurde mit Hilfe von [Rancher](https://rancher.com/) erstellt. Das Login erfolgt mit in Rancher erstellten User.
-
-
-### Login und Auswahl Kubernetes Cluster
-
-Melden Sie sich im Rancher WebGUI mit Ihrem User an und wählen sie anschliessend den gewünschten Cluster aus.
-
-
-Auf dem Cluster Dashboard finden sie oben Rechts ein Button mit dem Ihr `Kubeconfig File` angezeigt werden kann. Speichern sie dieses im Ihrem Home-Verzeichniss unter `.kube/config`. Prüfen sie anschliessend ob `kubectl` damit richtig konfiguriert ist z.B. mit `kubectl version`
-
-**Note:** Wenn sie bereits ein vorhandeses config File haben, müssen Sie ggfs. die Einträge aus dem Rancher config File in Ihr bestehendes übertragen.
+Our Kubernetes Cluster of the techlab environment runs on [cloudscale.ch](cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the Cluster with a local Rancher User
 
 
 
 
+### Login and choose Kubernetes Cluster
 
-## Namespace erstellen
-
-Ein Namespace in Kubernetes ist das Top Level-Konzept um Ihre Applikationen, Deployments, Container etc. zu organisieren. Siehe [Kubernetes Docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
-
-**Note:** Rancher kennt zusätzlich noch das Konzept des [Projekt](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) mit dem mehrere Namespaces zusammengefasst werden können.
-
-Im Rancher GUI können nun zusätzlich noch ihr Projekt auswählen.
+Login into the Rancher WebGUI with your assigned user and the choose the desired Cluster
 
 
-## Aufgabe: LAB3.1
+On thr Cluster Dashboard you find top right a Button with `Kubeconfig File`. Save the config File into your Home-Directory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. wiht `kubectl version`
 
-Erstellen Sie auf der Lab Plattform einen neuen Namespace.
+**Note:** If you already have a Kubeconfig File, you might need to merge the Rancher Entries with yours.
 
-**Note**: Verwenden Sie für Ihren Namespace-Namen am besten Ihren Techlab-Benutzernamen oder sonstigen Identifier, bspw. `[USER]-lab3-1`
 
-> Wie kann ein neuer Namespace erstellt werden?
+## Create a namespace
 
-**Tipp** :information_source:
+A namespace is the logical design used in Kubernetes to organize and separate your applications, deployments, services etc. on a top level base. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
+
+
+**Note:** Additionaly Rancher does know the concept of a  [Projekt](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
+
+In the Rancher WebGUI you can now choose your Project.
+
+
+
+## Exercise: LAB3.1
+
+Create a new namespace in the lab environment.
+
+**Note**: Please choose an identifying name for the namespace, in best case your the techlab username, e.g. `[USER]-lab3-1`
+
+> How can a new namespace be created?
+
+**Tip** :information_source:
 ```
 $ kubectl help
 ```
 
-oder verwenden Sie das Rancher GUI um den Namespace zu erstellen.
+**Tip:** By using the following command, you can switch into another namespace:
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-lab3-1
+```
 
-**Note:** Namespaces die via `kubectl` erstellt werden, müssen anschliessend in Rancher noch in ein Projekt übertagen werden, damit diese im GUI sichtbar sind.
+```
+Windows:
+$ kubectl config current-context
+// Save the context in a variable
+SET KUBE_CONTEXT=[Insert output of the upper command]
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-lab3-1
+```
 
-## Aufgabe: LAB3.2 Rancher-GUI erforschen
+
+**Note:** Namespaces created via `kubectl`,have to be assigned to a Project in Order to be seen inside the Rancher WebGUI. Ask your Teacher for the Assignement
+
+## Exercise: LAB3.2 discover the web console
 
 
-Schauen Sie sich die verschiedenen Menüpunkte in Rancher an. Aktuell gibts weder Deployments noch Pods oder Services.
+Please check the menu entries, there should neither appear any deployments nor any pods or services.
 
 
 ---
 
-## Lösung: LAB3.1
+## Solution: LAB3.1
 
 ```
 $ kubectl create namespace [USER]-lab3-1
 ```
 ---
 
-Bestpractice ist den jeweiligen Namespace bei sämtlichen `kubectl` Befehlen über `--namespace namespace` oder in Kurzform `-n namespace` explizit anzugeben
+It is bestpractice to explicitly select the Namespace in each `kubectl` command by adding `--namespace namespace` or in short`-n namespace`.
 
 ---
 
 **Ende Lab 3**
 
-<p width="100px" align="right"><a href="04_deploy_dockerimage.md">Ein Docker Image deployen →</a></p>
+<p width="100px" align="right"><a href="04_deploy_dockerimage.md">Deploy a docker image →</a></p>
 
-[← zurück zur Übersicht](../README.md)
+[← back to the overview](../README.md)

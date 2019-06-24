@@ -1,22 +1,24 @@
-# Lab 7: Troubleshooting, was ist im Pod?
+# Lab 7: Troubleshooting, what is a Pod?
 
-In diesem Lab wird aufgezeigt, wie man im Fehlerfall und Troubleshooting vorgehen kann und welche Tools einem dabei zur Verfügung stehen.
+This Lab helps you to Troubleshoot your Application and shows you some Tools to make Troubleshooting easier.
 
-## In Container einloggen
+## Login to a Container
 
-Laufende Container werden als unveränderbare Infrastruktur behandelt und sollen generell nicht modifiziert werden. Dennoch gibt es Usecases, bei denen man sich in die Container einloggen muss. Zum Beispiel für Debugging und Analysen.
+Running Container should be treated as immutable Infrastructure and should therefore not be modified. Although, there are some Use-cases in which you have to login into your running Container. Debugging and Analyze is one Example for this.
 
-## Aufgabe: LAB7.1
 
-Mit Kubernetes können Remote Shells in die Pods geöffnet werden ohne dass man darin vorgängig SSH installieren müsste. Die kann mittels `kubectl exec` command erreicht werden. Der Befehl ist generell dafür da, Commands in Container auszuführen. Mit den Paramentern `-it` kann allerdings die Shell und Verbindung offen behalten werden.
+## Task: LAB7.1 Shell into POD
 
-Wählen Sie mittels `kubectl get pods --namespace [USER]-dockerimage` einen Pod aus und führen Sie den folgenden Befehl aus:
+
+With Kubernetes you can open a remote Shell into a Pod without installing SSH by Using the Command `kubectl exec`. The command is used to executed anything in a Pod. With the Parameter `-it` you can leave open an Connection. We can use `winpty` for this.
+
+Choose a POD with `kubectl get pods --namespace [USER]-dockerimage` and execute the following Command:
 
 ```bash
 $ kubectl exec -it [POD] --namespace [USER]-dockerimage -- /bin/bash
 ```
 
-Sie können nun über diese Shell Analysen im Container ausführen:
+With this, you can work inside the POD, e.g.:
 
 ```bash
 bash-4.2$ ls -la
@@ -32,15 +34,16 @@ drwxr-xr-x 3 root    root 4096 Jun 21  2016 gradle
 drwxr-xr-x 4 root    root 4096 Jun 21  2016 src
 ```
 
-Mit dem exit Befehlt den Container wieder verlassen.
+With `exit` you can leave the Pod and close the Connection
 
 ```bash
 bash-4.2$ exit
 ```
 
-## Aufgabe: LAB7.2
+## Task: LAB7.2 Single Command
 
-Einzelne Befehle innerhalb des Containers können über `kubectl exec` ausgeführt werden:
+Single Commands inside a Container can be executed with `kubectl exec`:
+
 
 ```bash
 $ kubectl exec [POD] --namespace [USER]-dockerimage env
@@ -58,28 +61,31 @@ KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
 
-## Logfiles anschauen
+## Watch Logfiles
 
-Die Logfiles zu einem Pod können wie folgt angezeigt werden.
+Logfiles of a POD can with shown with the following Command:
+
 
 ```bash
 $ kubectl logs [POD] --namespace [USER]-dockerimage
 ```
 
-Der Parameter `-f` bewirkt analoges Verhalten wie `tail -f`. Damit werden die Logs gestreamt und neue Einträge angezeigt.
+The Parameter `-f` allows you to follow the Logfile (same as `tail -f`). With this, Logfiles are Streamed and new Entries are shown directly
 
-Befindet sich ein Pod im Status **CrashLoopBackOff** bedeutet dies, dass er auch nach wiederholtem Restarten nicht erfolgreich gestartet werden konnte. Die Logfiles können auch wenn der Pod nicht läuft mit dem folgenden Befehl angezeigt werden.
+When a POD is in State **CrashLoopBackOff** it means, that even after some Restarts, the POD could not be started successfully. Even if the Pod is not running, Logfiles can be viewed with the following Command:
+
 
  ```bash
 $ kubectl logs -p [POD] --namespace [USER]-dockerimage
 ```
 
 
-## Aufgabe: LAB7.3 Port Forwarding
+## Task: LAB7.3 Port Forwarding
 
-Kubernetes erlaubt es, beliebige Ports von der Entwicklungs-Workstation auf einen Pod weiterzuleiten. Dies ist z.B. nützlich, um auf Administrationskonsolen, Datenbanken, usw. zuzugreifen, die nicht gegen das Internet exponiert werden und auch sonst nicht erreichbar sind. Der Zugriff eines Port Forwarding erfolgt über den Kubernetes Master und wird vom Client bis zum Master über HTTPS getunnelt. Dies erlaubt es auch dann auf Kubernetes Platformen zuzugreifen, wenn sich restriktive Firewalls und/oder Proxies zwischen Workstation und Kubernetes befinden.
+Kubernetes allows you to Forward arbitrary Ports to your Development-Workstation. This allows you to access Admin-Consoles, Databases etc, even when they are not exposed externaly. Port Forwarding are handled by the Kubernetes Master and therefore tunneled from the Client via HTTPS. This allows you to access the Kubernetes Platform even when there are restrictive Firewalls and/or Proxies between your Workstation and Kubernetes.
 
-Übung: Auf die Spring Boot Metrics aus [Lab 4](04_deploy_dockerimage.md) zugreifen.
+Exercise: Access the Spring Boot Metrics from [Lab 4](04_deploy_dockerimage.md).
+
 
 ```bash
 $ kubectl get pod --namespace [USER]-dockerimage
@@ -88,19 +94,19 @@ Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
 
-Nicht vergessen den Pod Namen an die eigene Installation anzupassen. Falls installiert kann dafür Autocompletion verwendet werden.
+Don't forget to change the POD Name to your own Installation. If configured, you can use Auto-Completion.
 
-Die Metrics können nun unter folgendem Link abgerufen werden: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
-Die Metrics werden Ihnen als JSON angezeigt. Mit demselben Konzept können Sie nun bspw. mit Ihrem lokalen SQL Client auf eine Datenbank verbinden oder beispielsweise ihre locale Entwicklungsumgebung via Remote Debugging an die Applikation im Pod anhängen.
+The Metricy are now available with the following Link: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
+Those metrics are shown in JSON. With the same Concept you can Access Databases from your local Client or connect your local Development Environment via Remote-Debugging to your Application in the POD.
 
-Unter folgendem Link sind weiterführende Informationen zu Port Forwarding zu finden: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
+With the following Link you find more Information about Port-Forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
 
-**Note:** Der `kubectl port-forward`-Prozess wird solange weiterlaufen, bis er vom User abgebrochen wird. Sobald das Port-Forwarding also nicht mehr benötigt wird, kann er mit ctrl+c gestoppt werden.
+**Note:** The `kubectl port-forward`-Process runs as long as it is not terminated by the User. So when done, stop it with CTRL-C.
 
 ---
 
-**Ende Lab 7**
+**End Lab 7**
 
-<p width="100px" align="right"><a href="08_database.md">Datenbank deployen und anbinden →</a></p>
+<p width="100px" align="right"><a href="08_database.md">deploy Datebases and bind to it →</a></p>
 
-[← zurück zur Übersicht](../README.md)
+[← back to Overview](../README.md)

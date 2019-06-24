@@ -1,17 +1,18 @@
 # Lab 10.2: DaemonSet
 
-Ein DaemonSet funktioniert praktisch identisch wie ein normales Deployment, stellt aber sicher, dass auf jedem (oder bestimmten) der Nodes genau ein Pod läuft. Wird ein Node hinzugefügt, deployt das DaemonSet automatisch einen Pod darauf. Wird das DaemonSet gelöscht, werden auch sämtliche Pods gelöscht die es erstellt hat.
+A DaemonSet is almost identical to a normal Deploment, but makes sure that on every (or some specified) Node extractly one Pod is running. When a new Node is added, the DaemonSet automatically deploys a Pod on the new Node.
+When the DaemonSet is deleted, all related Pods are deleted.
 
-Der Einsatz eines DaemonSet eignet sich hervorragend, um z.B. einen Daemon zum Sammeln von Logs laufen zu lassen, wie fluentd, logstash oder den Splunk-Forwarder.
+One excellent Case to use a DaemonSet is a Daemon to grab Logs from Nodes (e.g. fluentd, logstash or a Splunk-Forwarder)
 
-Weitere Informationen können der [Kubernetes DaemonSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) entnommen werden.
+More Information abount DaemonSets can be found in the [Kubernetes DaemonSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/).
 
 ---
 
-**Ende Lab 10.2**
+**End Lab 10.2**
 
 <p width="100px" align="right"><a href="10_3_jobs.md">Jobs →</a></p>
 
-[← zurück zur Kapitelübersicht "Weitere Konzepte"](10_additional_concepts.md)
+[← back to Chapter-Overview "Additional Concepts"](10_additional_concepts.md)
 
-[← zurück zur Gesamtübersicht](../README.md)
+[← back to Overview](../README.md)

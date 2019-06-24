@@ -1,10 +1,11 @@
-# Lab: Eigene Applikation auf Kubernetes Deployen
+# Lab: Deploy your own Application in Kubernetes
 
-In diesem extended Lab geht es darum die eigene Applikation als Docker Container zu packetieren und anschliessend auf dem Kubernetes Cluster zu deployen.
+In this extended Lab you will build a Docker Container from your own Application and deploy it in a Kubernetes Cluster
 
-* Anhand des im Docker Techlab Gelernten die eigene Applikation als Docker Container packetieren
-* Docker image entsprechend auf Github pushen oder automated Build einrichten
-* Deployment der Applikation inkl. Abhängigkeiten (Secrets, Configmaps, Services, Volumes, Jobs, Datenbank, usw.) einrichten.
-* Änderung am Code vornehmen und ein Update durchführen.
+## Tasks
 
-Als Basis Applikation kann beispielsweise https://github.com/appuio/example-spring-boot-helloworld genommen werden. Dieses Gitrepository kann geforkt werden und anschliessend angepasst werden.
+* Based on your Knowledge from the Docker Techlab, create a Docker Build from your Application.
+* Push the Docker Image on Github or create an automated Build based on a Dockerfile in your Repository.
+* Make a Change in your SourceCode and redeploy your Application.
+
+As a Base Application, you can use https://github.com/appuio/example-spring-boot-helloworld. You can fork the Repository and make your Changed there.
