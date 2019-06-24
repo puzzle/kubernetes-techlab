@@ -2,8 +2,6 @@
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
-
-
 **Note:** In Rancher you can use `kubectl` directly within your Browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" and you get a Console with kubectl.
 
 ## Command Line Interface
@@ -16,14 +14,9 @@ As the client is written in Go, you can run the single binary on the following O
 - Mac OS X
 - Linux
 
-
-## Download and installation of `kubectl`
-
-**If you want to use GKE** please follow the [instructions of the official documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
-
-
-
 ## Manual installation of `kubectl`
+
+Follow https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 In case the installation from the official package repositories didn't work or a specific version is need, the static binary can be downloaded and put into one of the following paths.
 
