@@ -12,7 +12,7 @@ The command `kubectl create deployment` from [lab](04_deploy_dockerimage.md) cre
 With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 8080:
 
 ```
-$ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]-dockerimage
+$ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
@@ -24,7 +24,7 @@ As an example: If a replica of our application pod cannot handle the load anymor
 Let's have a more detailed look at our service:
 
 ```
-$ kubectl get services --namespace [USER]-dockerimage
+$ kubectl get services --namespace [TEAM]-dockerimage
 ```
 
 ```bash
@@ -37,7 +37,7 @@ The `NodePort` number is being assigned by Kubernetes and stays the same as long
 You get additional information by executing the following command:
 
 ```
-$ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
+$ kubectl get service example-spring-boot --namespace [TEAM]-dockerimage -o json
 ```
 
 ```
@@ -86,15 +86,15 @@ $ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
 With the appropriate command you get details from the pod (or any other resource):
 
 ```
-$ kubectl get pod example-spring-boot-3-nwzku --namespace [USER]-dockerimage -o json
+$ kubectl get pod example-spring-boot-3-nwzku --namespace [TEAM]-dockerimage -o json
 ```
 
-**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [USER]-dockerimage`) and then replace it in the following command.
+**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [TEAM]-dockerimage`) and then replace it in the following command.
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
 
-Service (`kubectl get service <Service Name> --namespace [USER]-dockerimage -o json`):
+Service (`kubectl get service <Service Name> --namespace [TEAM]-dockerimage -o json`):
 ```
 ...
 "selector": {
@@ -104,7 +104,7 @@ Service (`kubectl get service <Service Name> --namespace [USER]-dockerimage -o j
 ...
 ```
 
-Pod (`kubectl get pod <Pod Name> --namespace [USER]-dockerimage`):
+Pod (`kubectl get pod <Pod Name> --namespace [TEAM]-dockerimage`):
 ```
 ...
 "labels": {
@@ -115,7 +115,7 @@ Pod (`kubectl get pod <Pod Name> --namespace [USER]-dockerimage`):
 
 This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
 ```
-$ kubectl describe service example-spring-boot --namespace [USER]-dockerimage
+$ kubectl describe service example-spring-boot --namespace [TEAM]-dockerimage
 ```
 
 ```
@@ -157,12 +157,12 @@ There's a second option to make a service accessible from outside: Use an Ingres
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
 ```
-$ kubectl delete service example-spring-boot --namespace=[USER]-dockerimage
+$ kubectl delete service example-spring-boot --namespace=[TEAM]-dockerimage
 ```
 Now we create a service with type ClusterIP:
 
 ```
-$ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [USER]-dockerimage
+$ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
 In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change the Name and Host.
@@ -171,7 +171,7 @@ In order to create the ingress resource, we first need to edit the file `05_data
 
 After editing the ingress resource, we can create it:
 ```
-$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]-dockerimage
+$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [TEAM]-dockerimage
 ```
 Afterwards we are able to access our freshly created service (inside Mobiliar's network) at `http://springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io`
 

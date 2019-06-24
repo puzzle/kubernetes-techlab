@@ -20,25 +20,25 @@ Lets create our job:
 
 
 ```
-$ kubectl create -f ./labs/10_data/job_mysql-dump.yaml --namespace [USER]-dockerimage
+$ kubectl create -f ./labs/10_data/job_mysql-dump.yaml --namespace [TEAM]-dockerimage
 ```
 
 Check if the job was successful:
 
 ```
-$ kubectl describe jobs/mysql-dump --namespace [USER]-dockerimage
+$ kubectl describe jobs/mysql-dump --namespace [TEAM]-dockerimage
 ```
 
 The executed pod can be shown as follows:
 
 ```
-$ kubectl get pods --namespace [USER]-dockerimage
+$ kubectl get pods --namespace [TEAM]-dockerimage
 ```
 
 To show all pods belonging to a job in a human-readable format, the following command can be used:
 
 ```
-$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [USER]-dockerimage
+$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [TEAM]-dockerimage
 ```
 
 ## Cron Jobs

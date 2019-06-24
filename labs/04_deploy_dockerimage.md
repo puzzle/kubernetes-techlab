@@ -11,15 +11,15 @@ As a first step we are going to create a new namespace. A namespace represents a
 
 
 
-Create a new Namespace with Name `[USER]-dockerimage`:
+Create a new Namespace with Name `[TEAM]-dockerimage`:
 
 ```
-$ kubectl create namespace [USER]-dockerimage
+$ kubectl create namespace [TEAM]-dockerimage
 ```
 
 Display all existing pods in your namespace (there should not yet be any!):
 ```bash
-$ kubectl get pods -n=[USER]-dockerimage
+$ kubectl get pods -n=[TEAM]-dockerimage
 ```
 
 With the command `kubectl get` you can display all kinds of resources of different types.
@@ -36,12 +36,12 @@ in order to display all namespaces you have access to.
 As soon as your new namespace has been created, we are able to deploy our first application inside of it. First, we are going to directly start a new pod:
 
 ```
-$ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [USER]-dockerimage
+$ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [TEAM]-dockerimage
 ```
 
-Use `kubectl get pods --namespace [USER]-dockerimage` in order to show the running pod:
+Use `kubectl get pods --namespace [TEAM]-dockerimage` in order to show the running pod:
 ```
-$ kubectl get pods --namespace [USER]-dockerimage
+$ kubectl get pods --namespace [TEAM]-dockerimage
 NAME      READY     STATUS    RESTARTS   AGE
 nginx     1/1       Running   0          1m
 ```
@@ -59,7 +59,7 @@ With the following command we can create a deployment inside our already created
 
 
 ```
-$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]-dockerimage
+$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [TEAM]-dockerimage
 ```
 
 The output should be:
@@ -75,7 +75,7 @@ Use the command `kubectl get` with the `-w` parameter in order to get the reques
 
 
 ```
-$ kubectl get pods --namespace [USER]-dockerimage -w
+$ kubectl get pods --namespace [TEAM]-dockerimage -w
 ```
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
@@ -87,7 +87,7 @@ This process can last for some time depending on your internet connection and if
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]-dockerimage`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [TEAM]-dockerimage`, Kubernetes created a deployment resource.
 
 
 ### Deployment
@@ -95,7 +95,7 @@ When we executed the command `kubectl create deployment example-spring-boot --im
 Display the created deployment using the following command:
 
 ```
-$ kubectl get deployment --namespace [USER]-dockerimage
+$ kubectl get deployment --namespace [TEAM]-dockerimage
 ```
 A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
 
@@ -108,13 +108,13 @@ A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 ```
-$ kubectl get deployment example-spring-boot -o json --namespace [USER]-dockerimage
+$ kubectl get deployment example-spring-boot -o json --namespace [TEAM]-dockerimage
 ```
 
 After the image has been pulled, Kubernetes deploys a pod according to the deployment:
 
 ```
-$ kubectl get pod --namespace [USER]-dockerimage
+$ kubectl get pod --namespace [TEAM]-dockerimage
 ```
 
 ```

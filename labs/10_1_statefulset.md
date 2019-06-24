@@ -80,7 +80,7 @@ spec:
 
 1. Start the Statefulset
 ```bash
-kubectl create -f nginx-sfs.yaml --namespace [USER]-dockerimage
+kubectl create -f nginx-sfs.yaml --namespace [TEAM]-dockerimage
 ```
 
 ### Scaling
@@ -88,30 +88,30 @@ kubectl create -f nginx-sfs.yaml --namespace [USER]-dockerimage
 1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
 
 ```bash
-kubectl get statefulset --namespace [USER]-dockerimage
-kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
+kubectl get statefulset --namespace [TEAM]-dockerimage
+kubectl get pods -l app=nginx -w --namespace [TEAM]-dockerimage
 ```
 
 1. Scale up Statefulset
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3 --namespace [USER]-dockerimage
+kubectl scale statefulset nginx-cluster --replicas=3 --namespace [TEAM]-dockerimage
 ```
 
 ### Update Statefulset Image
 
 1. To watch the changes of the the Pods, please open a second window and execute the command:
 ```bash
-kubectl get pods -l app=nginx -w --namespace [USER]-dockerimage
+kubectl get pods -l app=nginx -w --namespace [TEAM]-dockerimage
 ```
 
 1. Set new version of the Image in the Statefulset
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [USER]-dockerimage
+kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [TEAM]-dockerimage
 ```
 
 1. Rollback the software
 ```bash
-kubectl rollout undo statefulset nginx-cluster --namespace [USER]-dockerimage
+kubectl rollout undo statefulset nginx-cluster --namespace [TEAM]-dockerimage
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).

@@ -49,7 +49,7 @@ In the Rancher WebGUI you can now choose your Project.
 
 Create a new namespace in the lab environment.
 
-**Note**: Please choose an identifying name for the namespace, in best case your the techlab username, e.g. `[USER]-lab3-1`
+**Note**: Please choose an identifying name for the namespace, in best case your the techlab username, e.g. `[TEAM]-lab3-1`
 
 > How can a new namespace be created?
 
@@ -61,7 +61,7 @@ $ kubectl help
 **Tip:** By using the following command, you can switch into another namespace:
 ```
 Linux:
-$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]-lab3-1
+$ kubectl config set-context $(kubectl config current-context) --namespace=[TEAM]-lab3-1
 ```
 
 ```
@@ -69,11 +69,11 @@ Windows:
 $ kubectl config current-context
 // Save the context in a variable
 SET KUBE_CONTEXT=[Insert output of the upper command]
-$ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]-lab3-1
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[TEAM]-lab3-1
 ```
 
 
-**Note:** Namespaces created via `kubectl`,have to be assigned to a Project in Order to be seen inside the Rancher WebGUI. Ask your Teacher for the Assignement
+**Note:** Namespaces created via `kubectl`,have to be assigned to a Project in Order to be seen inside the Rancher WebGUI. Ask your Teacher for the assignement
 
 ## Exercise: LAB3.2 discover the web console
 

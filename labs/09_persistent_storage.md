@@ -19,13 +19,13 @@ In a second step, the pvc from before is going to be attached to the right pod. 
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size:
 
 ```
-$ kubectl create --namespace [USER]-dockerimage -f ./labs/08_data/mysql-persistent-volume-claim.yaml
+$ kubectl create --namespace [TEAM]-dockerimage -f ./labs/08_data/mysql-persistent-volume-claim.yaml
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```
-$ kubectl edit deployment springboot-mysql --namespace [USER]-dockerimage
+$ kubectl edit deployment springboot-mysql --namespace [TEAM]-dockerimage
 ```
 ```
 ...
@@ -76,10 +76,10 @@ Our application automatically creates the database schema at startup.
 $ kubectl patch deployment example-spring-boot -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
 
-Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [USER]-dockerimage`, we can display the freshly created PersistentVolumeClaim:
+Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [TEAM]-dockerimage`, we can display the freshly created PersistentVolumeClaim:
 
 ```
-$ kubectl get pvc --namespace [USER]-dockerimage
+$ kubectl get pvc --namespace [TEAM]-dockerimage
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        RWO            standard       11s
 ```
