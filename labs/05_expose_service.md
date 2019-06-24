@@ -183,7 +183,7 @@ Afterwards we are able to access our freshly created service (inside Mobiliar's 
 
 ## Additional Task for Fast Learners
 
-Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `puzzle-[U-NUMBER]` and try to understand them.
+Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `[TEAM]-dockerimage` and try to understand them.
 
 
 ---
