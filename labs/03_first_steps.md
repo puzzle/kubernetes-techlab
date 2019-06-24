@@ -86,7 +86,7 @@ Please check the menu entries, there should neither appear any deployments nor a
 ## Solution: LAB3.1
 
 ```
-$ kubectl create namespace [USER]-lab3-1
+$ kubectl create namespace [TEAM]-lab3-1
 ```
 ---
 
