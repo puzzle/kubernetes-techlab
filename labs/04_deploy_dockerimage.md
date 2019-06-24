@@ -36,7 +36,7 @@ Sobald der Namespace erstellt wurde, können wir nun unsere erste Applikation de
 $ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [USER]-dockerimage
 ```
 
-Verwenden Sie `kubectl get pods --namespace puzzle-u803687` um den laufenden Pod anzuzeigen.
+Verwenden Sie `kubectl get pods --namespace [USER]-dockerimage` um den laufenden Pod anzuzeigen.
 ```
 $ kubectl get pods --namespace [USER]-dockerimage
 NAME      READY     STATUS    RESTARTS   AGE
@@ -46,7 +46,7 @@ nginx     1/1       Running   0          1m
 
 Verwenden Sie `kubectl get pods` um den laufenden Pod anzuzeigen.
 
-Schauen sie sich den nginx Pod in der [Web Console](https://console.cloud.google.com/kubernetes) unter dem Reiter "Workloads" an und löschen Sie ihn dort auch gleich wieder.
+Schauen sie sich den nginx Pod im Rancher WebGUI unter dem Reiter "Workloads" an und löschen Sie ihn dort auch gleich wieder.
 
 ## Aufgabe: LAB4.3 Deployment
 
@@ -118,9 +118,9 @@ example-spring-boot-69b658f647-xnm94   1/1     Running   0          52m
 Im Deployment wurde definiert, dass ein Replica Pod deployt werden soll. Dieser Pod ist aktuell von ausserhalb noch nicht verfügbar.
 
 
-## Aufgabe: LAB4.4 Deployment in der Web Console verifizieren
+## Aufgabe: LAB4.4 Deployment im Rancher WebGUI verifizieren
 
-Versuchen Sie sich die Logs zur Springboot Applikation über die Web Console anzuzeigen.
+Versuchen Sie sich die Logs zur Springboot Applikation über das Rancher WebGUI anzuzeigen.
 
 ---
 

@@ -1,4 +1,4 @@
-# Lab 5: Unseren Service mittels Load Balancer online verfügbar machen
+# Lab 5: Unseren Service mittels NodePort online verfügbar machen
 
 In diesem Lab werden wir die Applikation aus [Lab 4](04_deploy_dockerimage.md) über **http** vom Internet her erreichbar machen.
 
@@ -15,7 +15,7 @@ Damit machen wir nun die Applikation vom Internet her verfügbar.
 Mit dem folgenden Befehl wird unser Deployment über den Type LoadBalancer auf Port 80 und Pod Target Port 8080 exponiert:
 
 ```
-$ kubectl expose deployment example-spring-boot --type="LoadBalancer" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]-dockerimage
+$ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) dienen innerhalb Kubernetes als Abstraktionslayer, Einstiegspunkt und Proxy/Loadbalancer auf die dahinterliegenden Pods. Der Service ermöglicht es, innerhalb Kubernetes eine Gruppe von Pods des gleichen Typs zu finden und anzusprechen.
@@ -31,11 +31,11 @@ $ kubectl get services --namespace [USER]-dockerimage
 ```
 
 ```bash
-NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-example-spring-boot LoadBalancer   10.39.247.42   <pending>     80:30180/TCP   2s
+NAME                  TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+example-spring-boot   NodePort   10.43.91.62   <none>        80:30692/TCP  
 ```
 
-**Note:** Die External IP wird erst nachträglich eingetragen, es braucht hier einen Moment bis sie verfügbar ist.
+
 
 Mit dem folgenden Befehl können Sie zusätzliche Informationen über den Service auslesen:
 ```
@@ -47,22 +47,25 @@ $ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "creationTimestamp": "2018-10-15T14:53:37Z",
+        "annotations": {
+            "field.cattle.io/publicEndpoints": "[{\"addresses\":[\"5.102.145.8\"],\"port\":30692,\"protocol\":\"TCP\",\"serviceName\":\"team1-dockerimage:example-spring-boot\",\"allNodes\":true}]"
+        },
+        "creationTimestamp": "2019-06-21T06:25:38Z",
         "labels": {
             "app": "example-spring-boot"
         },
         "name": "example-spring-boot",
-        "namespace": "user-dockerimage",
-        "resourceVersion": "3046097",
-        "selfLink": "/api/v1/namespaces/user-dockerimage/services/example-spring-boot",
-        "uid": "18dea209-d08a-11e8-a406-42010a840034"
+        "namespace": "team1-dockerimage",
+        "resourceVersion": "102747",
+        "selfLink": "/api/v1/namespaces/team1-dockerimage/services/example-spring-boot",
+        "uid": "62ce2e59-93ed-11e9-b6c9-5a4205669108"
     },
     "spec": {
-        "clusterIP": "10.39.240.212",
+        "clusterIP": "10.43.91.62",
         "externalTrafficPolicy": "Cluster",
         "ports": [
             {
-                "nodePort": 30100,
+                "nodePort": 30692,
                 "port": 80,
                 "protocol": "TCP",
                 "targetPort": 8080
@@ -72,18 +75,13 @@ $ kubectl get service example-spring-boot --namespace [USER]-dockerimage -o json
             "app": "example-spring-boot"
         },
         "sessionAffinity": "None",
-        "type": "LoadBalancer"
+        "type": "NodePort"
     },
     "status": {
-        "loadBalancer": {
-            "ingress": [
-                {
-                    "ip": "104.199.26.127"
-                }
-            ]
-        }
+        "loadBalancer": {}
     }
 }
+
 
 ```
 
@@ -106,7 +104,7 @@ Service (`kubectl get service <Service Name> --namespace [USER]-dockerimage -o j
 ...
 ```
 
-Pod (`kubectl get pod <Pod Name> --namespace puzzle-[U-NUMMER]`):
+Pod (`kubectl get pod <Pod Name> --namespace [USER]-dockerimage`):
 ```
 ...
 "labels": {
@@ -145,23 +143,11 @@ Events:
 
 Unter Endpoints finden Sie nun den aktuell laufenden Pod.
 
-Den Service `example-spring-boot` haben wir bereits im vorherigen Lab exponiert, jedoch war die LoadBalancer IP noch auf Pending.
-```bash
-$ kubectl get services
-NAME                  TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
-example-spring-boot   LoadBalancer   10.39.240.212   104.199.26.127   80:30100/TCP   22m
-```
-
-Im Service wurde mittlerweile die EXTERNAL-IP gesetzt. Unsere Applikation ist nun darüber verfügbar.
-Wie Sie am Output sehen, ist unser Service über eine IP und Port erreichbar (104.199.26.127.20:80).
-
-**Note:** Ihre IP kann unterschiedlich sein.
-
 **Note:** Service IPs bleiben während ihrer Lebensdauer immer gleich.
 
-Rufen Sie im Browser entsprechend http://[ExternalIP] auf.
+Rufen Sie im Browser entsprechend http://[ExternalIP]:[NodePort] auf.
 
-Jetzt ist Ihre Applikation in der [Web Console](https://console.cloud.google.com/kubernetes) auch unter dem Reiter "Services" zu finden.
+Jetzt ist Ihre Applikation in der Rancher WebGUI auch unter dem Reiter "Service Discovery" zu finden.
 
 
 ## Aufgabe: LAB5.2
@@ -178,14 +164,14 @@ Anschliessend legen wir einen Service vom Type Cluster IP an
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [USER]-dockerimage
 ```
 
-Passen Sie dafür im File `05_data/ingress.yaml` entsprechend den Namen und den Host entsprechend mit Ihrer U-Nummer an.
+Passen Sie dafür im File `05_data/ingress.yaml` entsprechend den Namen und den Host entsprechend an.
+
+**Note:** Die NodeIP kann mit `kubectl get node -o wide` angezeigt werden. Verwenden sie die IP aus der Spalte `INTERNAL-IP`, sie können eine beliebigen Node auswählen.
 
 Die Ingress Resource kann wie folgt angelegt werden:
 ```
 $ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]-dockerimage
 ```
-
-TODO: Beschreiben wi man nun via Namen darauf zugreifen kann.
 
 ---
 

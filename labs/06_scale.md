@@ -14,7 +14,7 @@ $ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-
 und stellen den Service zur Verfügung (expose)
 
 ```
-$ kubectl expose deployment appuio-php-docker --type="LoadBalancer" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [USER]-dockerimage
+$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --target-port=8080 --namespace [USER]-dockerimage
 ```
 
 Wenn wir unsere Example Applikation skalieren wollen, müssen wir unserem Deployment mitteilen, dass wir bspw. stets 3 Replicas des Images am Laufen haben wollen.

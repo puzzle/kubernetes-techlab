@@ -2,7 +2,7 @@
 
 In diesem Lab werden wir gemeinsam den `kubectl` Client installieren und konfigurieren, damit wir danach die ersten Schritte auf der Techlab Plattform durchführen können.
 
-**Note:** GKE bietet die sog. "Cloud Shell", d.h. eine Shell, welche via Browser verwendet werden kann. Falls Sie auf die Installation von `kubectl` und später `gcloud` verzichten möchten, können Sie dieses Lab überspringen. Stattdessen in der Web Console, sobald Sie das Login in [Lab 3](03_first_steps.md) gemacht haben, oben rechts auf "Cloud Shell" klicken, um diese zu aktivieren.
+**Note:** In Rancher kann `kubectl` auch direkt im Browser bedient werden. Sobald Sie im Rancher WebGUI eingeloggt sind und sich auf der Cluster Dashboard Seite befinden, kann oben rechts auf "Launch kubectl" geklickt werden.
 
 
 ## Command Line Interface

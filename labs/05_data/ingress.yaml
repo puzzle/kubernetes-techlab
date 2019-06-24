@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: example-spring-boot
+  name: springboot-example-[USER]
+spec:
+  rules:
+  - host: springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io
+    http:
+      paths:
+      - backend:
+          serviceName: example-spring-boot
+          servicePort: 80
+        path: /
