@@ -2,7 +2,9 @@
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
-**Note:** With GKE you can use the browser based shell named "Cloud Shell". If you are not interested in the installation of `kubectl` and `gcloud` themselves later on, you can skip this lab. You can continue with the login from [Lab 3](03_first_steps.md) and click afterwards the "Cloud Shell" button on the top right in the GKE frontend.
+
+
+**Note:** In Rancher you can use `kubectl` directly within your Browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" and you get a Console with kubectl.
 
 ## Command Line Interface
 
@@ -19,13 +21,6 @@ As the client is written in Go, you can run the single binary on the following O
 
 **If you want to use GKE** please follow the [instructions of the official documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
-**Important:** You can install the latest version of `kubectl`, except it is not compatible with the Kubernetes Version of the installed master nodes (`1.9.7-gke.6`).
-Please install an older version in that case.
-
-
-## Installation of `kubectl` at La Mobilière
- 
-The Container Solutions Team at Mobilière provides a PowerShell script for installing and setting up `kubectl`. You find the documentation in the [CWiki](https://cwiki.mobicorp.ch/confluence/display/COP/Kubectl+einrichten). If you did the installation according to the documentation, you can skip the rest of this lab and continue with [lab 4](04_deploy_dockerimage.md).
 
 
 ## Manual installation of `kubectl`
