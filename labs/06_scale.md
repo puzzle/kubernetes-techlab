@@ -69,7 +69,7 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 Now we create a new service with type NodePort:
 
 ```
-$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --target-port=8080 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
 Let's look at our service. We should see all three endpoints referenced:
