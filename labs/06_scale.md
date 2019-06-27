@@ -121,11 +121,11 @@ while true; do sleep 1; curl -s [URL]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 
 ```
 @Windows (ab Powershell-Version 3.0):
-while(1) { ^
-	Start-Sleep -s 1 ^
-	Invoke-RestMethod http://35.205.165.31/pod/ ^
-	Get-Date -Uformat "+ TIME: %H:%M:%S,%3N" ^
-} ^
+while(1) { 
+	Start-Sleep -s 1 
+	Invoke-RestMethod http://[URL]/pod/ 
+	Get-Date -Uformat "+ TIME: %H:%M:%S,%3N" 
+}
 ```
 
 and scale from **3** to **1** replicas.
