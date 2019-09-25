@@ -15,7 +15,7 @@ $ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
 
-Let's have a closer look at the existing ReplicaSet:
+Let's have a closer look at the existing replicaset:
 
 
 ```
@@ -31,7 +31,7 @@ Or for even more details:
 $ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [TEAM]-dockerimage
 ```
 
-The ReplicaSet shows how many pods/replicas are desired, current and ready.
+The replicaset shows how many pods/replicas are desired, current and ready.
 
 
 Now we scale our application to three replicas:
@@ -95,7 +95,7 @@ Events:
   Normal  EnsuringLoadBalancer  2s    service-controller  Ensuring load balancer
 ```
 
-Scaling of Pods within a Service ist fast, as Kubernetes simply creates a new Container
+Scaling of pods within a service ist fast, as Kubernetes simply creates a new container
 
 
 **Tip:** Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
@@ -109,7 +109,7 @@ NodePort=32193
 URL=http://[NodeIP]:38709/
 ```
 
-**Tip:** Check previous Lab on how to get the `NodeIP`
+**Tip:** Check previous lab on how to get the `NodeIP`
 
 Now, execute the corresponding loop command for your operating system.
 
@@ -174,7 +174,7 @@ POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:29,459
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:30,531
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:31,596
 POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:32,662
-# keine Antwort
+# no answer
 POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:33,729
 POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:34,794
 POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:35,862
@@ -380,7 +380,7 @@ $ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"meta
 
 ## Self Healing
 
-Via ReplicaSet we told Kubernetes how many replicas we want. So what happens if we simply delete a pod?
+Via replicaset we told Kubernetes how many replicas we want. So what happens if we simply delete a pod?
 
 Look for a running pod (status `RUNNING`) that you can bear to kill via `kubectl get pods`.
 

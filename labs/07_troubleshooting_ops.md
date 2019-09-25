@@ -1,24 +1,24 @@
 # Lab 7: Troubleshooting, what is a Pod?
 
-This Lab helps you to Troubleshoot your Application and shows you some Tools to make Troubleshooting easier.
+This Lab helps you to troubleshoot your application and shows you some tools to make troubleshooting easier.
 
 ## Login to a Container
 
-Running Container should be treated as immutable Infrastructure and should therefore not be modified. Although, there are some Use-cases in which you have to login into your running Container. Debugging and Analyze is one Example for this.
+Running container should be treated as immutable infrastructure and should therefore not be modified. Although, there are some use-cases in which you have to login into your running container. Debugging and analyze is one example for this.
 
 
 ## Task: LAB7.1 Shell into POD
 
 
-With Kubernetes you can open a remote Shell into a Pod without installing SSH by Using the Command `kubectl exec`. The command is used to executed anything in a Pod. With the Parameter `-it` you can leave open an Connection. We can use `winpty` for this.
+With Kubernetes you can open a remote Shell into a pod without installing SSH by Using the command `kubectl exec`. The command is used to executed anything in a pod. With the parameter `-it` you can leave open an connection. We can use `winpty` for this.
 
-Choose a POD with `kubectl get pods --namespace [TEAM]-dockerimage` and execute the following Command:
+Choose a pod with `kubectl get pods --namespace [TEAM]-dockerimage` and execute the following command:
 
 ```bash
 $ kubectl exec -it [POD] --namespace [TEAM]-dockerimage -- /bin/bash
 ```
 
-With this, you can work inside the POD, e.g.:
+With this, you can work inside the pod, e.g.:
 
 ```bash
 bash-4.2$ ls -la
@@ -34,7 +34,7 @@ drwxr-xr-x 3 root    root 4096 Jun 21  2016 gradle
 drwxr-xr-x 4 root    root 4096 Jun 21  2016 src
 ```
 
-With `exit` you can leave the Pod and close the Connection
+With `exit` you can leave the pod and close the connection
 
 ```bash
 bash-4.2$ exit
@@ -42,7 +42,7 @@ bash-4.2$ exit
 
 ## Task: LAB7.2 Single Command
 
-Single Commands inside a Container can be executed with `kubectl exec`:
+Single commands inside a container can be executed with `kubectl exec`:
 
 
 ```bash
@@ -63,16 +63,16 @@ KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 
 ## Watch Logfiles
 
-Logfiles of a POD can with shown with the following Command:
+Logfiles of a pod can with shown with the following command:
 
 
 ```bash
 $ kubectl logs [POD] --namespace [TEAM]-dockerimage
 ```
 
-The Parameter `-f` allows you to follow the Logfile (same as `tail -f`). With this, Logfiles are Streamed and new Entries are shown directly
+The parameter `-f` allows you to follow the logfile (same as `tail -f`). With this, logfiles are streamed and new entries are shown directly
 
-When a POD is in State **CrashLoopBackOff** it means, that even after some Restarts, the POD could not be started successfully. Even if the Pod is not running, Logfiles can be viewed with the following Command:
+When a pod is in State **CrashLoopBackOff** it means, that even after some restarts, the pod could not be started successfully. Even if the pod is not running, logfiles can be viewed with the following command:
 
 
  ```bash
@@ -82,7 +82,7 @@ $ kubectl logs -p [POD] --namespace [TEAM]-dockerimage
 
 ## Task: LAB7.3 Port Forwarding
 
-Kubernetes allows you to Forward arbitrary Ports to your Development-Workstation. This allows you to access Admin-Consoles, Databases etc, even when they are not exposed externaly. Port Forwarding are handled by the Kubernetes Master and therefore tunneled from the Client via HTTPS. This allows you to access the Kubernetes Platform even when there are restrictive Firewalls and/or Proxies between your Workstation and Kubernetes.
+Kubernetes allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases etc, even when they are not exposed externaly. Port forwarding are handled by the Kubernetes master and therefore tunneled from the client via HTTPS. This allows you to access the Kubernetes platform even when there are restrictive firewalls and/or proxies between your workstation and Kubernetes.
 
 Exercise: Access the Spring Boot Metrics from [Lab 4](04_deploy_dockerimage.md).
 
@@ -94,19 +94,19 @@ Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```
 
-Don't forget to change the POD Name to your own Installation. If configured, you can use Auto-Completion.
+Don't forget to change the pod Name to your own Installation. If configured, you can use Auto-Completion.
 
-The Metricy are now available with the following Link: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
-Those metrics are shown in JSON. With the same Concept you can Access Databases from your local Client or connect your local Development Environment via Remote-Debugging to your Application in the POD.
+The metrics are now available with the following Link: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
+Those metrics are shown in JSON. With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the pod.
+ 
+With the following link you find more information about port forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
 
-With the following Link you find more Information about Port-Forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
-
-**Note:** The `kubectl port-forward`-Process runs as long as it is not terminated by the User. So when done, stop it with CTRL-C.
+**Note:** The `kubectl port-forward`-process runs as long as it is not terminated by the user. So when done, stop it with CTRL-C.
 
 ---
 
 **End Lab 7**
 
-<p width="100px" align="right"><a href="08_database.md">deploy Datebases and bind to it →</a></p>
+<p width="100px" align="right"><a href="08_database.md">deploy datebases and bind to it →</a></p>
 
 [← back to Overview](../README.md)
