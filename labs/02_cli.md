@@ -2,7 +2,7 @@
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
-**Note:** In Rancher you can use `kubectl` directly within your Browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" and you get a Console with kubectl.
+**Note:** In Rancher you can use `kubectl` directly within your browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" (or use the ° key) and you get a console with kubectl installed and configured.
 
 ## Command Line Interface
 
@@ -39,11 +39,11 @@ C:\Kubernetes\
 ```
 
 
-## Set the the right file modes on Linux and macOS
+## Set the the right file modes on Linux and MacOS
 
 `kubectl` has to be executable:
 
-```
+``
 cd ~/bin
 chmod +x kubectl
 ```

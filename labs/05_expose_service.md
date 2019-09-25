@@ -145,14 +145,25 @@ Events:
 
 **Note:** Service IP addresses stay the same for the duration of the service's life span.
 
-Open `http://[ExternalIP]:[NodePort]` in your Browser. You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the ExternalIP's of the Nodes.
+Open `http://[NodeIP]:[NodePort]` in your Browser. You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's of the available nodes.
 
-Now your Application is also visible in the Rancher WerbGUI under "Service Discovery"
+```
+kubectl get node -o wide
+NAME                  STATUS   ROLES               AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+k8s-techlab-master1   Ready    controlplane,etcd   42m   v1.14.6   5.102.145.172   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker1   Ready    worker              41m   v1.14.6   5.102.145.190   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker2   Ready    worker              19m   v1.14.6   5.102.146.103   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker3   Ready    worker              41m   v1.14.6   5.102.145.175   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+```
+
+**Note:** As you might not have the correct permissions to display the existing nodes, ask your teacher to get the node IP's.
+
+**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The link is show in your deployent or under "Service Discovery"
 
 
 ## Task: LAB5.2
 
-There's a second option to make a service accessible from outside: Use an Ingress router.
+There's a second option to make a service accessible from outside: Use an ingress router.
 
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
@@ -165,18 +176,15 @@ Now we create a service with type ClusterIP:
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
-In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change the Name and Host.
+In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change the name and host.
 
-**Note:** As already mentioned the NodeIP can be shown with `kubectl get node -o wide`. Use an IP from `INTERNAL-IP`, you can choose any of them.
+**Note:** As already mentioned the NodeIP can be shown with `kubectl get node -o wide`. Use an IP from `INTERNAL-IP`, you can choose any of them (with role `worker`)
 
 After editing the ingress resource, we can create it:
 ```
 $ kubectl create -f ./labs/05_data/ingress.yaml --namespace [TEAM]-dockerimage
 ```
-Afterwards we are able to access our freshly created service (inside Mobiliar's network) at `http://springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io`
-
----
-
+Afterwards we are able to access our freshly created service at `http://springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io`
 
 
 ---

@@ -19,19 +19,20 @@ As a fallback the repository can be downloaded as [zip file](https://github.com/
 
 **Note:** Please make sure, the be finshed with [Lab 2](02_cli.md).
 
-Our Kubernetes Cluster of the techlab environment runs on [cloudscale.ch](cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the Cluster with a local Rancher User
+Our Kubernetes cluster of the techlab environment runs on [cloudscale.ch](cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
 
+**Note:** For details about your credentials to log in, ask your teacher.
 
 
 
 ### Login and choose Kubernetes Cluster
 
-Login into the Rancher WebGUI with your assigned user and the choose the desired Cluster
+Login into the Rancher WebGUI with your assigned user and the choose the desired cluster.
 
 
-On thr Cluster Dashboard you find top right a Button with `Kubeconfig File`. Save the config File into your Home-Directory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. wiht `kubectl version`
+On the cluster dashboard you find top right a button with `Kubeconfig File`. Save the config file into your homedirectory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. with `kubectl version`
 
-**Note:** If you already have a Kubeconfig File, you might need to merge the Rancher Entries with yours.
+**Note:** If you already have a kubeconfig file, you might need to merge the Rancher entries with yours.
 
 
 ## Create a namespace
@@ -39,7 +40,7 @@ On thr Cluster Dashboard you find top right a Button with `Kubeconfig File`. Sav
 A namespace is the logical design used in Kubernetes to organize and separate your applications, deployments, services etc. on a top level base. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
 
 
-**Note:** Additionaly Rancher does know the concept of a  [Projekt](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
+**Note:** Additionaly Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
 
 In the Rancher WebGUI you can now choose your Project.
 
@@ -73,7 +74,7 @@ $ kubectl config set-context %KUBE_CONTEXT% --namespace=[TEAM]-lab3-1
 ```
 
 
-**Note:** Namespaces created via `kubectl`,have to be assigned to a Project in Order to be seen inside the Rancher WebGUI. Ask your Teacher for the assignement
+**Note:** Namespaces created via `kubectl`, have to be assigned to your project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement.
 
 ## Exercise: LAB3.2 discover the web console
 

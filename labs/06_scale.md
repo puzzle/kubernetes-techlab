@@ -106,10 +106,10 @@ Replace the `URL` placeholder with the actual, constructed URL:
 ```
 NodePort=32193
 
-URL=http://[EXTERNALIP]:38709/
+URL=http://[NodeIP]:38709/
 ```
 
-**Tip:** Check previous Lab on how to get the `ExternalIP`
+**Tip:** Check previous Lab on how to get the `NodeIP`
 
 Now, execute the corresponding loop command for your operating system.
 

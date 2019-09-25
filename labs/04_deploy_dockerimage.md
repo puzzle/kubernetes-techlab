@@ -1,17 +1,17 @@
 # Lab 4: Deploy a Docker Image
 
-In this lab, we are going to deploy our first pre-built Docker image and look at the Kubernetes concepts pod, service and deployment.
+In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts pod, service and deployment.
 
 
 ## Task: LAB4.1
 
-After we've familiarized ourselves with the platform in [lab 3](03_first_steps.md), we are going to have a look at deploying a pre-built Docker image from Docker Hub or any other public Docker registry.
+After we've familiarized ourselves with the platform in [lab 3](03_first_steps.md), we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
 
-As a first step we are going to create a new namespace. A namespace represents a grouping of resources (containers and Docker images, pods, services, configurations, quotas, limits and more). Authorized users inside that namespace are able to manage those resources. Inside a Kubernetes cluster, the name of a namespace has to be unique.
+As a first step we are going to create a new namespace. A namespace represents a grouping of resources (containers and container images, pods, services, configurations, quotas, limits and more). Authorized users inside that namespace are able to manage those resources. Inside a Kubernetes cluster, the name of a namespace has to be unique.
 
 
 
-Create a new Namespace with Name `[TEAM]-dockerimage`:
+Create a new namespace with name `[TEAM]-dockerimage`:
 
 ```
 $ kubectl create namespace [TEAM]-dockerimage
@@ -24,12 +24,6 @@ $ kubectl get pods -n=[TEAM]-dockerimage
 
 With the command `kubectl get` you can display all kinds of resources of different types.
 
-Use:
-
-```
-$ kubectl get namespace
-```
-in order to display all namespaces you have access to.
 
 ## Task: LAB4.2 Start a Pod
 
@@ -46,10 +40,7 @@ NAME      READY     STATUS    RESTARTS   AGE
 nginx     1/1       Running   0          1m
 ```
 
-
-Verwenden Sie `kubectl get pods` um den laufenden Pod anzuzeigen.
-
-Have a look at your nginx pod inside the Rancher WebGUI under "Workloads" an delete the Pod right afterwards.
+Have a look at your nginx pod inside the Rancher WebGUI under "Workloads" an delete the pod right afterwards.
 
 ## Task: LAB4.3 Deployment
 
@@ -69,7 +60,7 @@ deployment.apps/example-spring-boot created
 
 We're using an example from APPUiO (a Java Spring Boot application), which you can find on [Docker Hub](https://hub.docker.com/r/appuio/example-spring-boot/) and [GitHub (Source)](https://github.com/appuio/example-spring-boot-helloworld).
 
-Kubernetes creates the defined and necessary resources, pulls the Docker image (in this case from Docker Hub) and deploys the pod.
+Kubernetes creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the pod.
 
 Use the command `kubectl get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes. (**This command will never end unless you terminate it with ctrl+c**):
 
@@ -80,7 +71,7 @@ $ kubectl get pods --namespace [TEAM]-dockerimage -w
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
 
-**Tip**: If you want to create your own Docker images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html) and apply them. The Image Creation Guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
+**Tip**: If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html) and apply them. The Image Creation Guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 
 
 

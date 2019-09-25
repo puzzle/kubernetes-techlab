@@ -17,7 +17,7 @@ Using the open source software Kubernetes, you get a platform to deploy your sof
 
 ## Overview
 
-Kubernetes consists out of Kubernetes master nodes and kubernetes minion (compute) nodes.
+Kubernetes consists out of Kubernetes master nodes and kubernetes minion (also knows as worker or compute) nodes.
 
 ### Master and minion nodes
 The master components are the _apiserver_, the _scheduler_ and the _controller-manager_.
@@ -30,8 +30,8 @@ The Control plane for the minions is implemented in the master components.
 
 ### Container and images
 
-The smallest entities in Kubernetes are Pods, which resamble your "containerized Application".
-Using container virtualisation, processes on a linux system can be isolated up to a level, where only the predefined resources are available. Several containers can run on the same system, without "seeing" eachother (files, process ids, network). One container should contain one application (webserver, database, cache etc.). 
+The smallest entities in Kubernetes are pods, which resamble your "containerized Application".
+Using container virtualisation, processes on a linux system can be isolated up to a level, where only the predefined resources are available. Several containers can run on the same system, without "seeing" eachother (files, process ids, network). One container should contain one application (webserver, database, cache etc.).
 It should be at least one part of the application, e.g. when running a multi service middleware.
 In a container itself any process can be started, that runs native on your oparating system.
 
@@ -61,7 +61,7 @@ Permissions and roles can be bound on a namespace base. This way a user can cont
 
 A Pod is the smallest entity in Kubernetes. It represents one instance of your running application process.
 The pod consists out of at least two containers, one for your application itself and another one as part of the kubernetes design, to keep the network namespace.
-The so called infrastructure container therefore is automatically added by Kubernetes.
+The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
 
 The applications port from inside the pod are exposed via services.
 

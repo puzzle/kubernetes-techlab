@@ -42,7 +42,7 @@ $ echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 mysqlpassword
 ```
 
-**Note:** Secrets by default are not encrypted! Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/). Another option would be the use of a vault like [Vault by HashiCopr](https://www.vaultproject.io/).
+**Note:** Secrets by default are not encrypted! Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/). Another option would be the use of a vault like [Vault by HashiCorp](https://www.vaultproject.io/).
 
 We are going to create another secret for storing the MySQL root password.
 
@@ -51,7 +51,7 @@ $ kubectl create secret generic mysql-root-password --namespace [TEAM]-dockerima
 secret/mysql-root-password created
 ```
 
-We are now going to create deployment and service. For a first example we use a database without persistent storage. Only use an ephemeral database for testint purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
+We are now going to create deployment and service. A a first example we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
 
 As we had seen in the earlier labs, all resources like deployments, services, secrets and so on can be displayed in yaml or json format. But it doesn't end there, capabilities also include the creation and exportation of resources using yaml or json files.
 
@@ -64,7 +64,7 @@ service/springboot-mysql created
 deployment.apps/springboot-mysql created
 ```
 
-As soon as the Docker image for mysql:5.6 has been pulled, you will see a new pod using `kubectl get pods`.
+As soon as the container image for mysql:5.6 has been pulled, you will see a new pod using `kubectl get pods`.
 
 The environment variables defined in the deployment configure the MySQL pod and how our frontend will be able to access it.
 
