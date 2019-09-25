@@ -7,7 +7,7 @@ By default, data in pods is not persistent which was e.g. the case in lab 8. Thi
 
 ### Request Storage
 
-Attaching persistent storage to a pod happens in two steps. The first step includes the creation of a so-called PersistentVolueClaim (pvc) in our namespace. This claim defines amongst others what name and size we would like to get.
+Attaching persistent storage to a pod happens in two steps. The first step includes the creation of a so-called PersistentVolueClaim (PVC) in our namespace. This claim defines amongst others what name and size we would like to get.
 
 The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a Persistent Volume by Kubernetes, one that has at least the requested size. If only volumes exist that have a larger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim will not be bound as long as no volume the exact same or larger size is created.
 

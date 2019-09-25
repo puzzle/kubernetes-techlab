@@ -1,6 +1,6 @@
 # Lab: Create Helm Chart for your own Application
 
-In this extended Lab, we are going to create an Helm Chart for he manually deployed Application from the extended Lab [Deploy your own Application](22_deploy_your_own_appication.md)
+In this extended Lab, we are going to create an Helm Chart for he manually deployed application from the extended lab [Deploy your own Application](22_deploy_your_own_appication.md)
 
 * create HELM Chart
 * define Resources
