@@ -34,10 +34,13 @@ In a [later Section](https://docs.helm.sh/developing_charts/#templates-and-value
 
 Helm needs a component installed in the Kubernetes cluster for the communication with Kubernetes. This component is called Tiller. The local Helm client communicates with the Tiller instance. 
 
-For this Exercise, you can easily install Tiller in your own Namespace:
+For this Exercise, you can install Tiller in your own Namespace, but we also need to create a ServiceAccount and a Role & Rolebinding for Helm to work correctly:
 
 ```
-helm init --tiller-namespace [USER]-dockerimage --upgrade
+kubectl create sa "tiller-[USER]-dockerimage"
+kubectl create role "tiller-role-[USER]-dockerimage" --namespace [USER]-dockerimage --verb=* --resource=*.,*.apps,*.batch,*.extensions
+kubectl create rolebinding "tiller-rolebinding-[USER]-dockerimage" --role="tiller-role-[USER]-dockerimage" --serviceaccount="tiller-[USER]-dockerimage"
+helm init --service-account "tiller-[USER]-dockerimage" --tiller-namespace [USER]-dockerimage --upgrade
 ```
 
 To not always add the namespace when calling `helm` (with `--tiller-namespace [USER]-dockerimage`), you can set the following environment variable:
