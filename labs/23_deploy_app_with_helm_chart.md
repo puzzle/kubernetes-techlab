@@ -1,6 +1,6 @@
-# Lab: Deploy an Aplication with a Helm Charts
+# Lab: Deploy an Application with a Helm Charts
 
-In this extended Lab, we are going to deploy an existing Application with a Helm Chart
+In this extended lab, we are going to deploy an existing application with a Helm chart
 
 ## Helm Hub
 
