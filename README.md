@@ -35,7 +35,7 @@ Goal of these techlabs:
 1. [Deployment Strategies](labs/21_deployment_strategies.md)
 1. [Deploy your own application](labs/22_deploy_your_own_appication.md)
 1. [Create a helm chart](labs/23_create_helm_chart.md)
-1. [Deploy an application with a  helm chart](labs/23_deploy_app with helm_chart.md)
+1. [Deploy an application with a helm chart](labs/23_deploy_app_with_helm_chart.md)
 
 
 ## Additional Docs
