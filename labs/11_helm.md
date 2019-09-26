@@ -39,7 +39,7 @@ For this Exercise, you can install Tiller in your own Namespace, but we also nee
 ```
 kubectl create sa "tiller-[USER]-dockerimage"
 kubectl create role "tiller-role-[USER]-dockerimage" --namespace [USER]-dockerimage --verb=* --resource=*.,*.apps,*.batch,*.extensions
-kubectl create rolebinding "tiller-rolebinding-[USER]-dockerimage" --role="tiller-role-[USER]-dockerimage" --serviceaccount="tiller-[USER]-dockerimage"
+kubectl create rolebinding "tiller-rolebinding-[USER]-dockerimage" --role="tiller-role-[USER]-dockerimage" --serviceaccount="[USER]-dockerimage:tiller-[USER]-dockerimage"
 helm init --service-account "tiller-[USER]-dockerimage" --tiller-namespace [USER]-dockerimage --upgrade
 ```
 

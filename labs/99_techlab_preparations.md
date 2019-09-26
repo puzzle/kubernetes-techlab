@@ -6,7 +6,7 @@
 
 ### Cloudscale CSI
 
-* App cloudscale-csi in Project System und Namespace kube-system deployen. Values `cloudscale.access_token=...`
+* App puzzle/cloudscale-csi in Project System und Namespace kube-system deployen. Values `cloudscale.access_token=...`
 
 
 ### Berechtigungen User
