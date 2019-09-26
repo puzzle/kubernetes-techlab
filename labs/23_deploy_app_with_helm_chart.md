@@ -45,6 +45,7 @@ postgresql:
 ```
 
 **Note:** Remember Lab5 to get the NodeIP
+
 **Note:** As `cloudscale-volume-ssd` is anyway the default StorageClass, this would not be necessary
 
 If you look inside the [requirements.yaml](https://github.com/helm/charts/blob/master/stable/hackmd/requirements.yaml) file of the HackMD Chart you see a dependency to the `postgresql` Helm chart. All the `postgresql` values are used by this dependent Helm chart and the chart is automaticly deployed when installing HackMD.
@@ -106,7 +107,7 @@ or change the deployment strategy to:
 ```
 
 
-**Note:** that when you change the deployment stategy manually, on a Helm upgrade you changes are lost!
+**Note:** that when you change the deployment stategy manually, on a Helm upgrade your changes are lost!
 
 ### Cleanup
 
