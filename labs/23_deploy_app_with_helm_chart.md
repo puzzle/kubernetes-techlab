@@ -27,7 +27,7 @@ Let's check the available configuration for this Helm chart. Normally you find t
 
 We are going to override some of the values, for that purpose, create a new values.yaml file locally on your workstation with the following content:
 
-```
+```yaml
 image:
   tag: 1.3.0-alpine
 persistence:
