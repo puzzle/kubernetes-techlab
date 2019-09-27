@@ -4,7 +4,7 @@ In this extended lab, we are going to deploy an existing application with a Helm
 
 ## Helm Hub
 
-Check out [Helm Hub](https://hub.helm.sh/), there you find a lot of Helm charts. For this lab, we are going to install [hackmd](https://hub.helm.sh/charts/stable/hackmd) a realtime, multiplatform collaborative markdown note editor.
+Check out [Helm Hub](https://hub.helm.sh/), there you find a lot of Helm charts. For this lab, we choose [HackMD](https://hub.helm.sh/charts/stable/hackmd) a realtime, multiplatform collaborative markdown note editor.
 
 ## HackMD
 
@@ -17,7 +17,7 @@ stable         	https://kubernetes-charts.storage.googleapis.com
 local          	http://127.0.0.1:8879/charts                              
 ```
 
-Which should be the case. If, for any reason, you don't have the stable repo, you can add it by typing:
+which should already be the case. If, for any reason, you don't have the stable repo, you can add it by typing:
 
 ```
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -25,7 +25,7 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 
 Let's check the available configuration for this Helm chart. Normally you find them in the [values.yaml](https://github.com/helm/charts/blob/master/stable/hackmd/values.yaml) File inside the repository or described in the charts readme. 
 
-We are going to override some of the values, for that purpose, create a new values.yaml file locally on your workstation with the following content:
+We are going to override some of the values, for that purpose, create a new `values.yaml` file locally on your workstation with the following content:
 
 ```yaml
 image:
@@ -56,7 +56,7 @@ Now deploy the application with:
 helm install -f values.yaml stable/hackmd
 ```
 
-Watch the deployed application with `helm ls` and also check the Rancher WebGUI for the newly created deployments, the ingress and also the PersistenceVolumeClaim.
+Watch the deployed application with `helm ls` and also check the Rancher WebGUI for the newly created Deployments, the Ingress and also the PersistenceVolumeClaim.
 
 ```
 helm ls
@@ -64,7 +64,7 @@ NAME             	REVISION	UPDATED                 	STATUS  	CHART       	APP VE
 altered-billygoat	1       	Thu Sep 26 14:06:59 2019	DEPLOYED	hackmd-1.2.1	1.3.0-alpine	team1-dockerimage
 ```
 
-As soon as all deployments are ready (hackmd and postgres) you can open the application with the URL from your `values.yaml` file.
+As soon as all Deployments are ready (hackmd and postgres) you can open the application with the URL from your `values.yaml` file or by using the link inside the Rancher WebGUI.
 
 ### Upgrade
 
@@ -74,9 +74,11 @@ We are now going to upgrade the application to a newer Container image. You can 
 helm upgrade --reuse-values --set image.tag=1.3.1-alpine quiet-squirrel stable/hackmd
 ```
 
-And then observe how the deployment was changed to a the new container image tag. 
+**Note:** Make sure to use the correct release name, as shown with the `helm ls` command.
 
-**Remark / Warning** The HackMD uses the default deployment strategy which is: 
+And then observe how the Deployment was changed to a the new container image tag. 
+
+**Remark** The HackMD uses the default Deployment strategy which is: 
 
 ```
   strategy:
@@ -86,9 +88,9 @@ And then observe how the deployment was changed to a the new container image tag
     type: RollingUpdate
 ```
 
-this means, the new pod is scheduled and then when ready, the old one will be removed. As we are using the cloudscale-csi storage integration, we can only mount a volume once. Therefore the new pod cannot mount the volume as long as the old pod is not gone. Do you know how to solve this?
+this means, the new Pod is scheduled and then when ready, the old one will be removed. As we are using the cloudscale-csi storage integration, we can only mount a volume once. Therefore the new Pod cannot mount the volume as long as the old Pod is not gone. Do you know how to solve this?
 
-As a workaround you can scale down you deployment and then scale it up again:
+As a workaround you can scale down your Deployment and then scale it up again:
 
 ```
 kubectl scale deployment quiet-squirrel-hackmd --replicas=0 --namespace team1-dockerimage
@@ -107,7 +109,7 @@ or change the deployment strategy to:
 ```
 
 
-**Note:** that when you change the deployment stategy manually, on a Helm upgrade your changes are lost!
+**Note:** that when you change the Deployment stategy manually, on a Helm upgrade your changes are lost!
 
 ### Cleanup
 
