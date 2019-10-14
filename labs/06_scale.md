@@ -391,7 +391,7 @@ kubectl get pods -w --namespace [TEAM]-dockerimage
 ```
 Now delete a pod (in another terminal) with the following command:
 ```
-kubectl delete pod appuio-php-docker-3-788j5
+kubectl delete pod appuio-php-docker-3-788j5 --namespace [TEAM]-dockerimage
 ```
 
 
