@@ -36,7 +36,7 @@ persistence:
 ingress:
   enabled: true
   hosts:
-    - hack-md-team1.[USER]-dockerimage.[NodeIP].xip.io
+    - hack-md-[TEAM].k8s-techlab.puzzle.ch
 postgresql:
   persistence:
     size: 1Gi
