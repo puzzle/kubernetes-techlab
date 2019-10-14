@@ -43,7 +43,7 @@ C:\Kubernetes\
 
 `kubectl` has to be executable:
 
-``
+```
 cd ~/bin
 chmod +x kubectl
 ```

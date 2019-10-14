@@ -32,7 +32,16 @@ Login into the Rancher WebGUI with your assigned user and the choose the desired
 
 On the cluster dashboard you find top right a button with `Kubeconfig File`. Save the config file into your homedirectory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. with `kubectl version`
 
-**Note:** If you already have a kubeconfig file, you might need to merge the Rancher entries with yours.
+**Note:** If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use the KUBECONFIG environment variable to specify a dedicated file.
+
+```
+#example location ~/.kube-techlab/config
+vim ~/.kube-techlab/config
+# paste content 
+
+# set KUBECONFIG Environment Variable to the correct file
+export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
+```
 
 
 ## Create a namespace
