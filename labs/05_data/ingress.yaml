@@ -6,7 +6,7 @@ metadata:
   name: springboot-example-[USER]
 spec:
   rules:
-  - host: springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io
+  - host: springboot-example-[USER].k8s-techlab.puzzle.ch
     http:
       paths:
       - backend:

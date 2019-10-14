@@ -176,15 +176,14 @@ Now we create a service with type ClusterIP:
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
-In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change the name and host.
+In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change `spec.rules[0].host`.
 
-**Note:** As already mentioned the NodeIP can be shown with `kubectl get node -o wide`. Use an IP from `INTERNAL-IP`, you can choose any of them (with role `worker`)
 
 After editing the ingress resource, we can create it:
 ```
 $ kubectl create -f ./labs/05_data/ingress.yaml --namespace [TEAM]-dockerimage
 ```
-Afterwards we are able to access our freshly created service at `http://springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io`
+Afterwards we are able to access our freshly created service at `http://springboot-example-[USER].k8s-techlab.puzzle.ch`
 
 
 ---
