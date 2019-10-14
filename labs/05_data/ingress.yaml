@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   labels:
     app: example-spring-boot
-  name: springboot-example-[USER]
+  name: springboot-example-[TEAM]
 spec:
   rules:
-  - host: springboot-example-[USER].[USER]-dockerimage.[NodeIP].xip.io
+  - host: springboot-example-[TEAM].[TEAM]-dockerimage.[NodeIP].xip.io
     http:
       paths:
       - backend:
