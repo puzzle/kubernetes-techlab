@@ -20,7 +20,7 @@ On scaling up from 3 to 5 within a Deployment, two additional Pods could be star
 
 Example with Rabbitmq
 
-1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace puzzle-[U-NUMBER]`
+1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace rabbitmq-[TEAM]`
 1. `rabbitmq-3` is started
 1. when `rabbitmq-3` done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
 

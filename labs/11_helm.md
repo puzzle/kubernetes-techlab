@@ -98,7 +98,7 @@ To remove an application, you can simply remove the Helm release with the follow
 
 
 ```sh
-helm delete [RELEASE] --namespace [namespace]
+helm delete [RELEASE]
 ```
 
 With `kubectl get pods --namespace [USER]-dockerimage` you should now longer see your application Pod.
