@@ -51,7 +51,7 @@ Basically, there are the following possibilities to achieve this: https://kubern
 In this example, we want the file to be mounted as a volume in the container. We add the ConfigMap in the deployment as follows:
 
 
-Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace --namespace [TEAM]-dockerimage`:
+Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace [TEAM]-dockerimage`:
 
 ```
       - configMap:
