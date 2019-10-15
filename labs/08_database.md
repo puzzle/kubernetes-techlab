@@ -51,7 +51,7 @@ $ kubectl create secret generic mysql-root-password --namespace [TEAM]-dockerima
 secret/mysql-root-password created
 ```
 
-We are now going to create deployment and service. A a first example we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
+We are now going to create deployment and service. As a first example we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
 
 As we had seen in the earlier labs, all resources like deployments, services, secrets and so on can be displayed in yaml or json format. But it doesn't end there, capabilities also include the creation and exportation of resources using yaml or json files.
 
