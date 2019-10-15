@@ -80,12 +80,14 @@ kind: Deployment
 metadata:
   name: app
 spec:
-  containers:
-    - name: app
-      resources:
-        limits:
-          cpu: 100m
-          memory: 50Mi
+  template:
+    spec:
+      containers:
+        - name: app
+          resources:
+            limits:
+              cpu: 100m
+              memory: 50Mi
 EOF
 ```
 
