@@ -176,7 +176,7 @@ Now we create a service with type ClusterIP:
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
 ```
 
-In order to create the ingress resource, we first need to edit the file `05_data/ingress.yaml` and change `spec.rules[0].host`.
+In order to create the ingress resource, we first need to edit the file `./labs/05_data/ingress.yaml` and change `spec.rules[0].host` in the kubernetes-techlab git repository.
 
 
 After editing the ingress resource, we can create it:
