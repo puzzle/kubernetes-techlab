@@ -18,7 +18,7 @@ Wir werden eine einfach aufgebaute Applikation deployen:
 
 Kustomize bietet "Vererbung" für Kubernetes-Konfigurationen. Wir werden das nutzen, um eine Basiskonfiguration sowie die davon erbenden Applikationsumgebungen Integration und Produktion zu definieren. So bleibt die Applikationskonfiguration DRY.
 
-Überfliege die Kapitel (besonders die Bilder) _1)_ und _2)_ im [kustomize-Readme](https://github.com/kubernetes-sigs/kustomize). Unsere Basiskonfiguration entspricht in kustomize-Sprech einer _base_, Integration und Produktion werden als _overlay_ realisiert.
+Überfliege die Kapitel (besonders die Bilder) _1)_ und _2)_ im [kustomize-Readme](https://github.com/kubernetes-sigs/kustomize/blob/master/README.md). Unsere Basiskonfiguration entspricht in kustomize-Sprech einer _base_, Integration und Produktion werden als _overlay_ realisiert.
 
 In den [Dateien zu diesem Lab](./12_data) befindet sich die kustomize-Konfiguration für Basis und Umgebungen. Eine gültige kubernetes-Konfiguration für die Integrationsumgebung generiert man daraus wie folgt:
 
@@ -115,7 +115,7 @@ Die Deploymentkonfiguration zeigt, dass neu ein Limit für CPU und Memory gilt:
 kubectl -n $user-lab-12-integration describe deployment app
 ```
 
-Übrigens: Kustomize patcht ziemlich clever, es verwendet [strategic merges](https://github.com/kubernetes/community/blob/master/contributors/devel/strategic-merge-patch.md). Für dich heisst das: Wenn du neue Werte für YAML-Arrays (z.B. Umgebungsvariabeln, Container eines Pods oder tief verschachtelte Optionen) angibst, führt kustomize die Objeke richtig zusammen und ersetzt sie nicht einfach mit den Inhalten deines Patches.
+Übrigens: Kustomize patcht ziemlich clever, es verwendet [strategic merges](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md). Für dich heisst das: Wenn du neue Werte für YAML-Arrays (z.B. Umgebungsvariabeln, Container eines Pods oder tief verschachtelte Optionen) angibst, führt kustomize die Objeke richtig zusammen und ersetzt sie nicht einfach mit den Inhalten deines Patches.
 
 Konfiguriere nun analog die höheren Limits für die Produktion und freue dich darüber, wie DRY, aber doch flexibel, die Konfiguration ist ;)
 
@@ -133,7 +133,7 @@ kustomize hat weitere hilfreiche Features.
 * Verwende mehrere _bases_, um verschiedene Komponenten zu einer Konfiguration zu vereinen.
 * Füge automatisch Labels zu den Ressourcen oder prefixe deren Namen.
 * Erbe in deinen _overlays_ von andern _overlays_
-* Und viel mehr, siehe die [Beispiele](https://github.com/kubernetes-sigs/kustomize/tree/master/examples) oder diese [kustomization.yaml](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/kustomization.yaml), welche viele der vorhandenen Features nutzt und erklärt.
+* Und viel mehr, siehe die [Beispiele](https://github.com/kubernetes-sigs/kustomize/tree/master/examples) oder diese [kustomization.yaml](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/glossary.md#kustomization), welche viele der vorhandenen Features nutzt und erklärt.
 
 ---
 
