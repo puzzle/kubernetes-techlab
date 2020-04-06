@@ -107,4 +107,6 @@ With `kubectl get pods --namespace [USER]` you should now longer see your applic
 
 **End Lab 11**
 
+<p width="100px" align="right"><a href="12_kustomize.md">Kustomize →</a></p>
+
 [← back to Overview](../README.md)
