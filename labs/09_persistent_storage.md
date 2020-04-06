@@ -19,7 +19,7 @@ In a second step, the pvc from before is going to be attached to the right pod. 
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size:
 
 ```
-$ kubectl create --namespace [USER] -f ./labs/08_data/mysql-persistent-volume-claim.yaml
+$ kubectl create -f ./labs/08_data/mysql-persistent-volume-claim.yaml --namespace [USER]
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:

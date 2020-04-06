@@ -98,14 +98,11 @@ Events:
 Scaling of pods within a service ist fast, as Kubernetes simply creates a new container
 
 
-**Tip:** Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
-
 You can check the availability of your service while you scale the number of replicas up and down.
 Replace the `URL` placeholder with the actual, constructed URL:
 
 ```
 NodePort=32193
-
 URL=http://[NodeIP]:38709/
 ```
 
@@ -116,7 +113,7 @@ Now, execute the corresponding loop command for your operating system.
 
 ```
 @Linux:
-while true; do sleep 1; curl -s [URL]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 ```
@@ -161,7 +158,7 @@ But what happens if start a new deployment while our while command is running?
 **Tip:** If on Windows, execute the following command in Gitbash, Powershell seems not to work.
 
 ```
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]
 ```
 During a short period we won't get a response:
 ```

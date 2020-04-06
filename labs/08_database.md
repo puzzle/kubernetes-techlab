@@ -9,7 +9,7 @@ Numerous applications are in some kind stateful and want to save data persistent
 We are first going to create a so-called secret in which we write the password for accessing the database.
 
 ```bash
-$ kubectl create secret generic mysql-password --namespace [USER] --from-literal=password=mysqlpassword
+$ kubectl create secret generic mysql-password --from-literal=password=mysqlpassword --namespace [USER]
 secret/mysql-password created
 ```
 
@@ -47,7 +47,7 @@ mysqlpassword
 We are going to create another secret for storing the MySQL root password.
 
 ```bash
-$ kubectl create secret generic mysql-root-password --namespace [USER] --from-literal=password=mysqlrootpassword
+$ kubectl create secret generic mysql-root-password --from-literal=password=mysqlrootpassword --namespace [USER] 
 secret/mysql-root-password created
 ```
 
@@ -96,7 +96,7 @@ We now can set these environment variables inside the deployment configuration. 
 So let's set the environment variables in the example-spring-boot deployment:
 
 ```
-$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true" --namespace [TEAM]-dockerimage
+$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true" --namespace [USER]
 ```
 
 You could also do the changes by direclty editing the deployment:

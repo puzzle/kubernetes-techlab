@@ -9,7 +9,7 @@ The command `kubectl create deployment` from [lab](04_deploy_dockerimage.md) cre
 
 ## Task: LAB5.1
 
-With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 8080:
+With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 8080:
 
 ```
 $ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [USER]
