@@ -105,7 +105,7 @@ $ kubectl create namespace [USER]
 ```
 
 or, if working on a Rancher managed Kubernetes Cluster, use the WebGui to create your Namespace in your desired project.
----
+
 
 It is bestpractice to explicitly select the Namespace in each `kubectl` command by adding `--namespace [USER]` or in short`-n [USER]`.
 

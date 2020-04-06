@@ -145,20 +145,19 @@ Events:
 
 **Note:** Service IP addresses stay the same for the duration of the service's life span.
 
-Open `http://[NodeIP]:[NodePort]` in your Browser. You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's of the available nodes.
+Open `http://[NodeIP]:[NodePort]` in your Browser. 
+You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
 
 ```
 kubectl get node -o wide
-NAME                  STATUS   ROLES               AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
-k8s-techlab-master1   Ready    controlplane,etcd   42m   v1.14.6   5.102.145.172   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker1   Ready    worker              41m   v1.14.6   5.102.145.190   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker2   Ready    worker              19m   v1.14.6   5.102.146.103   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker3   Ready    worker              41m   v1.14.6   5.102.145.175   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+NAME         STATUS   ROLES                      AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+lab-1   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.142   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
+lab-2   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.77    <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
+lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
+
 ```
 
-**Note:** As you might not have the correct permissions to display the existing nodes, ask your teacher to get the node IP's.
-
-**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The link is show in your deployment or under "Service Discovery"
+**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The direkt link is shown on your *Resources / Workload* Page in the tab *Workload*. Look for your namespace and the deployment name. The Link looks like `31665/tcp`. Or go to the *Service Discovery* Tab and look for your service Name. The Link there looks the same and is right below the service name.
 
 
 ## Task: LAB5.2
@@ -168,7 +167,7 @@ There's a second option to make a service accessible from outside: Use an ingres
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
 ```
-$ kubectl delete service example-spring-boot --namespace=[USER]-dockerimage
+$ kubectl delete service example-spring-boot --namespace=[USER]
 ```
 Now we create a service with type ClusterIP:
 

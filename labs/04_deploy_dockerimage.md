@@ -47,7 +47,7 @@ Use the command `kubectl get` with the `-w` parameter in order to get the reques
 
 
 ```
-$ kubectl get pods --namespace [USER]-dockerimage -w
+$ kubectl get pods --namespace [USER] -w
 ```
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
@@ -57,7 +57,7 @@ This process can last for some time depending on your internet connection and if
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]-dockerimage`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [USER]`, Kubernetes created a deployment resource.
 
 
 ### Deployment
@@ -96,7 +96,7 @@ The deployment defines that one replica should be deployed, which is running as 
 
 ## Task: LAB4.3 Verify the Deployment in the Rancher WebGUI
 
-Try to display the logs from the Springboot application via the Rancher WebGui.
+Try to display the logs from the Springboot application via the Rancher WebGui or use `kubectl logs [POD]`
 
 
 ---
