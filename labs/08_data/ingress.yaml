@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   labels:
     app: example-spring-boot
-  name: springboot-example-[U-nummer]
+  name: springboot-example-[USER]
 spec:
   rules:
   - host: springboot-example-example.com

@@ -10,7 +10,7 @@ Create a new deployment in your namespace:
 
 
 ```
-$ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld --namespace [TEAM]-dockerimage
+$ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld --namespace [USER]
 ```
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
@@ -19,7 +19,7 @@ Let's have a closer look at the existing replicaset:
 
 
 ```
-$ kubectl get replicasets --namespace [TEAM]-dockerimage
+$ kubectl get replicasets --namespace [USER]
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   1         1         1       110s
@@ -28,7 +28,7 @@ appuio-php-docker-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```
-$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [TEAM]-dockerimage
+$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [USER]
 ```
 
 The replicaset shows how many pods/replicas are desired, current and ready.
@@ -37,13 +37,13 @@ The replicaset shows how many pods/replicas are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```
-$ kubectl scale deployment appuio-php-docker --replicas=3 --namespace [TEAM]-dockerimage
+$ kubectl scale deployment appuio-php-docker --replicas=3 --namespace [USER]
 ```
 
 Check the number of desired, current and ready replicas:
 
 ```
-$ kubectl get replicasets --namespace [TEAM]-dockerimage
+$ kubectl get replicasets --namespace [USER]
 
 NAME                           DESIRED   CURRENT   READY   AGE
 appuio-php-docker-86d9d584f8   3         3         1       4m33s
@@ -53,7 +53,7 @@ appuio-php-docker-86d9d584f8   3         3         1       4m33s
 and look at how many pods there are:
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 NAME                                 READY   STATUS    RESTARTS   AGE
 appuio-php-docker-86d9d584f8-7vjcj   1/1     Running   0          5m2s
 appuio-php-docker-86d9d584f8-hbvlv   1/1     Running   0          31s
@@ -69,15 +69,15 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 Now we create a new service with type NodePort:
 
 ```
-$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [USER]
 ```
 
 Let's look at our service. We should see all three endpoints referenced:
 
 ```bash
-$ kubectl describe service appuio-php-docker --namespace [TEAM]-dockerimage
+$ kubectl describe service appuio-php-docker --namespace [USER]
 Name:                     appuio-php-docker
-Namespace:                philipona-scale
+Namespace:                [USER]
 Labels:                   app=appuio-php-docker
 Annotations:              <none>
 Selector:                 app=appuio-php-docker
@@ -242,7 +242,7 @@ In our deployment configuration inside the rolling update strategy section we de
 You can directly edit the deployment (or any resource) with:
 
 ```
-$ kubectl edit deployment appuio-php-docker --namespace [TEAM]-dockerimage
+$ kubectl edit deployment appuio-php-docker --namespace [USER]
 ```
 
 
@@ -261,7 +261,7 @@ spec:
 
 If you prefer json formatting to yaml, use the `--output`/`-o` parameter to edit the resource in json:
 ```
-$ kubectl edit deployment appuio-php-docker -o json --namespace [TEAM]-dockerimage
+$ kubectl edit deployment appuio-php-docker -o json --namespace [USER]
 ```
 **json**
 ```
@@ -374,7 +374,7 @@ while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
 Start a new deployment by editing it (the so-called ConfigChange trigger triggers the new deployment automatically):
 
 ```bash
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]
 ```
 
 
@@ -387,11 +387,11 @@ Look for a running pod (status `RUNNING`) that you can bear to kill via `kubectl
 Show all pods and watch for changes:
 
 ```
-kubectl get pods -w --namespace [TEAM]-dockerimage
+kubectl get pods -w --namespace [USER]
 ```
 Now delete a pod (in another terminal) with the following command:
 ```
-kubectl delete pod appuio-php-docker-3-788j5 --namespace [TEAM]-dockerimage
+kubectl delete pod appuio-php-docker-3-788j5 --namespace [USER]
 ```
 
 

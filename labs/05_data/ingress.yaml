@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   labels:
     app: example-spring-boot
-  name: springboot-example-[TEAM]
+  name: springboot-example-[USER]
 spec:
   rules:
-  - host: springboot-example-[TEAM].k8s-techlab.puzzle.ch
+  - host: springboot-example-[USER].k8s-techlab.puzzle.ch
     http:
       paths:
       - backend:

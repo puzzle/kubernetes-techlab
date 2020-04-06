@@ -9,14 +9,14 @@ Numerous applications are in some kind stateful and want to save data persistent
 We are first going to create a so-called secret in which we write the password for accessing the database.
 
 ```bash
-$ kubectl create secret generic mysql-password --namespace [TEAM]-dockerimage --from-literal=password=mysqlpassword
+$ kubectl create secret generic mysql-password --namespace [USER] --from-literal=password=mysqlpassword
 secret/mysql-password created
 ```
 
 The secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
-$ kubectl get secret mysql-password --namespace [TEAM]-dockerimage -o json
+$ kubectl get secret mysql-password --namespace [USER] -o json
 {
     "apiVersion": "v1",
     "data": {
@@ -47,7 +47,7 @@ mysqlpassword
 We are going to create another secret for storing the MySQL root password.
 
 ```bash
-$ kubectl create secret generic mysql-root-password --namespace [TEAM]-dockerimage --from-literal=password=mysqlrootpassword
+$ kubectl create secret generic mysql-root-password --namespace [USER] --from-literal=password=mysqlrootpassword
 secret/mysql-root-password created
 ```
 
@@ -59,7 +59,7 @@ In our case we want to create a deployment including a service for our MySQL dat
 
 
 ```
-$ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml --namespace [TEAM]-dockerimage
+$ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml --namespace [USER]
 service/springboot-mysql created
 deployment.apps/springboot-mysql created
 ```
@@ -102,11 +102,11 @@ $ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=spri
 You could also do the changes by direclty editing the deployment:
 
 ```
-$ kubectl edit deployment --namespace [TEAM]-dockerimage example-spring-boot
+$ kubectl edit deployment --namespace [USER] example-spring-boot
 ```
 
 ```
-$ kubectl get deployment --namespace [TEAM]-dockerimage example-spring-boot
+$ kubectl get deployment --namespace [USER] example-spring-boot
 ```
 ```
 ...
@@ -136,7 +136,7 @@ As described in [lab 07](07_troubleshooting_ops.md) we can log into a pod with `
 Show all pods:
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 NAME                                   READY   STATUS    RESTARTS   AGE
 example-spring-boot-574544fd68-qfkcm   1/1     Running   0          2m20s
 springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
@@ -145,7 +145,7 @@ springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
 Log into the MySQL pod:
 
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER] -- /bin/bash
 ```
 
 You are now able to connect to the database and display the tables. Log in using:
@@ -197,13 +197,13 @@ Analogue to the `MYSQL_PASSWORD` environment variable, remove the value of the `
 This is how you copy the database dump into the pod:
 
 ```
-kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/ --namespace [TEAM]-dockerimage
+kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/ --namespace [USER]
 ```
 
 This is how you log into the MySQL pod:
 
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [USER] -- /bin/bash
 ```
 
 This shows how to drop the whole database:

@@ -12,10 +12,10 @@ Running container should be treated as immutable infrastructure and should there
 
 With Kubernetes you can open a remote Shell into a pod without installing SSH by Using the command `kubectl exec`. The command is used to executed anything in a pod. With the parameter `-it` you can leave open an connection. We can use `winpty` for this.
 
-Choose a pod with `kubectl get pods --namespace [TEAM]-dockerimage` and execute the following command:
+Choose a pod with `kubectl get pods --namespace [USER]` and execute the following command:
 
 ```bash
-$ kubectl exec -it [POD] --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it [POD] --namespace [USER] -- /bin/bash
 ```
 
 With this, you can work inside the pod, e.g.:
@@ -46,11 +46,11 @@ Single commands inside a container can be executed with `kubectl exec`:
 
 
 ```bash
-$ kubectl exec [POD] --namespace [TEAM]-dockerimage env
+$ kubectl exec [POD] --namespace [USER] env
 ```
 
 ```bash
-$ kubectl exec example-spring-boot-69b658f647-xnm94 --namespace [TEAM]-dockerimage env
+$ kubectl exec example-spring-boot-69b658f647-xnm94 --namespace [USER] env
 PATH=/opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-spring-boot-4-8mbwe
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
@@ -67,7 +67,7 @@ Logfiles of a pod can with shown with the following command:
 
 
 ```bash
-$ kubectl logs [POD] --namespace [TEAM]-dockerimage
+$ kubectl logs [POD] --namespace [USER]
 ```
 
 The parameter `-f` allows you to follow the logfile (same as `tail -f`). With this, logfiles are streamed and new entries are shown directly
@@ -76,7 +76,7 @@ When a pod is in State **CrashLoopBackOff** it means, that even after some resta
 
 
  ```bash
-$ kubectl logs -p [POD] --namespace [TEAM]-dockerimage
+$ kubectl logs -p [POD] --namespace [USER]
 ```
 
 
@@ -88,8 +88,8 @@ Exercise: Access the Spring Boot Metrics from [Lab 4](04_deploy_dockerimage.md).
 
 
 ```bash
-$ kubectl get pod --namespace [TEAM]-dockerimage
-$ kubectl port-forward example-spring-boot-1-xj1df 9000:9000 --namespace [TEAM]-dockerimage
+$ kubectl get pod --namespace [USER]
+$ kubectl port-forward example-spring-boot-1-xj1df 9000:9000 --namespace [USER]
 Forwarding from 127.0.0.1:9000 -> 9000
 Forwarding from [::1]:9000 -> 9000
 ```

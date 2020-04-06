@@ -37,16 +37,16 @@ Helm needs a component installed in the Kubernetes cluster for the communication
 For this Exercise, you can install Tiller in your own Namespace, but we also need to create a ServiceAccount and a Role & Rolebinding for Helm to work correctly:
 
 ```
-kubectl create sa "tiller-[USER]-dockerimage"
-kubectl create role "tiller-role-[USER]-dockerimage" --namespace [USER]-dockerimage --verb=* --resource=*.,*.apps,*.batch,*.extensions
-kubectl create rolebinding "tiller-rolebinding-[USER]-dockerimage" --role="tiller-role-[USER]-dockerimage" --serviceaccount="[USER]-dockerimage:tiller-[USER]-dockerimage"
-helm init --service-account "tiller-[USER]-dockerimage" --tiller-namespace [USER]-dockerimage --upgrade
+kubectl create sa "tiller-[USER]"
+kubectl create role "tiller-role-[USER]" --namespace [USER] --verb=* --resource=*.,*.apps,*.batch,*.extensions
+kubectl create rolebinding "tiller-rolebinding-[USER]" --role="tiller-role-[USER]" --serviceaccount="[USER]:tiller-[USER]"
+helm init --service-account "tiller-[USER]" --tiller-namespace [USER] --upgrade
 ```
 
-To not always add the namespace when calling `helm` (with `--tiller-namespace [USER]-dockerimage`), you can set the following environment variable:
+To not always add the namespace when calling `helm` (with `--tiller-namespace [USER]`), you can set the following environment variable:
 
 ```
-export TILLER_NAMESPACE=[USER]-dockerimage
+export TILLER_NAMESPACE=[USER]
 ```
 
 As mentioned, there are some security conserns with a central and always running Tiller Instance. Everybody with access to the Tiller instance, can create Deployments in all namespaces the ServiceAccount on which Tiller runs, has access to. Therefore we limit the permissions by using Tiller only for one Namespace.
@@ -55,18 +55,18 @@ As mentioned, there are some security conserns with a central and always running
 Before actually deploying our generated chart, we can check the (to be) generated Kubernetes ressources with the following Command:
 
 ```sh
-helm install --dry-run --debug --namespace [USER]-dockerimage mychart
+helm install --dry-run --debug --namespace [USER] mychart
 ```
 
 Finally, the following command creates a new Release with the Helm chart and deploys the application::
 ```sh
-helm install mychart --namespace [USER]-dockerimage
+helm install mychart --namespace [USER]
 ```
 
-With `kubectl get pods --namespace [USER]-dockerimage` you should see a new Pod. You can list the newly created Helm release with the following command:
+With `kubectl get pods --namespace [USER]` you should see a new Pod. You can list the newly created Helm release with the following command:
 
 ```sh
-helm ls --namespace [USER]-dockerimage
+helm ls --namespace [USER]
 ```
 
 ## Task: LAB11.5 Update an Application with Helm
@@ -77,14 +77,14 @@ You can apply your change with the following command:
 
 
 ```sh
-helm upgrade [RELEASE] --namespace [namespace] mychart
+helm upgrade [RELEASE] --namespace [USER] mychart
 ```
 
 As soon as the Service has a NodePort, you will see it with the following command (As we use -w (watch) you have to terminate the command with CTRL-C):
 
 
 ```sh
-kubectl get svc --namespace [namespace] -w
+kubectl get svc --namespace [USER] -w
 ```
 
 
@@ -101,7 +101,7 @@ To remove an application, you can simply remove the Helm release with the follow
 helm delete [RELEASE]
 ```
 
-With `kubectl get pods --namespace [USER]-dockerimage` you should now longer see your application Pod.
+With `kubectl get pods --namespace [USER]` you should now longer see your application Pod.
 
 ---
 
