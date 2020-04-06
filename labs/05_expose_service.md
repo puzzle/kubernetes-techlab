@@ -169,18 +169,17 @@ In order to switch the service type, we are going to delete the NodePort service
 ```
 $ kubectl delete service example-spring-boot --namespace=[USER]
 ```
-Now we create a service with type ClusterIP:
+Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 ```
 $ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [USER]
 ```
 
-In order to create the ingress resource, we first need to edit the file `./labs/05_data/ingress.yaml` and change `spec.rules[0].host` in the kubernetes-techlab git repository.
-
+In order to create the ingress resource, we first need to edit the file `./labs/05_data/ingress.yaml` and change `spec.rules[0].host` in the kubernetes-techlab git repository. Replase `[USER]` with your abbreviation.
 
 After editing the ingress resource, we can create it:
 ```
-$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]-dockerimage
+$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [USER]
 ```
 Afterwards we are able to access our freshly created service at `http://springboot-example-[USER].k8s-techlab.puzzle.ch`
 
