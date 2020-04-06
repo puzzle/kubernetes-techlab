@@ -58,7 +58,6 @@ ingress:
   hostname: helmtechlab-wordpress-[USER].k8s-techlab.puzzle.ch
 [...]
 ```
-{{% /collapse %}}
 
 We're now going to deploy the application in a specific version (which is not the latest release on purpose):
 
