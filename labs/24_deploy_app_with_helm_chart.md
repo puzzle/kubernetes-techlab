@@ -1,118 +1,112 @@
 # Lab: Deploy an Application with a Helm Charts
 
-In this extended lab, we are going to deploy an existing application with a Helm chart
+In this extended lab, we are going to deploy an existing, more complex application with a Helm chart from the Helm Hub.
 
-## Helm Hub
 
-Check out [Helm Hub](https://hub.helm.sh/), there you find a lot of Helm charts. For this lab, we choose [HackMD](https://hub.helm.sh/charts/stable/hackmd) a realtime, multiplatform collaborative markdown note editor.
+### Helm Hub
 
-## HackMD
+Check out [Helm Hub](https://hub.helm.sh/) where you'll find a huge number of different Helm charts. For this lab, we'll use the [WordPress chart by Bitnami](https://hub.helm.sh/charts/bitnami/wordpress), a publishing platform for building blogs and websites.
 
-The official HackMD Helm-Chart ist published in the stable Helm repository. First, make sure that you have the stable repo added in your Helm client.
+
+### WordPress
+
+As this WordPress Helm chart is published in Bitnami's Helm repository, we're first going to add it to our local repo list:
 
 ```
-helm repo list
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+
+Let's check if that worked:
+
+```
+$ helm repo list
 NAME           	URL                                              
-stable         	https://kubernetes-charts.storage.googleapis.com 
-local          	http://127.0.0.1:8879/charts                              
+bitnami         https://charts.bitnami.com/bitnami 
 ```
 
-which should already be the case. If, for any reason, you don't have the stable repo, you can add it by typing:
+Let's look at the available configuration for this Helm chart. Usually you can find them in the `values.yaml` or in the charts' readme file. You can also check them on its [Helm Hub page](https://hub.helm.sh/charts/bitnami/wordpress).
 
-```
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-```
-
-Let's check the available configuration for this Helm chart. Normally you find them in the [values.yaml](https://github.com/helm/charts/blob/master/stable/hackmd/values.yaml) File inside the repository or described in the charts readme. 
-
-We are going to override some of the values, for that purpose, create a new `values.yaml` file locally on your workstation with the following content:
+We are going to override some of the values. For that purpose, create a new `values.yaml` file locally on your workstation with the following content:
 
 ```yaml
-image:
-  tag: 1.3.0-alpine
+---
 persistence:
-  storageClass: cloudscale-volume-ssd
   size: 1Gi
+service:
+  type: ClusterIP
+updateStrategy: 
+  type: Recreate
+
+mariadb:
+  db:
+    password: mysuperpassword123
+  master:
+    persistence:
+      size: 1Gi
+```
+
+If you look inside the [requirements.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/requirements.yaml) file of the WordPress chart you see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.
+
+
+
+You can use the following snippet for your ingress configuration if you want to be able to access the WordPress instance after deploying it (although this is not really necessary for this lab).
+
+```yaml
+[...]
 ingress:
   enabled: true
-  hosts:
-    - hack-md-[TEAM].k8s-techlab.puzzle.ch
-postgresql:
-  persistence:
-    size: 1Gi
-    storageClass: cloudscale-volume-ssd
-  postgresPassword: my-secret-password
+  hostname: helmtechlab-wordpress-[USER].k8s-techlab.puzzle.ch
+[...]
 ```
+{{% /collapse %}}
 
-**Note:** Remember Lab5 to get the NodeIP
-
-**Note:** As `cloudscale-volume-ssd` is anyway the default StorageClass, this would not be necessary
-
-If you look inside the [requirements.yaml](https://github.com/helm/charts/blob/master/stable/hackmd/requirements.yaml) file of the HackMD Chart you see a dependency to the `postgresql` Helm chart. All the `postgresql` values are used by this dependent Helm chart and the chart is automaticly deployed when installing HackMD.
-
-Now deploy the application with:
+We're now going to deploy the application in a specific version (which is not the latest release on purpose):
 
 ```
-helm install -f values.yaml stable/hackmd
+$ helm install wordpress -f values.yaml --namespace [USER] --version 9.0.4 bitnami/wordpress
 ```
 
-Watch the deployed application with `helm ls` and also check the Rancher WebGUI for the newly created Deployments, the Ingress and also the PersistenceVolumeClaim.
+Watch for the newly created resources with `helm ls` and `kubectl get deploy,pod,ingress,pvc`:
 
-```
-helm ls
-NAME             	REVISION	UPDATED                 	STATUS  	CHART       	APP VERSION 	NAMESPACE        
-altered-billygoat	1       	Thu Sep 26 14:06:59 2019	DEPLOYED	hackmd-1.2.1	1.3.0-alpine	team1-dockerimage
+```bash
+$ helm ls --namespace [USER]                                                            
+NAME     	NAMESPACE      	REVISION	UPDATED                                 	STATUS  	CHART          	APP VERSION
+wordpress	[USER]        	1       	2020-03-31 13:23:17.213961038 +0200 CEST	deployed	wordpress-9.0.4	5.3.2
 ```
 
-As soon as all Deployments are ready (hackmd and postgres) you can open the application with the URL from your `values.yaml` file or by using the link inside the Rancher WebGUI.
+```bash
+$ kubectl -n [USER] get deploy,pod,ingress,pvc
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/wordpress   1/1     1            1           2m6s
+
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/wordpress-6bf6df9c5d-w4fpx   1/1     Running   0          2m6s
+pod/wordpress-mariadb-0          1/1     Running   0          2m6s
+
+NAME                           HOSTS                                          ADDRESS       PORTS   AGE
+ingress.extensions/wordpress   helmtechlab-wordpress.k8s-internal.puzzle.ch   10.100.1.10   80      2m6s
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS            AGE
+persistentvolumeclaim/data-wordpress-mariadb-0   Bound    pvc-859fe3b4-b598-4f86-b7ed-a3a183f700fd   1Gi        RWO            cloudscale-volume-ssd   2m6s
+persistentvolumeclaim/wordpress                  Bound    pvc-83ebf739-0b0e-45a2-936e-e925141a0d35   1Gi        RWO            cloudscale-volume-ssd   2m7s
+```
+
+As soon as all deployments are ready (`wordpress` and `mariadb`) you can open the application with the URL from your Ingress defined in `values.yaml`.
+
 
 ### Upgrade
 
-We are now going to upgrade the application to a newer Container image. You can do this with:
+We are now going to upgrade the application to a newer Helm chart version. You can do this with:
 
 ```
-helm upgrade --reuse-values --set image.tag=1.3.1-alpine quiet-squirrel stable/hackmd
+$ helm upgrade -f values.yaml --namespace [USER] --version 9.1.1 wordpress bitnami/wordpress
 ```
 
-**Note:** Make sure to use the correct release name, as shown with the `helm ls` command.
+And then observe the changes in your WordPress and MariaDB Apps
 
-And then observe how the Deployment was changed to a the new container image tag. 
-
-**Remark** The HackMD uses the default Deployment strategy which is: 
-
-```
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-```
-
-this means, the new Pod is scheduled and then when ready, the old one will be removed. As we are using the cloudscale-csi storage integration, we can only mount a volume once. Therefore the new Pod cannot mount the volume as long as the old Pod is not gone. Do you know how to solve this?
-
-As a workaround you can scale down your Deployment and then scale it up again:
-
-```
-kubectl scale deployment quiet-squirrel-hackmd --replicas=0 --namespace team1-dockerimage
-# Wait for the Pod to be removed and then scale up again
-kubectl scale deployment quiet-squirrel-hackmd --replicas=1 --namespace team1-dockerimage
-```
-
-or change the deployment strategy to:
-
-```
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 25%
-    type: RollingUpdate
-```
-
-
-**Note:** that when you change the Deployment stategy manually, on a Helm upgrade your changes are lost!
 
 ### Cleanup
 
 ```
-helm delete --purge altered-billygoat
+$ helm uninstall wordpress --namespace [USER]
 ```
