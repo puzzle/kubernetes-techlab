@@ -81,7 +81,7 @@ Namespace:                [USER]
 Labels:                   app=appuio-php-docker
 Annotations:              <none>
 Selector:                 app=appuio-php-docker
-Type:                     LoadBalancer
+Type:                     NodePort
 IP:                       10.39.245.205
 Port:                     <unset>  80/TCP
 TargetPort:               8080/TCP

@@ -124,7 +124,7 @@ Namespace:                spl
 Labels:                   app=example-spring-boot
 Annotations:              <none>
 Selector:                 app=example-spring-boot
-Type:                     LoadBalancer
+Type:                     NodePort
 IP:                       10.39.240.212
 LoadBalancer Ingress:     104.199.26.127
 Port:                     <unset>  80/TCP

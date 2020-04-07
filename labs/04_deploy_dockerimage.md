@@ -78,7 +78,7 @@ A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 ```
-$ kubectl get deployment example-spring-boot -o json --namespace [USER]-dockerimage
+$ kubectl get deployment example-spring-boot -o json --namespace [USER]
 ```
 
 After the image has been pulled, Kubernetes deploys a pod according to the deployment:
