@@ -96,7 +96,7 @@ The deployment defines that one replica should be deployed, which is running as 
 
 ## Task: LAB4.3 Verify the Deployment in the Rancher WebGUI
 
-Try to display the logs from the Springboot application via the Rancher WebGui or use `kubectl logs [POD]`
+Try to display the logs from the Springboot application via the Rancher WebGui or use `kubectl logs [POD] -n [USER]`
 
 
 ---
