@@ -126,7 +126,6 @@ Annotations:              <none>
 Selector:                 app=example-spring-boot
 Type:                     NodePort
 IP:                       10.39.240.212
-LoadBalancer Ingress:     104.199.26.127
 Port:                     <unset>  80/TCP
 TargetPort:               8080/TCP
 NodePort:                 <unset>  30100/TCP
