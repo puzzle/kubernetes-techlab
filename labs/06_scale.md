@@ -101,9 +101,10 @@ Scaling of pods within a service ist fast, as Kubernetes simply creates a new co
 You can check the availability of your service while you scale the number of replicas up and down.
 Replace the `URL` placeholder with the actual, constructed URL:
 
+Example
 ```
 NodePort=32193
-URL=http://[NodeIP]:38709/
+URL=http://[NodeIP]:$NodePort
 ```
 
 **Tip:** Check previous lab on how to get the `NodeIP`
