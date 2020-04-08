@@ -18,7 +18,7 @@ Goal of these techlabs:
 1. [Expose a service](labs/05_expose_service.md)
 1. [Skaling](labs/06_scale.md)
 1. [Troubleshooting, what happens in the pod?](labs/07_troubleshooting_ops.md)
-1. [Deployen a database and get connected](labs/08_database.md)
+1. [Deploy a database and get connected](labs/08_database.md)
 1. [Usage of persistent storage with database example](labs/09_persistent_storage.md)
 1. [Additional concepts](labs/10_additional_concepts.md)
     1. [StatefulSet](labs/10_1_statefulset.md)
