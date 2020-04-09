@@ -52,7 +52,7 @@ The control- and predictable behaviour can be perfectly used with application as
 
 ## Task: LAB10.1
 
-### Statefulset erstellen
+### Create Statefulset
 1. Create a statefulset based on the YAML file _nginx-sfs.yaml_ :
 ```YAML
 apiVersion: apps/v1
